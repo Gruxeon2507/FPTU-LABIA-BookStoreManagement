@@ -1,5 +1,5 @@
 -- CREATE DATABASE FU_LABIA_BookStoreManagement ;
--- DROP DATABASE FU_LABIA_BookStoreManagement
+-- DROP DATABASE FU_LABIA_BookStoreManagement;
 USE FU_LABIA_BookStoreManagement;
 
 CREATE TABLE `User`(
@@ -9,7 +9,7 @@ CREATE TABLE `User`(
     dob date,
     email varchar(150),
     createDate date,
-    lastestActive datetime,
+    lastActive datetime,
     avatar blob,
     CONSTRAINT PK_User PRIMARY KEY (userName)
 );
