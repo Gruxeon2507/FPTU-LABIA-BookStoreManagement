@@ -5,6 +5,7 @@ USE FU_LABIA_BookStoreManagement;
 CREATE TABLE `User`(
 	userName varchar(50),
     `password` varchar(50),
+    displayName nvarchar (150),
     dob date,
     email varchar(150),
     createDate date,
@@ -53,11 +54,13 @@ REFERENCES Feature(featureId);
 CREATE TABLE Book (
 	bookId int NOT NULL,
     title nvarchar(150),
+    authorName nvarchar(150),
+    `description` longtext,
     pdf longblob,
     cover longblob,
-    createdBy varchar(50),
-    isApproved bit,
     price float,
+    createdBy varchar(50),
+    isApproved bit DEFAULT false,
     noSale int DEFAULT 0,
     noView int DEFAULT 0,
     CONSTRAINT PK_Book PRIMARY KEY (bookId)
@@ -72,7 +75,7 @@ CREATE TABLE Category (
 );
 
 CREATE TABLE Book_Category(
-	bookId int NOT NULL, 
+	bookId int NOT NULL , 
     categoryId int NOT NULL,
     CONSTRAINT PK_Book_Category PRIMARY KEY (bookId, categoryId)
 );
@@ -82,6 +85,15 @@ REFERENCES Book (bookId);
 ALTER TABLE Book_Category ADD CONSTRAINT FK_BookCategory_Category FOREIGN KEY(categoryId)
 REFERENCES Category (categoryId);
 
+/*
+SELECT * FROM `User`;
+SELECT * FROM `Role`;
+SELECT * FROM Book;
+SELECT * FROM Category;
+SELECT * FROM Book_Category;
+SELECT * FROM User_Role ;
+SELECT * FROM Role_Feature;
+*/
 
 
 
