@@ -36,25 +36,25 @@ INSERT INTO Category (categoryId, categoryName)
 VALUES (17, 'Tâm lý');
 
 -- User
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('huyenntk','123','Nguyễn Thị Khánh Huyền','2003-08-06','huyenntk@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/huyenntk.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('maiphuonghoang','123','Hoàng Mai Phương','2003-01-29','maiphuonghoang@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/maiphuonghoang.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('duckm','123','Khiếu Minh Đức','2003-07-25','duckm@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/duckm.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('giangpt','123','Phạm Trường Giang','2003-06-18','giangpt@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/giangpt.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('duongpt','123','Phạm Tuấn Dương','2002-01-01','duongpt@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/duongpt.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('anbv','123','Bùi Văn An','2001-01-01','anbv@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/anbv.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('nhatvn','123','Vũ Ngọc Nhất','2003-01-01','nhatvn@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/nhatvn.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('phucvd','123','Vũ Duy Phúc','2003-01-01','phucvd@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/phucvd.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('hoavt','123','Vũ Tiến Hòa','1999-01-01','hoavt@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/hoavt.jpg');
-INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatar)
+INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('khoahoc','123','Em Yêu Khoa Học','2022-01-01','khoahoc@gmail.com','2023-04-11','2023-04-11 15:00:00','avatar/khoahoc.jpg');
 
 -- Role

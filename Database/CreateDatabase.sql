@@ -1,5 +1,5 @@
--- CREATE DATABASE FU_LABIA_BookStoreManagement ;
--- DROP DATABASE FU_LABIA_BookStoreManagement;
+ CREATE DATABASE FU_LABIA_BookStoreManagement ;
+ --  DROP DATABASE FU_LABIA_BookStoreManagement;
 USE FU_LABIA_BookStoreManagement;
 
 CREATE TABLE `User`(
