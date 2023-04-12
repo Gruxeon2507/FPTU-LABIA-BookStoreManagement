@@ -39,6 +39,7 @@ public class User {
     private String email;
     private Date dob;
     private Date createDate;
+    private String avatar;
     private java.sql.Timestamp lastActive;
 
     @OneToMany(mappedBy = "createdBy")

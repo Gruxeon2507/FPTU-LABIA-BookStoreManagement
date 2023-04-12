@@ -34,8 +34,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookId;
     private String title;
-    private java.sql.Blob pdf;
-    private java.sql.Blob cover;
+    private String pdfPath;
+    private String coverPath;
 
     @ManyToOne
     @JoinColumn(name = "createdBy", referencedColumnName = "username")

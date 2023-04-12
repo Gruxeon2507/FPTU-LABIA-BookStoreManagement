@@ -10,7 +10,7 @@ CREATE TABLE `User`(
     email varchar(150),
     createDate date,
     lastActive datetime,
-    avatar blob,
+    avatarPath varchar(255),
     CONSTRAINT PK_User PRIMARY KEY (username)
 );
 
@@ -56,8 +56,8 @@ CREATE TABLE Book (
     title nvarchar(150),
     authorName nvarchar(150),
     `description` longtext,
-    pdf longblob,
-    cover longblob,
+    pdfPath varchar(255),
+    coverPath varchar(255),
     price float,
     createdBy varchar(50),
     isApproved bit DEFAULT false,
