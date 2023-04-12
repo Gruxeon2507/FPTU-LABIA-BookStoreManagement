@@ -6,6 +6,8 @@ package com.labia.bookstoremanagement.model;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -30,19 +32,19 @@ import lombok.Setter;
 public class Role {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roleId;
     private String roleName;
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany
     @JoinTable(name = "User_Role",
-            joinColumns = @JoinColumn(name = "roleId"), 
-            inverseJoinColumns = @JoinColumn(name = "userName"))
+            joinColumns = @JoinColumn(name = "roleId"),
+            inverseJoinColumns = @JoinColumn(name = "username"))
     private List<User> users;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany
     @JoinTable(name = "Role_Feature",
-            joinColumns = @JoinColumn(name = "roleId"), 
+            joinColumns = @JoinColumn(name = "roleId"),
             inverseJoinColumns = @JoinColumn(name = "featureId"))
     private List<Feature> features;
-    
 
 }

@@ -33,7 +33,7 @@ import org.apache.naming.java.javaURLContextFactory;
 public class User {
 
     @Id
-    private String userName;
+    private String username;
     private String password;
     private String displayName;
     private String email;
@@ -45,8 +45,6 @@ public class User {
     private List<Book> books;
     
     @ManyToMany(mappedBy = "users")
-//    @JoinTable(name = "User_Role", 
-//            joinColumns = @JoinColumn(name = "userName"), inverseJoinColumns = @JoinColumn(name = "roleId"))
     private List<Role> roles;
 
 }
