@@ -4,6 +4,8 @@
  */
 package com.labia.bookstoremanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +30,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "Book")
-public class Book {
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bookId")
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +42,8 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "createdBy", referencedColumnName = "username")
+    @JsonIgnore
+//    @JsonBackReference
     private User createdBy;
 
     private boolean isApproved;
@@ -47,6 +52,7 @@ public class Book {
     private int noView;
 
     @ManyToMany(mappedBy = "books")
+//    @JsonIgnore
     private List<Category> categories;
 
 }

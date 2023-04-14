@@ -252,6 +252,8 @@ Từ thế hệ này sang thế hệ khác, những nữ phù thủy Bene Gesser
 INSERT INTO Book_Category(bookId,categoryId)
 VALUES (1,1);
 INSERT INTO Book_Category(bookId,categoryId)
+VALUES (1,2);
+INSERT INTO Book_Category(bookId,categoryId)
 VALUES (2,1);
 INSERT INTO Book_Category(bookId,categoryId)
 VALUES (3,1);

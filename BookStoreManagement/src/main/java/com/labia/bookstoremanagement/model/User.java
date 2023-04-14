@@ -4,13 +4,11 @@
  */
 package com.labia.bookstoremanagement.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,7 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.naming.java.javaURLContextFactory;
 
 /**
  *
@@ -30,7 +27,8 @@ import org.apache.naming.java.javaURLContextFactory;
 @AllArgsConstructor
 @Entity
 @Table(name = "`User`")
-public class User {
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+public class User implements Serializable {
 
     @Id
     private String username;
@@ -39,12 +37,12 @@ public class User {
     private String email;
     private Date dob;
     private Date createDate;
-    private String avatar;
+    private String avatarPath;
     private java.sql.Timestamp lastActive;
 
     @OneToMany(mappedBy = "createdBy")
     private List<Book> books;
-    
+
     @ManyToMany(mappedBy = "users")
     private List<Role> roles;
 
