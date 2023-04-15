@@ -29,17 +29,17 @@ public class BookController {
     List<Book> getAll() {
         return bookRepository.findAll();
     }
-
-    
-    @GetMapping("by-user/{username}")
-    List<Book> getBookByUser(@PathVariable String username) {
-        return bookRepository.getBookByUsername(username);
-    }
-
-    @GetMapping("by-category/{categoryId}")
-    List<Book> getBookByCategory(@PathVariable Integer categoryId) {
-        return bookRepository.getBookByCategoryId(categoryId);
-    }
-    
+//
+//    
+//    @GetMapping("by-user/{username}")
+//    List<Book> getBookByUser(@PathVariable String username) {
+//        return bookRepository.getBookByUsername(username);
+//    }
+//
+//    @GetMapping("by-category/{categoryId}")
+//    List<Book> getBookByCategory(@PathVariable Integer categoryId) {
+//        return bookRepository.getBookByCategoryId(categoryId);
+//    }
+//    
 
 }

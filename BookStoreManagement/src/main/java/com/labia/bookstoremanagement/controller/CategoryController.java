@@ -27,10 +27,10 @@ public class CategoryController {
     List<Category> getAllCategory() {
         return categoryRepository.findAll();
     }
-
-    @GetMapping("by-book/{bookId}")
-    List<Category> getCategoryByBook(@PathVariable Integer bookId) {
-        return categoryRepository.getCategoryByBookId(bookId);
-    }
+//
+//    @GetMapping("by-book/{bookId}")
+//    List<Category> getCategoryByBook(@PathVariable Integer bookId) {
+//        return categoryRepository.getCategoryByBookId(bookId);
+//    }
 
 }

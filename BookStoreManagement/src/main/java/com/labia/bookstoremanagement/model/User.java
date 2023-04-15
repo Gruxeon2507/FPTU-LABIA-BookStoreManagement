@@ -9,7 +9,6 @@ import java.sql.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "`User`")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 public class User implements Serializable {
 
     @Id
@@ -40,10 +38,10 @@ public class User implements Serializable {
     private String avatarPath;
     private java.sql.Timestamp lastActive;
 
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "user")
     private List<Book> books;
 
-    @ManyToMany(mappedBy = "users")
-    private List<Role> roles;
-
+    
+    @OneToMany(mappedBy = "user")
+    private List<User_Role> user_roles;
 }

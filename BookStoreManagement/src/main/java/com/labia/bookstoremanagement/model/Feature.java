@@ -4,14 +4,13 @@
  */
 package com.labia.bookstoremanagement.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,8 +36,7 @@ class Feature  implements Serializable{
     private String featureName;
     private String url;
 
-    @ManyToMany(mappedBy = "features")
-    @JsonIgnore
-    private List<Role> roles;
+    @OneToMany(mappedBy = "feature")
+    private List<Role_Feature> role_features;
 
 }

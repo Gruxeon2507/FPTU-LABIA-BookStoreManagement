@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,19 +32,21 @@ import lombok.Setter;
 @Entity
 @Table(name = "Category")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "categoryId")
-public class Category  implements Serializable{
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
-
-    @ManyToMany
-    @JoinTable(name = "Book_Category", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "bookId"))
-    @JsonIgnore
-    private List<Book> books;
-
     private String categoryName;
 
+//    @ManyToMany
+//    @JoinTable(name = "Book_Category", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "bookId"))
+//    @JsonIgnore
+//    private List<Book> books;
+    
+    @OneToMany(mappedBy = "category")
+    List<Book_Category> book_Categories;
+    
 }
 //hien thi tat ca use
 //hien thi 1 use
