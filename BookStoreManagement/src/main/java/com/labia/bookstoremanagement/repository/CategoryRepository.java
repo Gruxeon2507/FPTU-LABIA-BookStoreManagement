@@ -15,6 +15,6 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
-    @Query("select c from Category c join c.books b where b.bookId = :bookId")
-    List<Category> getCategoryByBookId(Integer bookId);
+//    @Query("select c from Category c join c.books b where b.bookId = :bookId")
+//    List<Category> getCategoryByBookId(Integer bookId);
 }

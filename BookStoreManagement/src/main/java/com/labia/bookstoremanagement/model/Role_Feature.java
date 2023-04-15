@@ -4,11 +4,13 @@
  */
 package com.labia.bookstoremanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.labia.bookstoremanagement.modelkey.RoleFeatureKey;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,10 +33,12 @@ public class Role_Feature {
     private RoleFeatureKey roleFeatureKey;
 
     @ManyToOne
+    @MapsId("roleId")
     @JoinColumn(name = "roleId")
     Role role;
 
     @ManyToOne
+    @MapsId("featureId")
     @JoinColumn(name = "featureId")
     Feature feature;
 }

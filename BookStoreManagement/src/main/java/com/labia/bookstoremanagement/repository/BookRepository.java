@@ -16,11 +16,12 @@ import org.springframework.data.jpa.repository.Query;
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
 //    @Query(value = "select * from book b join user u on  b.createdBy = u.username where u.username =?1 ", nativeQuery = true)
-    @Query(value = "select b from Book b join b.createdBy u where u.username =:username")
-    List<Book> getBookByUsername(String username);
-
-    @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
-    List<Book> getBookByCategoryId(Integer categoryId);
+    
+//    @Query(value = "select b from Book b join b.createdBy u where u.username =:username")
+//    List<Book> getBookByUsername(String username);
+//
+//    @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
+//    List<Book> getBookByCategoryId(Integer categoryId);
     
 
 

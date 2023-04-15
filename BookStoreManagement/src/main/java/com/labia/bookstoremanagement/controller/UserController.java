@@ -23,10 +23,10 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
     
-//    @GetMapping("")
-//    List<User> getAllUser(){
-//        return userRepository.findAll();
-//    }
+    @GetMapping("")
+    List<User> getAllUser(){
+        return userRepository.findAll();
+    }
 //    
 //    @GetMapping("/{username}")
 //    User getUser(@PathVariable String username){

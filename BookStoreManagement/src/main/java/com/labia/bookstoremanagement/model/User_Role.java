@@ -4,11 +4,13 @@
  */
 package com.labia.bookstoremanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.labia.bookstoremanagement.modelkey.UserRoleKey;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import lombok.*;
 
@@ -28,10 +30,14 @@ public class User_Role {
     private UserRoleKey userRoleKey;
 
     @ManyToOne
+    @MapsId("username")
     @JoinColumn(name = "username")
+
     User user;
 
     @ManyToOne
+    @MapsId("roleId")
     @JoinColumn(name = "roleId")
+
     Role role;
 }

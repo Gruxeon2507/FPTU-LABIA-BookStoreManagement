@@ -4,6 +4,7 @@
  */
 package com.labia.bookstoremanagement.modelkey;
 
+import java.io.Serializable;
 import javax.persistence.Embeddable;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class UserRoleKey {
+public class UserRoleKey implements Serializable{
     private String username;
     private int roleId;
 }

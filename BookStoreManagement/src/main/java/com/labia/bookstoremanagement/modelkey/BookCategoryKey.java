@@ -4,6 +4,7 @@
  */
 package com.labia.bookstoremanagement.modelkey;
 
+import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class BookCategoryKey {
+public class BookCategoryKey implements Serializable{
     private int bookId;
     private int categoryId;
 }

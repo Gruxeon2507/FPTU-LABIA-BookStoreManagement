@@ -4,6 +4,7 @@
  */
 package com.labia.bookstoremanagement.modelkey;
 
+import java.io.Serializable;
 import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class RoleFeatureKey {
+public class RoleFeatureKey implements Serializable{
     private int roleId;
     private int featureId;
 }
