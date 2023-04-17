@@ -34,13 +34,11 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
-
     @GetMapping("")
     List<Book> getAll() {
         return bookRepository.findAll();
     }
 
-    
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {
         return bookRepository.getBookByUsername(username);
@@ -50,10 +48,10 @@ public class BookController {
     List<Book> getBookByCategory(@PathVariable Integer categoryId) {
         return bookRepository.getBookByCategoryId(categoryId);
     }
-    
+
     @GetMapping(value = "/pdf/{fileId}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> getFile(@PathVariable String fileId) throws IOException {
-            String filePath = "pdf/" + fileId +".pdf";
+        String filePath = "pdf/" + fileId + ".pdf";
         File file = new File(filePath);
         InputStream inputStream = new FileInputStream(file);
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
@@ -64,20 +62,19 @@ public class BookController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(inputStreamResource);
     }
-    
+
     @GetMapping(value = "/image/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getImage(@PathVariable String fileId) throws IOException {
-    String filePath = "cover/" + fileId +".jpg";
-    File file = new File(filePath);
-    InputStream inputStream = new FileInputStream(file);
-    InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-    HttpHeaders headers = new HttpHeaders();
-    headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
-    return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.IMAGE_JPEG)
-            .body(inputStreamResource);
-}
-
+        String filePath = "cover/" + fileId + ".jpg";
+        File file = new File(filePath);
+        InputStream inputStream = new FileInputStream(file);
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(inputStreamResource);
+    }
 
 }
