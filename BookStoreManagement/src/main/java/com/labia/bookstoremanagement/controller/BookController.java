@@ -63,7 +63,7 @@ public class BookController {
                 .body(inputStreamResource);
     }
 
-    @GetMapping(value = "/image/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/cover/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getImage(@PathVariable String fileId) throws IOException {
         String filePath = "cover/" + fileId + ".jpg";
         File file = new File(filePath);
