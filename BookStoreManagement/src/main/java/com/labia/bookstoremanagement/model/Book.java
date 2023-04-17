@@ -4,6 +4,7 @@
  */
 package com.labia.bookstoremanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -40,6 +41,7 @@ public class Book implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "createdBy", referencedColumnName = "username")
+    @JsonIgnore
     private User user;
 
     private boolean isApproved;

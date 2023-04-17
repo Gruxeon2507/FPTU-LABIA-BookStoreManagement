@@ -35,10 +35,12 @@ public class Role_Feature {
     @ManyToOne
     @MapsId("roleId")
     @JoinColumn(name = "roleId")
+    @JsonIgnore
     Role role;
 
     @ManyToOne
     @MapsId("featureId")
     @JoinColumn(name = "featureId")
+    @JsonIgnore
     Feature feature;
 }

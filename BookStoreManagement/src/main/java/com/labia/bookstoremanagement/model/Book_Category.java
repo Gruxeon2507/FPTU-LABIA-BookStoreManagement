@@ -38,11 +38,13 @@ public class Book_Category {
     @ManyToOne
     @MapsId("bookId")
     @JoinColumn(name = "bookId")
+    @JsonIgnore
     Book book;
 
     @ManyToOne
     @MapsId("categoryId")
     @JoinColumn(name = "categoryId")
+    @JsonIgnore
     Category category;
 
 }

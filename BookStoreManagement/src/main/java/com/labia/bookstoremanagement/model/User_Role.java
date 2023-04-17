@@ -33,11 +33,13 @@ public class User_Role {
     @MapsId("username")
     @JoinColumn(name = "username")
 
+    @JsonIgnore
     User user;
 
     @ManyToOne
     @MapsId("roleId")
     @JoinColumn(name = "roleId")
+    @JsonIgnore
 
     Role role;
 }
