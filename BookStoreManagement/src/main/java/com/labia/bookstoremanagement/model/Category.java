@@ -22,7 +22,7 @@ import lombok.Setter;
 
 /**
  *
- * @author huyen
+ * @author emiukhoahoc
  */
 @Getter
 @Setter
@@ -30,7 +30,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "Category")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "categoryId")
 public class Category  implements Serializable{
 
     @Id
@@ -45,7 +44,4 @@ public class Category  implements Serializable{
     private String categoryName;
 
 }
-//hien thi tat ca use
-//hien thi 1 use
-//tim sach theo userId
-//hien thi tat ca sach 
+

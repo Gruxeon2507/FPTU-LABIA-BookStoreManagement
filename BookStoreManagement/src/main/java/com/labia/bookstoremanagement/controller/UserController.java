@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author ADMIN
+ * @author emiukhoahoc
  */
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 public class UserController {
     @Autowired
     UserRepository userRepository;
     
-    @GetMapping("")
+    @GetMapping
     List<User> getAllUser(){
         return userRepository.findAll();
     }

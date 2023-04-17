@@ -24,17 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author ADMIN
+ * @author emiukhoahoc
  */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"*"})
 @RestController
-@RequestMapping("api/book")
+@RequestMapping("api/books")
 public class BookController {
 
     @Autowired
     BookRepository bookRepository;
 
-    @GetMapping("")
+    @GetMapping
     List<Book> getAll() {
         return bookRepository.findAll();
     }

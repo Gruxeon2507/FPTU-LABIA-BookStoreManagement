@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -23,7 +22,7 @@ import lombok.Setter;
 
 /**
  *
- * @author huyen
+ * @author emiukhoahoc
  */
 @Getter
 @Setter
@@ -37,6 +36,7 @@ public class Role  implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roleId;
     private String roleName;
+    
     @ManyToMany
     @JoinTable(name = "User_Role",
             joinColumns = @JoinColumn(name = "roleId"),

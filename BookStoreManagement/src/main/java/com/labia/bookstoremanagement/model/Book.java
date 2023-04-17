@@ -22,7 +22,7 @@ import lombok.Setter;
 
 /**
  *
- * @author huyen
+ * @author emiukhoahoc
  */
 @Getter
 @Setter
@@ -30,7 +30,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "Book")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bookId")
 public class Book implements Serializable {
 
     @Id
@@ -39,20 +38,17 @@ public class Book implements Serializable {
     private String title;
     private String pdfPath;
     private String coverPath;
-
-    @ManyToOne
-    @JoinColumn(name = "createdBy", referencedColumnName = "username")
-    @JsonIgnore
-//    @JsonBackReference
-    private User createdBy;
-
     private boolean isApproved;
     private float price;
     private int noSale;
     private int noView;
 
+    @ManyToOne
+    @JoinColumn(name = "createdBy", referencedColumnName = "username")
+    @JsonIgnore
+    private User createdBy;
+
     @ManyToMany(mappedBy = "books")
-//    @JsonIgnore
     private List<Category> categories;
 
 }

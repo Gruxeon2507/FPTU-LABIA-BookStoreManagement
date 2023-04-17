@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
- * @author ADMIN
+ * @author emiukhoahoc
  */
 public interface UserRepository extends JpaRepository<User, String>{
     User findByUsername(String username);

@@ -19,7 +19,7 @@ import lombok.Setter;
 
 /**
  *
- * @author huyen
+ * @author emiukhoahoc
  */
 @Getter
 @Setter
@@ -27,7 +27,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "`User`")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 public class User implements Serializable {
 
     @Id

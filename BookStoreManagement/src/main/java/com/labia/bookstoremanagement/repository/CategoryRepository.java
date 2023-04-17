@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 
 /**
  *
- * @author ADMIN
+ * @author emiukhoahoc
  */
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 

@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author ADMIN
+ * @author emiukhoahoc
+
  */
 @RestController
-@RequestMapping("api/category")
+@RequestMapping("api/categories")
 public class CategoryController {
     @Autowired
     CategoryRepository categoryRepository;
     
-    @GetMapping("")
+    @GetMapping
     List<Category> getAllCategory() {
         return categoryRepository.findAll();
     }

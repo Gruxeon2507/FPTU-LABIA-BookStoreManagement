@@ -24,7 +24,7 @@ class ListBook extends Component {
                         <thead>
                             <tr>
                                 <th>bookId</th>
-                                <th>title</th>
+                                <th >title</th>
                                 <th>pdfPath</th>
                                 <th>coverPath</th>
                                 <th>price</th>
@@ -42,16 +42,16 @@ class ListBook extends Component {
                                         <td>{book.bookId}</td>
                                         <td>{book.title}</td>
                                         <td>
-                                            <a href={"http://localhost:9999/api/book/pdf/"+book.bookId}>{book.pdfPath}</a>
+                                            <a href={"http://localhost:9999/api/books/pdf/"+book.bookId}>{book.pdfPath}</a>
                                         </td>
-                                        <td><img src={"http://localhost:9999/api/book/image/"+book.bookId} width={100}></img></td>
+                                        <td><img src={"http://localhost:9999/api/books/cover/"+book.bookId} width={100}></img></td>
                                         <td>{book.price}</td>
                                         <td>{book.noSale}</td>
                                         <td>{book.noView}</td>
                                         <td>{book.categories.map(
                                             category => <p>{category.categoryName}</p>
                                         )}</td>
-                                        <td>{book.approved}</td>
+                                        <td>{book.approved ? 'yes':'no'}</td>
                                     </tr>
                                 )
                             }

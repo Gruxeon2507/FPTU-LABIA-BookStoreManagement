@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 
 /**
  *
- * @author ADMIN
+ * @author emiukhoahoc
  */
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
