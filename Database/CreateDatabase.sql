@@ -1,6 +1,6 @@
 DROP DATABASE FU_LABIA_BookStoreManagement;
-CREATE DATABASE FU_LABIA_BookStoreManagement;
-
+ CREATE DATABASE FU_LABIA_BookStoreManagement ;
+  
 USE FU_LABIA_BookStoreManagement;
 
 CREATE TABLE `User`(
@@ -85,7 +85,7 @@ ALTER TABLE Book_Category ADD CONSTRAINT FK_BookCategory_Book FOREIGN KEY(bookId
 REFERENCES Book (bookId);
 ALTER TABLE Book_Category ADD CONSTRAINT FK_BookCategory_Category FOREIGN KEY(categoryId)
 REFERENCES Category (categoryId);
-
+select * from book b join user u on  b.createdBy = u.userName where b.createdBy  = 'maiphuonghoang'
 /*
 SELECT * FROM `User`;
 SELECT * FROM `Role`;
@@ -95,7 +95,6 @@ SELECT * FROM Book_Category;
 SELECT * FROM User_Role ;
 SELECT * FROM Role_Feature;
 */
-
 
 
 

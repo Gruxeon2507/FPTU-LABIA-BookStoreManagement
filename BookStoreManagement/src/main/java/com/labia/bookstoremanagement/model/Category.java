@@ -4,6 +4,8 @@
  */
 package com.labia.bookstoremanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,7 @@ import lombok.Setter;
 
 /**
  *
- * @author huyen
+ * @author emiukhoahoc
  */
 @Getter
 @Setter
@@ -28,7 +30,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "Category")
-public class Category {
+public class Category  implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +40,11 @@ public class Category {
     @JoinTable(name = "Book_Category",
             joinColumns = @JoinColumn(name = "categoryId"),
             inverseJoinColumns = @JoinColumn(name = "bookId"))
+    @JoinTable(name = "Book_Category", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "bookId"))
+    @JsonIgnore
     private List<Book> books;
 
     private String categoryName;
 
 }
+

@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package com.labia.bookstoremanagement.repository;
 
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
- * @author huyen
+ * @author emiukhoahoc
  */
 public interface UserRepository extends JpaRepository<User, String>{
     User findByUsername(String username);

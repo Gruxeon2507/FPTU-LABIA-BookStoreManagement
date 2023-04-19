@@ -4,6 +4,8 @@
  */
 package com.labia.bookstoremanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,7 @@ import lombok.Setter;
 
 /**
  *
- * @author huyen
+ * @author emiukhoahoc
  */
 @Getter
 @Setter
@@ -28,7 +30,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "Book")
-public class Book {
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,15 +38,16 @@ public class Book {
     private String title;
     private String pdfPath;
     private String coverPath;
-
-    @ManyToOne
-    @JoinColumn(name = "createdBy", referencedColumnName = "username")
-    private User createdBy;
-
     private boolean isApproved;
     private float price;
     private int noSale;
     private int noView;
+    private String authorName;
+
+    @ManyToOne
+    @JoinColumn(name = "createdBy", referencedColumnName = "username")
+    @JsonIgnore
+    private User createdBy;
 
     @ManyToMany(mappedBy = "books")
     private List<Category> categories;
