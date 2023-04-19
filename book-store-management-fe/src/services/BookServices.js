@@ -9,6 +9,9 @@ class BookService{
     getBookById(id){
         return axios.get(BOOK_BASE_REST_API_URL+"/api/image/"+id);
     }
+    getBookByUser(username){
+        return axios.get(BOOK_BASE_REST_API_URL+"/by-user/"+username);
+    }
 }
 
 export default new BookService();
