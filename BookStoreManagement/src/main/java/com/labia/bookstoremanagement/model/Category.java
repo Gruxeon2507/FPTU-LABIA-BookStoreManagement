@@ -35,7 +35,9 @@ public class Category {
     private int categoryId;
 
     @ManyToMany
-    @JoinTable(name = "Book_Category", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "bookId"))
+    @JoinTable(name = "Book_Category",
+            joinColumns = @JoinColumn(name = "categoryId"),
+            inverseJoinColumns = @JoinColumn(name = "bookId"))
     private List<Book> books;
 
     private String categoryName;

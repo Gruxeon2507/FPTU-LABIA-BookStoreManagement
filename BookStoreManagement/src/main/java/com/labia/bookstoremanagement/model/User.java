@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import org.apache.naming.java.javaURLContextFactory;
  *
  * @author huyen
  */
+//@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -39,7 +41,7 @@ public class User {
     private String email;
     private Date dob;
     private Date createDate;
-    private String avatar;
+    private String avatarPath;
     private java.sql.Timestamp lastActive;
 
     @OneToMany(mappedBy = "createdBy")
