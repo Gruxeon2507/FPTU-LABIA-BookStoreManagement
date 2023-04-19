@@ -42,6 +42,7 @@ public class Book implements Serializable {
     private float price;
     private int noSale;
     private int noView;
+    private String authorName;
 
     @ManyToOne
     @JoinColumn(name = "createdBy", referencedColumnName = "username")
