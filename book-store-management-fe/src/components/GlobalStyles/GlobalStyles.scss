@@ -1,0 +1,25 @@
+:root {
+
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html {
+
+  }
+  body {
+    
+  }
+  button,
+  input,
+  [tabindex] {
+    outline: none;
+    border: none;
+  }
+  a[href] {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+  
