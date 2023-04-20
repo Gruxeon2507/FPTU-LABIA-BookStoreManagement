@@ -22,6 +22,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
     List<Book> getBookByCategoryId(Integer categoryId);
     
-
+    Book findByBookId(int id);
 
 }

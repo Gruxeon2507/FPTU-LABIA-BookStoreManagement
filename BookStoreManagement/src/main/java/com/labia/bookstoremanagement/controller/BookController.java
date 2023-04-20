@@ -39,6 +39,11 @@ public class BookController {
         return bookRepository.findAll();
     }
 
+    @GetMapping("by-id/{bookId}")
+    Book getBookById(@PathVariable("bookId") Integer id){
+        return bookRepository.findByBookId(id);
+    }
+    
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {
         return bookRepository.getBookByUsername(username);

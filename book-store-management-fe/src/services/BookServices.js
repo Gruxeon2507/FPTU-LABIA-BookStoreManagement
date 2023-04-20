@@ -6,11 +6,12 @@ class BookService{
     getBook(){
         return axios.get(BOOK_BASE_REST_API_URL);
     }
-    getBookById(id){
-        return axios.get(BOOK_BASE_REST_API_URL+"/api/image/"+id);
-    }
     getBookByUser(username){
         return axios.get(BOOK_BASE_REST_API_URL+"/by-user/"+username);
+    }
+
+    getBookByBookId(id){
+        return axios.get(BOOK_BASE_REST_API_URL + "/by-id/" + id);
     }
 }
 
