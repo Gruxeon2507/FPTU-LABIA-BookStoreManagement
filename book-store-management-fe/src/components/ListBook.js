@@ -42,9 +42,9 @@ class ListBook extends Component {
                                         <td>{book.bookId}</td>
                                         <td>{book.title}</td>
                                         <td>
-                                            <a href={"http://localhost:9999/api/books/pdf/"+book.bookId}>{book.pdfPath}</a>
+                                            <a href={"http://localhost:8080/api/books/pdf/"+book.bookId}>{book.pdfPath}</a>
                                         </td>
-                                        <td><img src={"http://localhost:9999/api/books/cover/"+book.bookId} width={100}></img></td>
+                                        <td><img src={"http://localhost:8080/api/books/cover/"+book.bookId} width={100}></img></td>
                                         <td>{book.price}</td>
                                         <td>{book.noSale}</td>
                                         <td>{book.noView}</td>
