@@ -1,9 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import ListBook from "./components/ListBook"
 import UserProfile from './components/UserProfile/UserProfile';
-import   { BrowserRouter as Router} from "react-router-dom";
-import {Routes,Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes,Route} from "react-router-dom";
 import Navbar from './components/NavBar/NavBar';
 import AccountSetting from './components/AccountSetting/AccountSetting';
 function App() {
@@ -14,6 +12,7 @@ function App() {
         <Route path="" Component={ListBook}></Route>
         <Route path="/user/:userId" Component={UserProfile}></Route>
         <Route path="/user/setting" Component={AccountSetting}></Route>
+
       </Routes>
       
     </div>

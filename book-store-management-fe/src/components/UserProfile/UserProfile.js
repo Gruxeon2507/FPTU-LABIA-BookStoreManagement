@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import UserServices from "../../services/UserServices";
-import "./UserProfile.css"
+import "./UserProfile.scss"
 import BookServices from "../../services/BookServices";
 import { useParams } from "react-router-dom";
 
