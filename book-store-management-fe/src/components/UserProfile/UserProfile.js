@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import UserServices from "../../services/UserServices";
-import "./UserProfile.css"
+import "./UserProfile.scss"
 import BookServices from "../../services/BookServices";
 class UserProfile extends Component {
     constructor(props) {
