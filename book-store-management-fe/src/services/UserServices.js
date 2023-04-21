@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const USER_BASE_REST_API_URL = "http://localhost:9999/api/users";
+const USER_BASE_REST_API_URL = "http://localhost:6789/api/users";
 
 class UserServices{
     getALlUser(){
@@ -11,6 +11,11 @@ class UserServices{
     }
     updateUserInformation(User){
         return axios.post(USER_BASE_REST_API_URL+"/update",User);
+    }
+
+    
+    updateUserAvatar(formData){
+        return axios.post(USER_BASE_REST_API_URL+"/avatar/upload",formData)
     }
 }
 
