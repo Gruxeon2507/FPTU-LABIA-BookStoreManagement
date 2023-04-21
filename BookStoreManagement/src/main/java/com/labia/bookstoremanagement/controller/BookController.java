@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -92,4 +93,28 @@ public class BookController {
         return books;
     }
 
+    @GetMapping("/by-categories/page/{categoryIds}")
+    public List<Book> getPageBooksByCategories(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize,
+            @PathVariable("categoryIds") Integer[] categoryIds
+    ) {
+
+         Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds); 
+        List<Integer> bookIds= new ArrayList<>();
+        for (Book book : books) {
+           bookIds.add(book.getBookId());
+        }
+        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds,pageable);
+//        Page<Book> pageBooks = bookRepository.getBookByBookId(1, pageable);
+        List<Book> bookss = pageBooks.getContent();
+        return bookss;
+    }
+
+    @GetMapping("by-categories/{categoryIds}")
+    public List<Book> getBooks(@PathVariable("categoryIds") Integer[] categoryIds) {
+        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
+        return books;
+    }
 }

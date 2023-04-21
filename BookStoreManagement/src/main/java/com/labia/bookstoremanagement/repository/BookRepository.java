@@ -6,6 +6,8 @@ package com.labia.bookstoremanagement.repository;
 
 import com.labia.bookstoremanagement.model.Book;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,7 +23,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
     List<Book> getBookByCategoryId(Integer categoryId);
+    
+    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
+    List<Book> getBookByCategoryIds(Integer[] categoryIds);
 
-//    Page<Book> findAll(Pageable pageable);
-
+    public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
 }

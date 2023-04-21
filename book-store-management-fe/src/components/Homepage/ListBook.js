@@ -13,7 +13,6 @@ function ListBook() {
     return BookServices.getAllBooks()
       .then((response) => {
         console.log(response);
-
         return response.data.length;
       })
       .catch((error) => {
@@ -52,6 +51,7 @@ function ListBook() {
       });
   };
 
+
   useEffect(() => {
     getAllCategories();
   }, []);
@@ -60,27 +60,64 @@ function ListBook() {
   }, []);
 
   const handlePageChange = (current) => {
-    setCurrentPage(current);
-    getPageBooks(current - 1, sizePerPage);
+    if(checked.length>0){
+      setCurrentPage(current);     
+      console.log("current" + current);
+      getPageBooksByCategories(checked.join(','),current - 1, sizePerPage);
+    }else{
+      setCurrentPage(current);     
+      getPageBooks(current - 1, sizePerPage);
+    }
+
   };
 
-
-  const [checked, setChecked] = useState([])
+  const [checked, setChecked] = useState([]);
   console.log(checked);
-  const handleCheck = (categoryId)=>{
-    setChecked(prev=>{
-      const isChecked = checked.includes(categoryId)
-      if(isChecked){
+  const handleCheck = (categoryId) => {
+    setChecked((prev) => {
+      const isChecked = checked.includes(categoryId);
+      if (isChecked) {
         //Uncheck
-        return checked.filter(item=>item !== categoryId)
-      }else{
-        return [...prev, categoryId]
+        return checked.filter((item) => item !== categoryId);
+      } else {
+        return [...prev, categoryId];
       }
-    })
-  }
+    });
+  };
+
+  const getPageBooksByCategories = (categoryIds, pageNumber, pageSize ) => {
+    BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
+      .then((response) => {
+          setPageBooks(response.data);
+          console.log("response"+response.data);
+
+      })
+      .catch((error) => {
+        console.log("loi lay ra page book");
+        console.log(error);
+      });
+  };
+
+  const getBooksByCategories = (categoryIds) => {
+    BookServices.getBooksByCategories(categoryIds)
+      .then((response) => {
+          setTotalPages(response.data.length);
+      })
+      .catch((error) => {
+        console.log("loi lay ra number page book");
+        console.log(error);
+      });
+  };
+  console.log("total page: " + totalPages);
+
   const handleSubmit = () => {
-    console.log({ids:checked});
-  }
+    setCurrentPage(1);     
+    console.log({ ids: checked });
+    const categoryIds = checked.join(",");
+    console.log(categoryIds);
+    getPageBooksByCategories(categoryIds,0,sizePerPage);
+    getBooksByCategories(categoryIds)
+  };
 
   return (
     <>
@@ -92,7 +129,7 @@ function ListBook() {
                 type="checkbox"
                 className="form-check-input w-20 h-20 ms-1 me-1"
                 checked={checked.includes(category.categoryId)}
-                onChange={()=>handleCheck(category.categoryId)}
+                onChange={() => handleCheck(category.categoryId)}
               />
               {category.categoryName}
             </label>
