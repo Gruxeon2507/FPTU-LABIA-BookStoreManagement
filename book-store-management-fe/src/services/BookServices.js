@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const BOOK_BASE_REST_API_URL = "http://localhost:6789/api/books";
+ const BOOK_BASE_REST_API_URL = "http://localhost:6789/api/books";
 
 class BookService{
-    getBook(){
+    getAllBooks(){
         return axios.get(BOOK_BASE_REST_API_URL);
     }
     getBookById(id){
@@ -12,6 +12,20 @@ class BookService{
     getBookByUser(username){
         return axios.get(BOOK_BASE_REST_API_URL+"/by-user/"+username);
     }
+    getPageBooks(pageNumber, pageSize){
+        console.log(`${BOOK_BASE_REST_API_URL}/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${BOOK_BASE_REST_API_URL}/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    }
+    getPageBooksByCategories(categoryIds,pageNumber, pageSize){
+        console.log(`${BOOK_BASE_REST_API_URL}/by-categories/page/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/page/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    }
+    getBooksByCategories(categoryIds){
+        return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/${categoryIds}`);
+    }
 }
 
 export default new BookService();
+
+
+  
