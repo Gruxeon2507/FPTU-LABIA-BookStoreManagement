@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const USER_BASE_REST_API_URL = "http://localhost:9999/api/users";
+const USER_BASE_REST_API_URL = "http://localhost:6789/api/users";
 
 class BookService{
     getALlUser(){

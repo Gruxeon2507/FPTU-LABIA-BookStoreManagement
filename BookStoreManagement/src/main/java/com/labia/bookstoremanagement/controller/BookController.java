@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -75,6 +79,17 @@ public class BookController {
                 .headers(headers)
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(inputStreamResource);
+    }
+
+    @GetMapping("page")
+    public List<Book> getBooks(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findAll(pageable);
+        List<Book> books = pageBooks.getContent();
+        return books;
     }
 
 }
