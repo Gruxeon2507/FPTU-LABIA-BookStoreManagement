@@ -12,7 +12,9 @@ class AccountSetting extends Component {
             email:'',
             dob:'',
             username: '',
+            avatarPath: null
         };
+        this.changeAvatarHandler= this.changeAvatarHandler.bind(this);
         this.changeGmailHandler = this.changeGmailHandler.bind(this);
         this.changeDisplayNameHandler = this.changeDisplayNameHandler.bind(this);
         this.changeDobHandler = this.changeDobHandler.bind(this);
@@ -33,9 +35,17 @@ class AccountSetting extends Component {
     saveUser(e) {
         e.preventDefault();
         let User = {email: this.state.email, displayName: this.state.displayName, dob: this.state.dob,username: this.state.username};
-        console.log(JSON.stringify(User));      
-
-        UserServices.updateUserInformation(User)
+        
+        console.log(JSON.stringify(User));    
+        UserServices.updateUserInformation(User)  
+        let avatarPath=this.state.avatarPath
+        if(avatarPath !== null){
+            const formData = new FormData();
+            formData.append('avatarPath', avatarPath);
+            formData.append('username',this.state.username)
+            UserServices.updateUserAvatar(formData)
+        }
+        
     }
 
     changeGmailHandler(event) {
@@ -47,6 +57,9 @@ class AccountSetting extends Component {
     changeDobHandler(event) {
         this.setState({dob: event.target.value})
     }
+    changeAvatarHandler(event) {
+        this.setState({avatarPath: event.target.files[0]})
+    }
 
     cancel() {
         
@@ -57,8 +70,15 @@ class AccountSetting extends Component {
         return (
             <div>
                 <form>
+                    <label name="displayName">Display Name: </label>
                     <input type="text" value={this.state.displayName} name="displayName" onChange={this.changeDisplayNameHandler} />
+
+                    <input type="file" name="avatarPath" onChange={this.changeAvatarHandler}></input>
+
+                    <label name="email">Email: </label>
                     <input type="text" value={this.state.email} name="email" onChange={this.changeGmailHandler} />
+
+                    <label name="dob">DoB: </label>
                     <input type="date" value={this.state.dob} name="dob" onChange={this.changeDobHandler }/>
                     <input type="submit" value="update"/>
 

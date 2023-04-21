@@ -21,7 +21,7 @@ function UserProfile() {
     return (
         <div className="container">
             <div className="avatar">
-                <img src={`http://localhost:9999/api/users/avatar/${user.username}`} alt={user.username} />
+                <img src={`http://localhost:6789/api/users/avatar/${user.username}`} alt={user.username} />
                 <p className="displayName">{user.displayName}</p>
             </div>
             <div className="userInfo">
@@ -36,7 +36,7 @@ function UserProfile() {
                         book =>
                             <div className="singleBook">
                                 <div className="bookCover">
-                                    <img src={"http://localhost:9999/api/books/cover/" + book.bookId} width={200} ></img>
+                                    <img src={"http://localhost:6789/api/books/cover/" + book.bookId} width={200} ></img>
                                 </div>
                                 <div className="bookContent">
                                     <div className="bookTitle"><p >{book.title}</p></div>
