@@ -73,7 +73,7 @@ public class UserController {
         temp.setDisplayName(user.getDisplayName());
         temp.setDob(user.getDob());
         temp.setEmail(user.getEmail());
-        userRepository.save(user);
+        userRepository.save(temp);
     }
 
     @PostMapping("/avatar/upload")
@@ -99,6 +99,7 @@ public class UserController {
         if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
             extension = fileName.substring(dotIndex + 1);
         }
+        
         return extension;
     }
 }
