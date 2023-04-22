@@ -4,22 +4,31 @@
  */
 package com.labia.bookstoremanagement.controller;
 
+import com.labia.bookstoremanagement.model.Book;
+import com.labia.bookstoremanagement.model.Category;
+import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.model.User;
+import com.labia.bookstoremanagement.repository.BookRepository;
+import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +49,10 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BookRepository bookRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     private final String AVT_UPLOAD_DIR = "/avatar/";
 
@@ -47,14 +60,17 @@ public class UserController {
     List<User> getAllUser() {
         return userRepository.findAll();
     }
+
     @GetMapping("superadmin")
     List<User> getUserForSuperAdmin() {
         return userRepository.getUserExceptSuperAdmin();
     }
+
     @GetMapping("admin")
     List<User> getUserForAdmin() {
         return userRepository.getUserExceptAdmin();
     }
+
     @GetMapping("/{username}")
     User getUser(@PathVariable String username) {
         return userRepository.findByUsername(username);
@@ -108,4 +124,85 @@ public class UserController {
         }
         return extension;
     }
+
+//    @DeleteMapping("/{username}")
+//    ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
+//        boolean exists = userRepository.existsByUsername(username);
+//        User user = userRepository.findByUsername(username);
+//        if (exists) {
+//// Delete the books created by the user
+//            List<Book> books = bookRepository.findByCreatedBy(user);
+//            for (Book book : books) {
+//                book.getCategories().removeAll(book.getCategories());
+//                bookRepository.delete(book);
+//            }
+//            // Delete the user
+//            userRepository.deleteByUsername(username);
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject("ok", "delete user successfully")
+//            );
+//        }
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//                new ResponseObject("failed", "Cannot find user to delete")
+//        );
+//    }
+//    @DeleteMapping("/{username}")
+//ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
+//    boolean exists = userRepository.existsByUsername(username);
+//    User user = userRepository.findByUsername(username);
+//    if (exists) {
+//        // Remove the user from the created by field of each book, then remove the book from its categories
+//        List<Book> books = bookRepository.findByCreatedBy(user);
+//        for (Book book : books) {
+//            book.setCreatedBy(null);
+//            for (Category category : book.getCategories()) {
+//                category.getBooks().remove(book);
+//            }
+//            book.getCategories().clear();
+//            bookRepository.delete(book);
+//        }
+//        // Delete the user
+//        userRepository.deleteByUsername(username);
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject("ok", "delete user successfully")
+//        );
+//    }
+//    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//            new ResponseObject("failed", "Cannot find user to delete")
+//    );   
+//}
+    @DeleteMapping("/{username}")
+    ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
+        boolean exists = userRepository.existsByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (exists) {
+            // Remove user from all roles
+            for (Role role : user.getRoles()) {
+                role.getUsers().remove(user);
+            }
+            user.getRoles().clear();
+            userRepository.save(user);
+
+            // Remove user from all books
+            List<Book> books = bookRepository.findByCreatedBy(user);
+            for (Book book : books) {
+                book.setCreatedBy(null);
+                for (Category category : book.getCategories()) {
+                    category.getBooks().remove(book);
+                }
+                book.getCategories().clear();
+                bookRepository.save(book);
+            }
+
+            // Delete the user
+            userRepository.delete(user);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "delete user successfully")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot find user to delete")
+        );
+    }
+
 }

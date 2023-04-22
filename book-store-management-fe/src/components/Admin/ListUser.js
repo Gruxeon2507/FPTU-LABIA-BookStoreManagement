@@ -38,7 +38,7 @@ const ListUser = () => {
                   <td>
                     <p>{role.roleName}</p>
                   </td>
-                  <td><button className="btn btn-danger" >Delete</button></td>
+                  <td><button className="btn btn-secondary" >Demote User</button><button className="btn btn-danger" >Delete</button></td>
                 </tr>
                 
               ) : (
@@ -58,20 +58,20 @@ const ListUser = () => {
         </thead>
         <tbody>
           {users.map((user, index) =>
-            user.roles.map((role) =>
-              role.roleId == 3 ? (
-                <tr key={user.id}>
-                  <td>{index}</td>
-                  <td>{user.displayName}</td>
-                  <td>
-                    <p>{role.roleName}</p>
-                  </td>
-                  <td><button className="btn btn-warning" >Promote Admin</button><button className="btn btn-danger" >Delete</button></td>
-                </tr>
-              ) : (
-                ""
-              )
+            user.roles.length == 1?user.roles.map((role) =>
+            role.roleId == 3? (
+              <tr key={user.id}>
+                <td>{index}</td>
+                <td>{user.displayName}</td>
+                <td>
+                  <p>{role.roleName}</p>
+                </td>
+                <td><button className="btn btn-warning" >Promote Admin</button><button className="btn btn-danger" >Delete</button></td>
+              </tr>
+            ) : (
+              ""
             )
+          ):""
           )}
         </tbody>
       </table>

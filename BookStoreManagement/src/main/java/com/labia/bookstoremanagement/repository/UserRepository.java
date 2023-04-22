@@ -6,6 +6,7 @@ package com.labia.bookstoremanagement.repository;
 
 import com.labia.bookstoremanagement.model.User;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,6 +24,14 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "select * from `User` u where u.username not in (select us.username from `User` us join User_Role ur on us.username = ur.username where ur.roleId = 2 and us.username = 'maiphuonghoang' or ur.roleId = 1)", nativeQuery = true)
     List<User> getUserExceptAdmin();
+
+
+    @Transactional
+    public void deleteByUsername(String username);
+
+    public boolean existsByUsername(String username);
+
+
     
 
 }
