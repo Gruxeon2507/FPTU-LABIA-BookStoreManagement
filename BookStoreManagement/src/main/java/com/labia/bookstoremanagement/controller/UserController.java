@@ -79,7 +79,7 @@ public class UserController {
     @PostMapping("/avatar/upload")
     public void ploadFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
-        if ((!fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
             String fileName = StringUtils.cleanPath(username + ".jpg");
             try {
                 // Save the file to the uploads directory
