@@ -47,7 +47,14 @@ public class UserController {
     List<User> getAllUser() {
         return userRepository.findAll();
     }
-
+    @GetMapping("superadmin")
+    List<User> getUserForSuperAdmin() {
+        return userRepository.getUserExceptSuperAdmin();
+    }
+    @GetMapping("admin")
+    List<User> getUserForAdmin() {
+        return userRepository.getUserExceptAdmin();
+    }
     @GetMapping("/{username}")
     User getUser(@PathVariable String username) {
         return userRepository.findByUsername(username);
@@ -73,7 +80,7 @@ public class UserController {
         temp.setDisplayName(user.getDisplayName());
         temp.setDob(user.getDob());
         temp.setEmail(user.getEmail());
-        userRepository.save(user);
+        userRepository.save(temp);
     }
 
     @PostMapping("/avatar/upload")

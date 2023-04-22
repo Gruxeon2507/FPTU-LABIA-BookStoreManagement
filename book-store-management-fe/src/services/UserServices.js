@@ -3,8 +3,11 @@ import axios from "axios";
 const USER_BASE_REST_API_URL = "http://localhost:6789/api/users";
 
 class UserServices{
-    getALlUser(){
+    getAllUser(){
         return axios.get(USER_BASE_REST_API_URL);
+    }
+    getUserForSuperAdmin(){
+        return axios.get(USER_BASE_REST_API_URL + '/superadmin');
     }
     getUserByUserName(id){
         return axios.get(USER_BASE_REST_API_URL+"/"+id);
