@@ -22,6 +22,12 @@ class UserServices{
     deleteUser(username){
         return axios.delete(USER_BASE_REST_API_URL + '/' + username);
     }
+    demoteUser(username){
+        return axios.delete(USER_BASE_REST_API_URL + '/demote/' + username);
+    }
+    promoteAdmin(username){
+        return axios.post(USER_BASE_REST_API_URL + '/promote/' + username);
+    }
 }
 
 export default new UserServices();

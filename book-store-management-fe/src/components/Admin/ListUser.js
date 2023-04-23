@@ -17,8 +17,29 @@ const ListUser = () => {
     getAllUser();
   });
   const deleteUser = (username) => {
+    alert("Sure to delete?");
     console.log(username);
     UserServices.deleteUser(username)
+      .then((response) => {
+        getAllUser();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const demoteUser = (username) => {
+    console.log(username);
+    UserServices.demoteUser(username)
+      .then((response) => {
+        getAllUser();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const promoteAdmin = (username) => {
+    console.log(username);
+    UserServices.promoteAdmin(username)
       .then((response) => {
         getAllUser();
       })
@@ -47,7 +68,12 @@ const ListUser = () => {
                     <p>{role.roleName}</p>
                   </td>
                   <td>
-                    <button className="btn btn-secondary">Demote User</button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => demoteUser(user.username)}
+                    >
+                      Demote User
+                    </button>
                     <button
                       className="btn btn-danger"
                       onClick={() => deleteUser(user.username)}
@@ -81,7 +107,10 @@ const ListUser = () => {
                         <p>{role.roleName}</p>
                       </td>
                       <td>
-                        <button className="btn btn-warning">
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => promoteAdmin(user.username)}
+                        >
                           Promote Admin
                         </button>
                         <button
