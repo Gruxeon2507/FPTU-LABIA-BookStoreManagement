@@ -4,6 +4,7 @@
  */
 package com.labia.bookstoremanagement.controller;
 
+import com.labia.bookstoremanagement.model.ResponseObject;
 import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.Category;
 import com.labia.bookstoremanagement.model.Role;
@@ -134,34 +135,60 @@ public class UserController {
             for (Role role : user.getRoles()) {
                 role.getUsers().remove(user);
             }
+
             user.getRoles().clear();
 
+            // clear all the books associated with this user
+//            user.getBooks().clear();
             for (Book book : user.getBooks()) {
                 // Remove categories from all books
-                //                book.setCreatedBy(null);
                 for (Category category : book.getCategories()) {
                     category.getBooks().remove(book);
                 }
                 book.getCategories().clear();
-                //remove 
-//                user.getBooks().remove(book);
-                //                bookRepository.save(book);
+
                 bookRepository.delete(book);
             }
-
-            user.getBooks().clear(); // clear all the books associated with this user
-//            userRepository.save(user); // save the changes to the database
 
             // Delete the user
             userRepository.delete(user);
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "delete user successfully")
+                    new ResponseObject("ok", "delete user successfully","")
             );
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("failed", "Cannot find user to delete")
+                new ResponseObject("failed", "Cannot find user to delete", "")
         );
     }
 
+    @DeleteMapping("/demote/{username}")
+    ResponseEntity<ResponseObject> demoteUser(@PathVariable String username) {
+        boolean exists = userRepository.existsByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (exists) {
+            userRepository.deleteRoleFromUser(username, 2);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "delete role of user successfully", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot find user to delete role", "")
+        );
+    }
+
+    @PostMapping("/promote/{username}")
+    ResponseEntity<ResponseObject> promoteAdmin(@PathVariable String username) {
+        boolean exists = userRepository.existsByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (exists) {
+            userRepository.addUserRole(username, 2);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "add role of user successfully", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot find user to add role", "")
+        );
+    }
 }
