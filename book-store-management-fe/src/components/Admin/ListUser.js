@@ -16,6 +16,15 @@ const ListUser = () => {
   useEffect(() => {
     getAllUser();
   });
+  const deleteUser = (username)=>{
+    console.log(username);
+    UserServices.deleteUser(username)
+    .then((response)=>{
+        getAllUser();
+    }).catch((error)=>{
+        console.log(error);
+    })
+  }
   return (
     <>
         <SuperAdmin />
@@ -38,7 +47,7 @@ const ListUser = () => {
                   <td>
                     <p>{role.roleName}</p>
                   </td>
-                  <td><button className="btn btn-secondary" >Demote User</button><button className="btn btn-danger" >Delete</button></td>
+                  <td><button className="btn btn-secondary" >Demote User</button><button className="btn btn-danger" onClick = {() => deleteUser(user.username) }>Delete</button></td>
                 </tr>
                 
               ) : (
@@ -66,7 +75,7 @@ const ListUser = () => {
                 <td>
                   <p>{role.roleName}</p>
                 </td>
-                <td><button className="btn btn-warning" >Promote Admin</button><button className="btn btn-danger" >Delete</button></td>
+                <td><button className="btn btn-warning" >Promote Admin</button><button className="btn btn-danger" onClick = {() => deleteUser(user.username) } >Delete</button></td>
               </tr>
             ) : (
               ""

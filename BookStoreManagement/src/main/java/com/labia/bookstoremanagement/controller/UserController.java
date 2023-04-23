@@ -125,52 +125,6 @@ public class UserController {
         return extension;
     }
 
-//    @DeleteMapping("/{username}")
-//    ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
-//        boolean exists = userRepository.existsByUsername(username);
-//        User user = userRepository.findByUsername(username);
-//        if (exists) {
-//// Delete the books created by the user
-//            List<Book> books = bookRepository.findByCreatedBy(user);
-//            for (Book book : books) {
-//                book.getCategories().removeAll(book.getCategories());
-//                bookRepository.delete(book);
-//            }
-//            // Delete the user
-//            userRepository.deleteByUsername(username);
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("ok", "delete user successfully")
-//            );
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                new ResponseObject("failed", "Cannot find user to delete")
-//        );
-//    }
-//    @DeleteMapping("/{username}")
-//ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
-//    boolean exists = userRepository.existsByUsername(username);
-//    User user = userRepository.findByUsername(username);
-//    if (exists) {
-//        // Remove the user from the created by field of each book, then remove the book from its categories
-//        List<Book> books = bookRepository.findByCreatedBy(user);
-//        for (Book book : books) {
-//            book.setCreatedBy(null);
-//            for (Category category : book.getCategories()) {
-//                category.getBooks().remove(book);
-//            }
-//            book.getCategories().clear();
-//            bookRepository.delete(book);
-//        }
-//        // Delete the user
-//        userRepository.deleteByUsername(username);
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject("ok", "delete user successfully")
-//        );
-//    }
-//    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//            new ResponseObject("failed", "Cannot find user to delete")
-//    );   
-//}
     @DeleteMapping("/{username}")
     ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
         boolean exists = userRepository.existsByUsername(username);
@@ -181,21 +135,26 @@ public class UserController {
                 role.getUsers().remove(user);
             }
             user.getRoles().clear();
-            userRepository.save(user);
 
-            // Remove user from all books
-            List<Book> books = bookRepository.findByCreatedBy(user);
-            for (Book book : books) {
-                book.setCreatedBy(null);
+            for (Book book : user.getBooks()) {
+                // Remove categories from all books
+                //                book.setCreatedBy(null);
                 for (Category category : book.getCategories()) {
                     category.getBooks().remove(book);
                 }
                 book.getCategories().clear();
-                bookRepository.save(book);
+                //remove 
+//                user.getBooks().remove(book);
+                //                bookRepository.save(book);
+                bookRepository.delete(book);
             }
+
+            user.getBooks().clear(); // clear all the books associated with this user
+//            userRepository.save(user); // save the changes to the database
 
             // Delete the user
             userRepository.delete(user);
+
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "delete user successfully")
             );
