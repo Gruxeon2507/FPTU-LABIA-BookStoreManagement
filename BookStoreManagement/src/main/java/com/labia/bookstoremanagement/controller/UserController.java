@@ -7,6 +7,7 @@ package com.labia.bookstoremanagement.controller;
 import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.UserRepository;
+import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import com.labia.bookstoremanagement.utils.DateTimeUtils;
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,6 +109,7 @@ public class UserController {
     @PostMapping("/register")
     public User registerUser(@RequestBody User user) {
         user.setAvatarPath("avatar/"+user.getUsername()+".jpg");
+        user.setPassword(AuthorizationUtils.hashPassword(user.getPassword()));
         user.setCreateDate(DateTimeUtils.getSqlDateNow());
         user.setLastActive(DateTimeUtils.getSqlTimeStampNow());
         userRepository.save(user);
@@ -129,6 +131,6 @@ public class UserController {
                 e.printStackTrace();
             }
         }
-
     }
+   
 }

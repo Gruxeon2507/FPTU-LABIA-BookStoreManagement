@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/books")
 public class BookController {
-
+    int BookId;
     @Autowired
     BookRepository bookRepository;
 
@@ -134,6 +136,7 @@ public class BookController {
         List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
         return books;
     }
+    
 
     @PostMapping("add")
     public Book addBook(@RequestBody Book book) {
@@ -143,7 +146,9 @@ public class BookController {
         book.setNoView(0);
         book.setApproved(false);
         bookRepository.save(book);
-        book.setCoverPath("cover/" + book.getBookId() + ".jpg");
+//        Book temp = bookRepository.findByTitle(book.getTitle());
+        BookId = book.getBookId();
+        book.setCoverPath("cover/" +book.getBookId() + ".jpg");
         book.setPdfPath("pdf/" + book.getBookId() + ".pdf");
         bookRepository.save(book);
 
@@ -153,13 +158,13 @@ public class BookController {
         }
         return book;
     }
+    
 
     @PostMapping("/cover/upload")
     public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file) {
-        Book book = bookRepository.findLastBook();
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath((book.getBookId() + 1) + ".jpg");
+            String fileName = StringUtils.cleanPath(BookId+ ".jpg");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + COVER_UPLOAD_DIR;
@@ -173,10 +178,9 @@ public class BookController {
 
     @PostMapping("/pdf/upload")
     public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file) {
-        Book book = bookRepository.findLastBook();
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath((book.getBookId() + 1) + ".pdf");
+            String fileName = StringUtils.cleanPath(BookId+ ".pdf");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
@@ -196,4 +200,11 @@ public class BookController {
         }
         return extension;
     }
+
+    @DeleteMapping("/delete/{bookId}")
+    public void deleteBook(@PathVariable("bookId") Integer bookId) {
+        categoryRepository.deleteBook_Category(bookId);
+        bookRepository.deleteById(bookId);
+    }
+
 }

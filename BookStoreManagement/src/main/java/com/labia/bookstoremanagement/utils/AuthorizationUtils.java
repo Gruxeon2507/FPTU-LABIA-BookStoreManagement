@@ -4,6 +4,8 @@
  */
 package com.labia.bookstoremanagement.utils;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 /**
  *
  * @author Asus
@@ -16,9 +18,10 @@ public class AuthorizationUtils {
 
         // Hash the password with the generated salt
         String hashedPassword = BCrypt.hashpw(password, salt);
+        String truncatedPassword = hashedPassword.substring(0, Math.min(hashedPassword.length(), 50));
 
         // Return the hashed password
-        return hashedPassword;
+        return  truncatedPassword;
     }
 
     public static boolean checkPassword(String password, String hashedPassword) {

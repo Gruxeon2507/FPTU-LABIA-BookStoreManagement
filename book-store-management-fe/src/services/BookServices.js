@@ -31,6 +31,10 @@ class BookService{
     updateBookpdf(formData){
         return axios.post(BOOK_BASE_REST_API_URL+"/pdf/upload",formData)
     }
+
+    deleteBook(bookId){
+        return axios.delete(BOOK_BASE_REST_API_URL+"/delete/"+bookId)
+    }
 }
 
 export default new BookService();

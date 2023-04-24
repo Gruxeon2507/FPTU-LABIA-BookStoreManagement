@@ -1,7 +1,7 @@
 import "./AddBook.scss";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Select from "react-select";
-
+import { useNavigate } from "react-router-dom";
 import React, { Component } from "react";
 import BookServices from "../../services/BookServices";
 
@@ -9,6 +9,7 @@ class AddBook extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bookId: null,
       categories: [],
       title: "",
       description: "",
@@ -109,6 +110,8 @@ class AddBook extends Component {
       //   selectedCategories: selectedCategories,
     };
 
+    const bookId = null;
+
     fetch("http://localhost:6789/api/books/add", {
       method: "POST",
       headers: {
@@ -116,14 +119,18 @@ class AddBook extends Component {
       },
       body: JSON.stringify(book),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+      })
       .then((data) => {
-        // Handle API response
+        this.setState({
+          bookId : data.title,
+        })
       });
-
     const formData = new FormData();
     formData.append("coverPath", this.state.coverPath);
     formData.append("pdfPath", this.state.pdfPath);
+    formData.append("bookId", this.state.bookId);
     BookServices.updateBookCover(formData);
     BookServices.updateBookpdf(formData);
   };
@@ -170,8 +177,7 @@ class AddBook extends Component {
             <br></br>
 
             <label>Description of Book:</label>
-            <input
-              type="text"
+            <textarea
               value={this.state.description}
               name="title"
               onChange={this.changeDescriptionHandler}
