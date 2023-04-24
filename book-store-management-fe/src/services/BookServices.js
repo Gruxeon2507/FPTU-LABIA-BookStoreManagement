@@ -23,6 +23,14 @@ class BookService{
     getBooksByCategories(categoryIds){
         return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/${categoryIds}`);
     }
+
+    updateBookCover(formData){
+        return axios.post(BOOK_BASE_REST_API_URL+"/cover/upload",formData)
+    }
+
+    updateBookpdf(formData){
+        return axios.post(BOOK_BASE_REST_API_URL+"/pdf/upload",formData)
+    }
 }
 
 export default new BookService();

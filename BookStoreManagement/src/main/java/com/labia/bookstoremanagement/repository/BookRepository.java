@@ -26,6 +26,11 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     
     @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
     List<Book> getBookByCategoryIds(Integer[] categoryIds);
+    
+    @Query(value = "SELECT * FROM Book order by bookId desc LIMIT 1", nativeQuery = true)
+    Book findLastBook();
 
+    
+     
     public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
 }

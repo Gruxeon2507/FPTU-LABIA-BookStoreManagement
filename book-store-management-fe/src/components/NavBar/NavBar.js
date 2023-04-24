@@ -10,6 +10,11 @@ function Navbar() {
                     <div className="navbarItem">
                         <Link to="">Home Page</Link>
                     </div>
+
+                    <div className="navbarItem">
+
+                        <Link to="/auth/register">Register User </Link>
+                    </div>
                     <div>
 
                         <Link to="/user">User Profile</Link>
@@ -23,7 +28,6 @@ function Navbar() {
                         <Link to="/book/view">View Book</Link>
                     </div>
                     <div className="navbarItem">
-
                         <Link to="/book/add">Add Book</Link>
                     </div>
                 </nav>

@@ -17,6 +17,10 @@ class UserServices{
     updateUserAvatar(formData){
         return axios.post(USER_BASE_REST_API_URL+"/avatar/upload",formData)
     }
+
+    registerUserAvatar(formData){
+        return axios.post(USER_BASE_REST_API_URL+"/register/avatar/upload",formData)
+    }
 }
 
 export default new UserServices();

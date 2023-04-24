@@ -4,13 +4,16 @@
  */
 package com.labia.bookstoremanagement.controller;
 
+import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.UserRepository;
+import com.labia.bookstoremanagement.utils.DateTimeUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -73,7 +76,7 @@ public class UserController {
         temp.setDisplayName(user.getDisplayName());
         temp.setDob(user.getDob());
         temp.setEmail(user.getEmail());
-        userRepository.save(user);
+        userRepository.save(temp);
     }
 
     @PostMapping("/avatar/upload")
@@ -100,5 +103,32 @@ public class UserController {
             extension = fileName.substring(dotIndex + 1);
         }
         return extension;
+    }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        user.setAvatarPath("avatar/"+user.getUsername()+".jpg");
+        user.setCreateDate(DateTimeUtils.getSqlDateNow());
+        user.setLastActive(DateTimeUtils.getSqlTimeStampNow());
+        userRepository.save(user);
+        userRepository.saveUser_Role(user.getUsername(), 3);
+         return userRepository.save(user);
+    }
+    
+    @PostMapping("/register/avatar/upload")
+    public void registerFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(username + ".jpg");
+            try {
+                // Save the file to the uploads directory
+
+                String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

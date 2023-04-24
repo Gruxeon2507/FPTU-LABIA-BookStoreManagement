@@ -5,7 +5,11 @@
 package com.labia.bookstoremanagement.controller;
 
 import com.labia.bookstoremanagement.model.Book;
+import com.labia.bookstoremanagement.model.Category;
+import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.BookRepository;
+import com.labia.bookstoremanagement.repository.CategoryRepository;
+import com.labia.bookstoremanagement.repository.UserRepository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,12 +24,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -38,6 +46,15 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    private final String COVER_UPLOAD_DIR = "/cover/";
+    private final String PDF_UPLOAD_DIR = "/pdf/";
 
     @GetMapping
     List<Book> getAll() {
@@ -100,13 +117,13 @@ public class BookController {
             @PathVariable("categoryIds") Integer[] categoryIds
     ) {
 
-         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds); 
-        List<Integer> bookIds= new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
+        List<Integer> bookIds = new ArrayList<>();
         for (Book book : books) {
-           bookIds.add(book.getBookId());
+            bookIds.add(book.getBookId());
         }
-        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds,pageable);
+        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds, pageable);
 //        Page<Book> pageBooks = bookRepository.getBookByBookId(1, pageable);
         List<Book> bookss = pageBooks.getContent();
         return bookss;
@@ -116,5 +133,67 @@ public class BookController {
     public List<Book> getBooks(@PathVariable("categoryIds") Integer[] categoryIds) {
         List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
         return books;
+    }
+
+    @PostMapping("add")
+    public Book addBook(@RequestBody Book book) {
+        User u = userRepository.findByUsername("giangpt");
+        book.setCreatedBy(u);
+        book.setNoSale(0);
+        book.setNoView(0);
+        book.setApproved(false);
+        bookRepository.save(book);
+        book.setCoverPath("cover/" + book.getBookId() + ".jpg");
+        book.setPdfPath("pdf/" + book.getBookId() + ".pdf");
+        bookRepository.save(book);
+
+//        categoryRepository.saveBook_Category(41,1);
+        for (Category c : book.getCategories()) {
+            categoryRepository.saveBook_Category(book.getBookId(), c.getCategoryId());
+        }
+        return book;
+    }
+
+    @PostMapping("/cover/upload")
+    public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file) {
+        Book book = bookRepository.findLastBook();
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath((book.getBookId() + 1) + ".jpg");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + COVER_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @PostMapping("/pdf/upload")
+    public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file) {
+        Book book = bookRepository.findLastBook();
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath((book.getBookId() + 1) + ".pdf");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private static String getFileExtension(String fileName) {
+        String extension = "";
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            extension = fileName.substring(dotIndex + 1);
+        }
+        return extension;
     }
 }

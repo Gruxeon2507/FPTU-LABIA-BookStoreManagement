@@ -4,6 +4,8 @@ import UserProfile from './components/UserProfile/UserProfile';
 import { BrowserRouter as Router, Routes,Route} from "react-router-dom";
 import Navbar from './components/NavBar/NavBar';
 import AccountSetting from './components/AccountSetting/AccountSetting';
+import AddBook from './components/AddBook/AddBook';
+import RegisterUser from './components/RegisterUser/RegisterUser';
 function App() {
   return (
     <div className="App">
@@ -11,9 +13,10 @@ function App() {
       <Routes>
 
         <Route path="" Component={ListBook}></Route>
+        <Route path="/auth/register" Component={RegisterUser}></Route>
         <Route path="/user/:userId" Component={UserProfile}></Route>
         <Route path="/user/setting" Component={AccountSetting}></Route>
-
+        <Route path="/book/add" Component={AddBook}></Route>
       </Routes>
       
     </div>
