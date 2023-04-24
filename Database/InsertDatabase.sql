@@ -147,21 +147,21 @@ nói riêng và trên toàn thế giới nói chung. Tác phẩm này được x
  cảnh câu chuyện là nước Nhật vào những năm 1960 đầy biến động. Những biến động, rối ren của xã hội đã phần nào gây tác động đến
  tâm lý của những thanh thiếu niên thời bấy giờ, mỗi người đều phải trải qua những dày vò, những niềm đau về cả thể xác lẫn tâm hồn.
  Cuốn sách này như là một lời cảnh tỉnh dành cho những người trẻ, và cũng là sự nuối tiếc của những người đã đi qua thời thanh xuân.',
- 'pdf/1.pdf','cover/1.jpg',150000,'huyenntk',0,0,0);
+ 'pdf/1.pdf','cover/1.jpg',150000,'huyenntk',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Xin Cạch Đàn Ông','Katarzyna Grochola','“Xin Cạch Đàn Ông” kể về cuộc hôn nhân kéo dài 10 năm của Judyta.
  Những mẩu chuyện nhỏ xảy ra hàng ngày như không đốt lò sưởi trong phòng ngủ, không ăn uống trên giường,... là chính
  là những yếu tố khiến cuộc hôn nhân của cô tan vỡ. Không gục ngã trước những đau thương, Judyta vẫn tự mình xây nhà,
  nuôi con, làm tốt công việc tại tòa soạn, và thậm chí còn tư vấn cho người khác về những vấn đề trong cuộc sống, như mâu 
  thuẫn gia đình, nữ công gia chánh,...',
- 'pdf/2.pdf','cover/2.jpg',150000,'huyenntk',0,0,0);
+ 'pdf/2.pdf','cover/2.jpg',150000,'huyenntk',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Đàn ông sao Hỏa, Đàn bà sao Kim','John Gray','“Đàn ông sao Hỏa, Đàn bà sao Kim” là tác phẩm phản ánh
  tâm lý tiềm thức của con người rất chân thực, là một cuốn sách tâm lý học tình yêu của tác giả John Gray mà 
  bạn không nên bỏ lỡ. Tác phẩm này sẽ giúp người đọc hiểu rõ hơn về bản thân, cũng như các giới tính khác. Qua
  đó, hãy học cách tạo dựng tình yêu và thích ứng với việc kết hôn để cuộc hôn nhân của bạn không trở nên nhàm 
  chán, cũng như tránh rơi vào tình trạng đổ vỡ.',
- 'pdf/3.pdf','cover/3.jpg',150000,'huyenntk',0,0,0);
+ 'pdf/3.pdf','cover/3.jpg',150000,'huyenntk',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Trà Hoa Nữ','Alexandre Dumas con','Trà Hoa Nữ được xuất bản vào năm 1848, được Alexandre Dumas sáng tác dựa trên mối tình
  ngắn ngủi của ông và Marie Duplessis, một kỹ nữ yêu hoa trà. Cuốn tiểu thuyết kể về mối tình bi thương của
@@ -169,7 +169,7 @@ VALUES ('Trà Hoa Nữ','Alexandre Dumas con','Trà Hoa Nữ được xuất b�
  khoảng thời gian vô cùng hạnh phúc bên nhau, nhưng cuối cùng họ cũng không thể vượt qua sự ngăn cản của 
  gia đình và sức mạnh to lớn của đồng tiền. Kết truyện, Marguerite Gautier ra đi trong sự cô đơn, với tấm
  lòng luôn hướng về người cô thương yêu nhất, Armand Duval.',
- 'pdf/4.pdf','cover/4.jpg',150000,'maiphuonghoang',0,0,0);
+ 'pdf/4.pdf','cover/4.jpg',150000,'maiphuonghoang',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Những Con Chim Ẩn Mình Chờ Chết','Colleen McCullough','“Những Con Chim Ẩn Mình Chờ Chết” kể về những 
 hy vọng, kế hoạch, lo lắng, niềm tin ẩn giấu và một mối tình bị ngăn cấm ở nước Úc. Dòng họ Clearly có ba thế 
@@ -177,7 +177,7 @@ hệ, họ sống bằng nghề chăn nuôi gia súc, dù vùng đất mà họ 
  câu chuyện đến từ mối tình của cô con gái duy nhất trong gia đình, Meggie với Ralph de Bricassart, một linh mục.
  Mối quan hệ của họ không chỉ bị gia đình ngăn cấm, mà còn xâm phạm đến đạo đức và giáo điều. Xuyên suốt tác phẩm 
  là những mâu thuẫn, dằn vặt, buộc các nhân vật phải đưa ra sự lựa chọn, quyết định cho cuộc sống của riêng họ.',
- 'pdf/5.pdf','cover/5.jpg',150000,'maiphuonghoang',0,0,0);
+ 'pdf/5.pdf','cover/5.jpg',150000,'maiphuonghoang',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Đừng Nhân Danh Tình Yêu','Bất Kinh Ngữ','“Đừng Nhân Danh Tình Yêu” là câu chuyện xoay quanh nhân vật
  nam chính tên Lục Trình Vũ - một bác sĩ đầy tài năng làm việc trong một bệnh viện có tiếng. Nữ chính là Đỗ
@@ -186,7 +186,7 @@ VALUES ('Đừng Nhân Danh Tình Yêu','Bất Kinh Ngữ','“Đừng Nhân Dan
  chỉ dừng lại ở sự ngại ngùng, bối rối. Và mười năm sau, họ gặp lại nhau trong một hoàn cảnh khác và đã tiến tới mối 
  quan hệ hôn nhân đầy vội vã. Vì sao họ lại kết hôn một cách vội vàng như vậy? Liệu cả hai có cùng nhau đi đến cuối
  con đường hạnh phúc? Đón đọc tác phẩm tình yêu đầy thực tế và đời thường này để biết chi tiết..',
- 'pdf/6.pdf','cover/6.jpg',150000,'maiphuonghoang',0,0,0);
+ 'pdf/6.pdf','cover/6.jpg',150000,'maiphuonghoang',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Gọi Em Bằng Tên Anh','André Aciman','“Gọi Em Bằng Tên Anh” được xuất bản vào năm 2007, là cuốn sách 
 kể về tình yêu đồng giới của nhà văn  André Aciman. Nhân vật chính của tác phẩm là Elio, một thiếu niên ngây 

@@ -43,6 +43,10 @@ public class BookController {
     List<Book> getAll() {
         return bookRepository.findAll();
     }
+    @GetMapping("/public")
+    List<Book> getAllPublic() {
+        return bookRepository.findByIsApproved(true);
+    }
 
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {
@@ -93,20 +97,31 @@ public class BookController {
         return books;
     }
 
-    @GetMapping("/by-categories/page/{categoryIds}")
+    @GetMapping("publicpage")
+    public List<Book> getPublicBooks(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findByIsApproved(true, pageable);
+        List<Book> books = pageBooks.getContent();
+        return books;
+    }
+
+    @GetMapping("/by-categories/publicpage/{categoryIds}")
     public List<Book> getPageBooksByCategories(
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize,
             @PathVariable("categoryIds") Integer[] categoryIds
     ) {
 
-         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds); 
-        List<Integer> bookIds= new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
+        List<Integer> bookIds = new ArrayList<>();
         for (Book book : books) {
-           bookIds.add(book.getBookId());
+            bookIds.add(book.getBookId());
         }
-        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds,pageable);
+        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds, pageable);
 //        Page<Book> pageBooks = bookRepository.getBookByBookId(1, pageable);
         List<Book> bookss = pageBooks.getContent();
         return bookss;

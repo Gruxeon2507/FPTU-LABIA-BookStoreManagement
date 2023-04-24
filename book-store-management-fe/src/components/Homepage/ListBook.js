@@ -9,8 +9,8 @@ import { Pagination } from "antd";
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const getAllBooks = () => {
-    return BookServices.getAllBooks()
+  const getAllPublicBooks = () => {
+    return BookServices.getAllPublicBooks()
       .then((response) => {
         console.log(response);
         return response.data.length;
@@ -24,7 +24,7 @@ function ListBook() {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    getAllBooks().then((count) => setTotalPages(count));
+    getAllPublicBooks().then((count) => setTotalPages(count));
   }, []);
 
   const [categories, setCategories] = useState([]);
