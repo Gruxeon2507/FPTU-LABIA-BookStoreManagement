@@ -1,17 +1,24 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import ListBook from "./components/ListBook";
-import Navbar from "./components/NavBar/NavBar";
-import ViewABook from "./components/ViewBook/ViewABook";
-import UserProfile from "./components/UserProfile/UserProfile";
+import './App.css';
+import ListBook from "./components/Homepage/ListBook"
+import UserProfile from './components/UserProfile/UserProfile';
+import { BrowserRouter as Router, Routes,Route} from "react-router-dom";
+import Navbar from './components/NavBar/NavBar';
+import AccountSetting from './components/AccountSetting/AccountSetting';
+import SuperAdmin from './components/SuperAdmin/SuperAdmin';
+import ListUser from './components/Admin/ListUser';
 function App() {
   return (
     <div className="App">
       <Navbar />
       <Routes>
-        <Route path="/"></Route>
-        <Route path="/user" Component={UserProfile}></Route>
-        <Route path="/book/view/:bookId" Component={ViewABook}></Route>
+
+        <Route path="" Component={ListBook}></Route>
+        <Route path="/user/:userId" Component={UserProfile}></Route>
+        <Route path="/user/setting" Component={AccountSetting}></Route>
+        <Route path="/superadmin" Component={SuperAdmin}></Route>
+        <Route path="/admin/user" Component={ListUser}></Route>
+
+
       </Routes>
     </div>
   );

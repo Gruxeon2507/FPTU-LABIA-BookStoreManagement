@@ -8,7 +8,7 @@ function Navbar() {
                 <p>User Feature</p>
                 <nav>
                     <div className="navbarItem">
-                        <Link to="/">Home Page</Link>
+                        <Link to="">Home Page</Link>
                     </div>
                     <div>
 
