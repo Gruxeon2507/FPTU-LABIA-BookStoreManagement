@@ -6,6 +6,7 @@ import Navbar from './components/NavBar/NavBar';
 import AccountSetting from './components/AccountSetting/AccountSetting';
 import SuperAdmin from './components/SuperAdmin/SuperAdmin';
 import ListUser from './components/Admin/ListUser';
+import ViewABook from './components/ViewBook/ViewABook';
 function App() {
   return (
     <div className="App">
@@ -17,6 +18,7 @@ function App() {
         <Route path="/user/setting" Component={AccountSetting}></Route>
         <Route path="/superadmin" Component={SuperAdmin}></Route>
         <Route path="/admin/user" Component={ListUser}></Route>
+        <Route path="/book/view/:bookId" Component={ViewABook}></Route>
 
 
       </Routes>
