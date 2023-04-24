@@ -16,9 +16,12 @@ const ListUser = () => {
   useEffect(() => {
     getAllUser();
   });
-  const deleteUser = (username) => {
-    alert("Sure to delete?");
-    console.log(username);
+
+
+const deleteUser = (username) => {
+  const confirmed = showDialog("Are you sure you want to delete this admin?");
+  console.log(username);
+  if (confirmed) {
     UserServices.deleteUser(username)
       .then((response) => {
         getAllUser();
@@ -26,7 +29,13 @@ const ListUser = () => {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
+};
+
+const showDialog = (message) => {
+  return window.confirm(message);
+};
+  
   const demoteUser = (username) => {
     console.log(username);
     UserServices.demoteUser(username)

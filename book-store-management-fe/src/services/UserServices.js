@@ -28,6 +28,10 @@ class UserServices{
     promoteAdmin(username){
         return axios.post(USER_BASE_REST_API_URL + '/promote/' + username);
     }
+    getSomeRecentCreatedUser(){
+        console.log(USER_BASE_REST_API_URL+"/some-recent-created-user");
+        return axios.get(USER_BASE_REST_API_URL+"/some-recent-created-user");
+    }
 }
 
 export default new UserServices();

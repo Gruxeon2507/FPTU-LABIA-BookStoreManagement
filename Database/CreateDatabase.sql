@@ -115,7 +115,17 @@ select * from `User` u where u.username not in (select us.username from `User` u
 INSERT INTO `User`(username,`password`,displayName)
 VALUES ('test','123','Em Yêu Khoa Học');
 */
+/*
+ INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
+ VALUES ('testUser','123','testUser','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
+INSERT INTO User_Role(username,roleId)
+VALUES ('testUser',3);
 
+ INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
+ VALUES ('testAdmin','123','testAdmin','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
+INSERT INTO User_Role(username,roleId)
+VALUES ('testAdmin',2);
+*/
 
 
 

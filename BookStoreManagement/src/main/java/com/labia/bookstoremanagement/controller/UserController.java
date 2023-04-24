@@ -16,17 +16,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -123,7 +122,7 @@ public class UserController {
         if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
             extension = fileName.substring(dotIndex + 1);
         }
-        
+
         return extension;
     }
 
@@ -155,7 +154,7 @@ public class UserController {
             userRepository.delete(user);
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "delete user successfully","")
+                    new ResponseObject("ok", "delete user successfully", "")
             );
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -191,5 +190,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ResponseObject("failed", "Cannot find user to add role", "")
         );
+    }
+
+    @GetMapping("/some-recent-created-user")
+    List<User> getSomeRecentUser() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("createDate").descending());
+        return userRepository.findAll(pageable).getContent();
     }
 }
