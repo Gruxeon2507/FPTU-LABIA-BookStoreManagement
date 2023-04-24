@@ -9,6 +9,9 @@ class BookService{
     getAllPublicBooks(){
         return axios.get(BOOK_BASE_REST_API_URL + "/public");
     }
+    getSomeUnpublicBooks(){
+        return axios.get(BOOK_BASE_REST_API_URL + "/someunpublic");
+    }
     getBookById(id){
         return axios.get(BOOK_BASE_REST_API_URL+"/api/image/"+id);
     }
@@ -25,6 +28,10 @@ class BookService{
     }
     getBooksByCategories(categoryIds){
         return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/${categoryIds}`);
+    }
+    getUserOfBook(bookId){
+        console.log(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
+        return axios.get(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
     }
 }
 

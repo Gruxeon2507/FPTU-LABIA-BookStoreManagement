@@ -27,6 +27,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     
     @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds and b.isApproved = '1'")
     List<Book> getBookByCategoryIds(Integer[] categoryIds);
+    
+    @Query("select b.createdBy from Book b where b.bookId = :bookId ")
+    User getBookCreated(Integer bookId);
 
     public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
 
@@ -36,5 +39,5 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     public List<Book> findByIsApproved(boolean b);
 
- 
+    List<Book> findByIsApprovedFalseOrderByBookIdDesc(Pageable pageable);
 }

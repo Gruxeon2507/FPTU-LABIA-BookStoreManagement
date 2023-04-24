@@ -18,7 +18,6 @@ function App() {
         <Route path="/superadmin" Component={SuperAdmin}></Route>
         <Route path="/admin/user" Component={ListUser}></Route>
 
-
       </Routes>
       
     </div>

@@ -5,7 +5,9 @@
 package com.labia.bookstoremanagement.controller;
 
 import com.labia.bookstoremanagement.model.Book;
+import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.BookRepository;
+import com.labia.bookstoremanagement.repository.UserRepository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,6 +19,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,19 +41,38 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping
     List<Book> getAll() {
         return bookRepository.findAll();
     }
+
     @GetMapping("/public")
     List<Book> getAllPublic() {
         return bookRepository.findByIsApproved(true);
     }
 
+    @GetMapping("/unpublic")
+    List<Book> getAllUnPublic() {
+        return bookRepository.findByIsApproved(false);
+    }
+
+    @GetMapping("/someunpublic")
+    List<Book> getSomeUnpublic() {
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("bookId").descending());
+        return bookRepository.findByIsApprovedFalseOrderByBookIdDesc(pageable);
+    }
+
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {
         return bookRepository.getBookByUsername(username);
+    }
+
+    @GetMapping("find-by-user/{bookId}")
+    User getUserOfBook(@PathVariable Integer bookId) {
+        return bookRepository.getBookCreated(bookId);
     }
 
     @GetMapping("by-category/{categoryId}")
@@ -132,4 +154,5 @@ public class BookController {
         List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
         return books;
     }
+
 }

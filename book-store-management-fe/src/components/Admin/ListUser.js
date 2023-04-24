@@ -49,7 +49,11 @@ const ListUser = () => {
   };
   return (
     <>
-      <SuperAdmin />
+      <div>
+        <Link to={"/superadmin"}>Darboard </Link>
+        <Link to={"/admin/user"}>User</Link>
+        <Link to={"/admin/book"}>Book </Link>
+      </div>
       <h1>List Admin</h1>
       <table className="table table-bordered table-striped">
         <thead>
