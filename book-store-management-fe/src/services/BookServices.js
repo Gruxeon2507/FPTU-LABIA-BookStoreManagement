@@ -10,8 +10,9 @@ class BookService{
         return axios.get(BOOK_BASE_REST_API_URL+"/by-user/"+username);
     }
 
-    getBookByBookId(id){
-        return axios.get(BOOK_BASE_REST_API_URL + "/by-id/" + id);
+    getBookByBookId(bookId){
+        console.log(BOOK_BASE_REST_API_URL + "/by-id/" + bookId);
+        return axios.get(BOOK_BASE_REST_API_URL + "/by-id/" + bookId);
     }
 }
 
