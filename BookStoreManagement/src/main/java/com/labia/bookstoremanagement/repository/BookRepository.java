@@ -5,6 +5,7 @@
 package com.labia.bookstoremanagement.repository;
 
 import com.labia.bookstoremanagement.model.Book;
+import com.labia.bookstoremanagement.model.User;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +29,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> getBookByCategoryIds(Integer[] categoryIds);
 
     public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
+
+    public List<Book> findByCreatedBy(User user);
 }
