@@ -25,7 +25,7 @@ const Dashboard = () => {
   };
 
   const getSomeRecentCreatedUsers = () => {
-    UserServices.getOnlyUser().then((response) => {
+    UserServices.getOnlyUser(0,5).then((response) => {
       setUsers(response.data);
     });
   };

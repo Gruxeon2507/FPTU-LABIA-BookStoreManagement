@@ -188,8 +188,12 @@ public class UserController {
     }
  
     @GetMapping("/onlyuser")
-    public List<User> getSomeUsersByCondition() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("createDate").descending());
+    public List<User> getSomeUsersByCondition(
+             @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
         //        return userRepository.findAll(pageable).getContent();
 
         return userRepository.getOnlyRoleUser(pageable);
@@ -200,5 +204,5 @@ public class UserController {
         String username = "khoahoc";
         return userRepository.getOnlyRoleAdmin(username);
     }
-
+    
 }

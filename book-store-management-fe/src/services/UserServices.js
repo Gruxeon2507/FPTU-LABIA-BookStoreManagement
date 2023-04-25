@@ -15,9 +15,9 @@ class UserServices{
         return axios.get(USER_BASE_REST_API_URL + '/onlyadmin');
     }
 
-    getOnlyUser(){
-        console.log(USER_BASE_REST_API_URL + '/onlyuser');
-        return axios.get(USER_BASE_REST_API_URL + '/onlyuser');
+    getOnlyUser(pageNumber, pageSize){
+        console.log(`USER_BASE_REST_API_URL/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${USER_BASE_REST_API_URL}/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`);
     }
     getUserByUserName(id){
         return axios.get(USER_BASE_REST_API_URL+"/"+id);
