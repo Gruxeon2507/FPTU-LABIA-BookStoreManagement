@@ -2,26 +2,49 @@ import React, { Component, useEffect, useState } from "react";
 import UserServices from "../../services/UserServices";
 import "./UserProfile.scss"
 import BookServices from "../../services/BookServices";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import AuthenService from "../../services/AuthenServices";
+import AuthenServices from "../../services/AuthenServices";
 
 function UserProfile() {
     const { userId } = useParams();
     const [user, setUser] = useState({});
     const [books, setBooks] = useState([]);
-
+    const [loginUser,setLoginUser] = useState("");
     useEffect(() => {
-        UserServices.getUserByUserName(userId).then((res) => {
-            setUser(res.data);
-        });
-        BookServices.getBookByUser(userId).then((res) => {
-            setBooks(res.data);
-        });
-    }, [userId]);
+        AuthenServices.getSessionUser(window.localStorage.getItem("sessionId")).then((res)=>{
+            setLoginUser(res.data)
+
+        })
+        console.log(loginUser);
+    }, []);
+    
+    useEffect(() => {
+        console.log(window.localStorage.getItem("user"))
+        console.log(window.localStorage.getItem("role"))
+        if(userId ){
+            UserServices.getUserByUserName(userId).then((res) => {
+                setUser(res.data);
+            });
+            BookServices.getBookByUser(userId).then((res) => {
+                setBooks(res.data);
+            });
+        }else{
+            UserServices.getUserByUserName(loginUser).then((res) => {
+                setUser(res.data);
+            });
+            BookServices.getBookByUser(loginUser).then((res) => {
+                setBooks(res.data);
+            });
+        }
+    }, [userId, loginUser]);
+    
 
     return (
         <div className="container">
             <div className="avatar">
                 <img src={`http://localhost:6789/api/users/avatar/${user.username}`} alt={user.username} />
+                {console.log(`http://localhost:6789/api/users/avatar/${user.username}`)}
                 <p className="displayName">{user.displayName}</p>
             </div>
             <div className="userInfo">
@@ -42,6 +65,7 @@ function UserProfile() {
                                     <div className="bookTitle"><p >{book.title}</p></div>
                                     <p>Tác giả: {book.authorName}</p>
                                     <p>Lượt xem: {book.noView}</p>
+                                    <button><Link to={"../book/view/"+book.bookId}>Đọc ngay</Link></button>
                                 </div>
                             </div>
                     )
