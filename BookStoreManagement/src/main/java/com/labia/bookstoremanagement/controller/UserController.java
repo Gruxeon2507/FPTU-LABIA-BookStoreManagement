@@ -22,6 +22,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -186,23 +187,41 @@ public class UserController {
                 new ResponseObject("failed", "Cannot find user to add role", "")
         );
     }
- 
+
     @GetMapping("/onlyuser")
     public List<User> getSomeUsersByCondition(
-             @RequestParam Integer pageNumber,
+            @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
-        
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
-        //        return userRepository.findAll(pageable).getContent();
-
+        //        return userRepository.findAll(pageable).getContent();       
         return userRepository.getOnlyRoleUser(pageable);
     }
 
-    @GetMapping("/onlyadmin")
-    List<User> getRoleAdmin() {
-        String username = "khoahoc";
-        return userRepository.getOnlyRoleAdmin(username);
+    @GetMapping("/onlyuser/count")
+    public int countUser() {
+        return userRepository.countOnlyRoleUser();
     }
-    
+
+//    @GetMapping("/onlyadmin")
+//    List<User> getRoleAdmin() {
+//        String username = "khoahoc";
+//        return userRepository.getOnlyRoleAdmin(username);
+//    }
+    @GetMapping("/onlyadmin")
+    public List<User> getSomeAdminsByCondition(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        String username = "khoahoc";
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
+        return userRepository.getOnlyRoleAdmin(username, pageable);
+    }
+
+    @GetMapping("/onlyadmin/count")
+    public int countAdmin() {
+        String username = "khoahoc";
+        return userRepository.countOnlyRoleAdmin(username);
+    }
+
 }

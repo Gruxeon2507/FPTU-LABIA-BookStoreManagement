@@ -27,12 +27,23 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "select * from `User` u join User_Role ru  on u.username = ru.username  where ru.roleId = 2 and u.username not in (select us.username from `User` us \n"
             + "join User_Role ur on us.username = ur.username \n"
             + "where ur.roleId = 2 and us.username = :username or ur.roleId = 1) ORDER BY u.createDate DESC", nativeQuery = true)
-    List<User> getOnlyRoleAdmin(String username);
-
+    List<User> getOnlyRoleAdmin(String username,Pageable pageable );
+  
     @Query(value = "select * from `User` us WHERE us.username in (\n"
             + "select u.username from `User` u join User_Role ur  on u.username = ur.username GROUP BY u.username\n"
             + "HAVING  COUNT(roleId) = 1)", nativeQuery = true)
     List<User> getOnlyRoleUser(Pageable pageable);
+    
+    @Query(value = "select count(*) from `User` us WHERE us.username in (\n"
+            + "select u.username from `User` u join User_Role ur  on u.username = ur.username GROUP BY u.username\n"
+            + "HAVING  COUNT(roleId) = 1)", nativeQuery = true)
+    int countOnlyRoleUser();
+    
+        
+    @Query(value = "select count(*) from `User` u join User_Role ru  on u.username = ru.username  where ru.roleId = 2 and u.username not in (select us.username from `User` us \n"
+            + "join User_Role ur on us.username = ur.username \n"
+            + "where ur.roleId = 2 and us.username = :username or ur.roleId = 1) ", nativeQuery = true)
+    int countOnlyRoleAdmin( String username);
 
     @Transactional
     public void deleteByUsername(String username);

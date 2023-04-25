@@ -115,20 +115,8 @@ select * from `User` u where u.username not in (select us.username from `User` u
 INSERT INTO `User`(username,`password`,displayName)
 VALUES ('test','123','Em Yêu Khoa Học');
 */
+
 /*
- INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
- VALUES ('testUser','123','testUser','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
-INSERT INTO User_Role(username,roleId)
-VALUES ('testUser',3);
-
- INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
- VALUES ('testAdmin','123','testAdmin','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
-INSERT INTO User_Role(username,roleId)
-VALUES ('testAdmin',2);
-INSERT INTO User_Role(username,roleId)
-VALUES ('testAdmin',3);
-*/
-
 select * from `User` u join User_Role ru  on u.username = ru.username  where ru.roleId = 2 and u.username not in (select us.username from `User` us 
 join User_Role ur on us.username = ur.username 
 where ur.roleId = 2 and us.username = 'khoahoc' or ur.roleId = 1)
@@ -136,6 +124,7 @@ where ur.roleId = 2 and us.username = 'khoahoc' or ur.roleId = 1)
 select * from `User` us WHERE us.username in (
 select u.username from `User` u join User_Role ur  on u.username = ur.username GROUP BY u.username
 HAVING  COUNT(roleId) = 1) 
+*/
 
 
 

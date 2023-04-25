@@ -30,7 +30,7 @@ const Dashboard = () => {
     });
   };
   const getSomeRecentCreatedAdmins = () => {
-    UserServices.getOnlyAdmin().then((response) => {
+    UserServices.getOnlyAdmin(0,5).then((response) => {
       setAdmins(response.data);
     });
   };
@@ -64,7 +64,6 @@ const Dashboard = () => {
           <th>Avatar</th>
           <th>Created Date</th>
           <th>Email</th>
-          <th>Dob</th>
           <th>Action</th>
         </thead>
         <tbody>        
@@ -82,7 +81,6 @@ const Dashboard = () => {
             </td>
             <td>{user.createDate}</td>
             <td>{user.email}</td>
-            <td>{user.dob}</td>
             <td></td>
           </tr>
           })}
@@ -95,7 +93,6 @@ const Dashboard = () => {
           <th>Avatar</th>
           <th>Created Date</th>
           <th>Email</th>
-          <th>Dob</th>
           <th>Action</th>
         </thead>
         <tbody>
@@ -114,7 +111,6 @@ const Dashboard = () => {
               </td>
               <td>{user.createDate}</td>
               <td>{user.email}</td>
-              <td>{user.dob}</td>
               <td></td>
             </tr>
           })}

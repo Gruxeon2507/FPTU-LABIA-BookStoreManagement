@@ -21,10 +21,10 @@ function ListBook() {
       });
   };
 
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
-    getAllPublicBooks().then((count) => setTotalPages(count));
+    getAllPublicBooks().then((count) => setTotalItems(count));
   }, []);
 
   const [categories, setCategories] = useState([]);
@@ -101,14 +101,14 @@ function ListBook() {
   const getBooksByCategories = (categoryIds) => {
     BookServices.getBooksByCategories(categoryIds)
       .then((response) => {
-          setTotalPages(response.data.length);
+          setTotalItems(response.data.length);
       })
       .catch((error) => {
         console.log("loi lay ra number page book");
         console.log(error);
       });
   };
-  console.log("total page: " + totalPages);
+  console.log("total page: " + totalItems);
 
   const handleSubmit = () => {
     setCurrentPage(1);     
@@ -166,7 +166,7 @@ function ListBook() {
       </div>
 
       <Pagination
-        total={totalPages}
+        total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>
           `${range[0]}-${range[1]} of ${total} items`
