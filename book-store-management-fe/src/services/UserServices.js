@@ -9,6 +9,16 @@ class UserServices{
     getUserForSuperAdmin(){
         return axios.get(USER_BASE_REST_API_URL + '/superadmin');
     }
+
+    getOnlyAdmin(){
+        console.log(USER_BASE_REST_API_URL + '/onlyadmin');
+        return axios.get(USER_BASE_REST_API_URL + '/onlyadmin');
+    }
+
+    getOnlyUser(){
+        console.log(USER_BASE_REST_API_URL + '/onlyuser');
+        return axios.get(USER_BASE_REST_API_URL + '/onlyuser');
+    }
     getUserByUserName(id){
         return axios.get(USER_BASE_REST_API_URL+"/"+id);
     }
@@ -27,10 +37,6 @@ class UserServices{
     }
     promoteAdmin(username){
         return axios.post(USER_BASE_REST_API_URL + '/promote/' + username);
-    }
-    getSomeRecentCreatedUser(){
-        console.log(USER_BASE_REST_API_URL+"/some-recent-created-user");
-        return axios.get(USER_BASE_REST_API_URL+"/some-recent-created-user");
     }
 }
 

@@ -66,11 +66,6 @@ public class UserController {
         return userRepository.getUserExceptSuperAdmin();
     }
 
-    @GetMapping("admin")
-    List<User> getUserForAdmin() {
-        return userRepository.getUserExceptAdmin();
-    }
-
     @GetMapping("/{username}")
     User getUser(@PathVariable String username) {
         return userRepository.findByUsername(username);
@@ -191,10 +186,19 @@ public class UserController {
                 new ResponseObject("failed", "Cannot find user to add role", "")
         );
     }
+ 
+    @GetMapping("/onlyuser")
+    public List<User> getSomeUsersByCondition() {
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("createDate").descending());
+        //        return userRepository.findAll(pageable).getContent();
 
-    @GetMapping("/some-recent-created-user")
-    List<User> getSomeRecentUser() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("createDate").descending());
-        return userRepository.findAll(pageable).getContent();
+        return userRepository.getOnlyRoleUser(pageable);
     }
+
+    @GetMapping("/onlyadmin")
+    List<User> getRoleAdmin() {
+        String username = "khoahoc";
+        return userRepository.getOnlyRoleAdmin(username);
+    }
+
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserServices from "../../services/UserServices";
 import { Link } from "react-router-dom";
-import SuperAdmin from "../SuperAdmin/SuperAdmin";
 const ListUser = () => {
   const [users, setUsers] = useState([]);
   const getAllUser = () => {
@@ -59,7 +58,7 @@ const showDialog = (message) => {
   return (
     <>
       <div>
-        <Link to={"/superadmin"}>Darboard </Link>
+        <Link to={"/superadmin"}>Dashboard </Link>
         <Link to={"/admin/user"}>User</Link>
         <Link to={"/admin/book"}>Book </Link>
       </div>
@@ -73,7 +72,7 @@ const showDialog = (message) => {
         <tbody>
           {users.map((user) =>
             user.roles.map((role) =>
-              role.roleId == 2 ? (
+              role.roleId === 2 ? (
                 <tr key={user.username}>
                   <td>{user.displayName}</td>
 
