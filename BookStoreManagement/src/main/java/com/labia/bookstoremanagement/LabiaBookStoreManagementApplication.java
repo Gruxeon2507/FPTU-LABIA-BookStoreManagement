@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 public class LabiaBookStoreManagementApplication {
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(LabiaBookStoreManagementApplication.class, args);
+        SpringApplication.run(LabiaBookStoreManagementApplication.class, args);
         
     }
 
