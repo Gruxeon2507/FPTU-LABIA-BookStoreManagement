@@ -5,11 +5,13 @@
 package com.labia.bookstoremanagement.repository;
 
 import com.labia.bookstoremanagement.model.Book;
+import com.labia.bookstoremanagement.model.User;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -24,13 +26,14 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
     List<Book> getBookByCategoryId(Integer categoryId);
 
+
     @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
     List<Book> getBookByCategoryIds(Integer[] categoryIds);
 
     @Query(value = "SELECT * FROM Book order by bookId desc LIMIT 1", nativeQuery = true)
     Book findLastBook();
 
-    @Query(value = "SELECT AUTO_INCREMENT\n"
+    @Query(value = "SELECT AUTO_INCREMENT\n"ssssssssssssssssssssssssssssssssss
             + "FROM information_schema.TABLES\n"
             + "WHERE TABLE_SCHEMA = 'fu_labia_bookstoremanagement'\n"
             + "AND TABLE_NAME = 'Book'", nativeQuery = true)
@@ -39,4 +42,29 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
 
     public Book findByTitle(String title);
+
+    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds and b.isApproved = '1'")
+    List<Book> getBookByCategoryIds(Integer[] categoryIds);
+
+    @Query("select b.createdBy from Book b where b.bookId = :bookId ")
+    User getBookCreated(Integer bookId);
+
+    public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
+
+    public List<Book> findByCreatedBy(User user);
+
+
+    public Book findByBookId(Integer id);
+
+    public Page<Book> findByIsApproved(boolean b, Pageable pageable);
+
+    public List<Book> findByIsApproved(boolean b);
+
+    List<Book> findByIsApprovedFalseOrderByBookIdDesc(Pageable pageable);
+
+    @Query(value = "select * from Book b where (b.isApproved = '1') "
+            + "and (b.title LIKE %?1% OR b.price LIKE %?1% OR b.authorName LIKE %?1%)" , nativeQuery = true)
+    Page<Book> findAllPublic(Pageable pageable, String searchText);
+
+
 }

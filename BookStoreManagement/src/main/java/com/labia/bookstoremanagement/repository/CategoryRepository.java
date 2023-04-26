@@ -21,6 +21,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     @Query("select c from Category c join c.books b where b.bookId = :bookId")
     List<Category> getCategoryByBookId(Integer bookId);
 
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO Book_Category(bookId, categoryId) VALUES ( :bookId, :categoryId);", nativeQuery = true)
@@ -30,5 +31,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     @Transactional
     @Query(value = "DELETE FROM Book_Category WHERE bookId = :bookId", nativeQuery = true)
     void deleteBook_Category(@Param("bookId") Integer bookId);
+
 
 }
