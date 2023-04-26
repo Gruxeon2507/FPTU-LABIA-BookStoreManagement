@@ -21,8 +21,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 import java.nio.file.Path;
 import java.util.ArrayList;
+
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -224,6 +226,13 @@ public class UserController {
         );
     }
 
+
+    @GetMapping("by-book/{bookId}")
+    User getUserByBookId(@PathVariable("bookId") int bookId) {
+        Book book = bookRepository.findByBookId(bookId);
+        return userRepository.getUserByBooks(book);
+    }
+
     @GetMapping("/onlyuser")
     public List<User> getSomeUsersByCondition(
             @RequestParam Integer pageNumber,
@@ -264,6 +273,7 @@ public class UserController {
     ResponseEntity<Page<User>> findAll(Pageable pageable,@PathVariable String searchText){
         return new ResponseEntity<>(userRepository.findAll(pageable, searchText), HttpStatus.OK);
     }
+
 
 
 }

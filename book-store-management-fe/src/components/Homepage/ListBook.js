@@ -55,6 +55,7 @@ function ListBook() {
         console.log(error);
       });
   };
+
   const findCondition = () => {
     setCondition(condition);
     console.log(
@@ -85,6 +86,7 @@ function ListBook() {
       encodeURIComponent(condition).replace(/%20/g, "%20")
     );
   }, []);
+
   useEffect(() => {
     getAllCategories();
   }, []);
@@ -132,7 +134,7 @@ function ListBook() {
   const getBooksByCategories = (categoryIds) => {
     BookServices.getBooksByCategories(categoryIds)
       .then((response) => {
-        setTotalItems(response.data.length);
+        setTotalPages(response.data.length);
       })
       .catch((error) => {
         console.log("loi lay ra number page book");

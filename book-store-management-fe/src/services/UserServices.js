@@ -38,11 +38,19 @@ class UserServices{
     promoteAdmin(username){
         return axios.post(USER_BASE_REST_API_URL + '/promote/' + username);
     }
+
+
+    getUserByBookId(bookId){
+        // console.log("calling")
+        // console.log(axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`) + "hello");
+        return axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`)
+
     countUser(){
         return axios.get(USER_BASE_REST_API_URL+'/onlyuser/count');
     }
     countAdmin(){
         return axios.get(USER_BASE_REST_API_URL+'/onlyadmin/count');
+
 
     }
 }

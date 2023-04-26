@@ -18,6 +18,7 @@ function ViewABook() {
     });
   }, [bookId]);
 
+
   if (book.approved != undefined && book.approved) {
     return (
       <div className="container">
@@ -26,11 +27,13 @@ function ViewABook() {
             <img
               src={"http://localhost:6789/api/books/cover/" + book.bookId}
               width={750}
+              alt={book.title}
             ></img>
           </div>
           <div className="content right">
             <div className="header">
               <h3>{book.title}</h3>
+              <h6>{book.authorName}</h6>
               {categories.map((category) => (
                 <button className="category-btn" key={category.categoryId}>
                   <Link to={"http://localhost:3000/" + category.categoryId}>
@@ -50,6 +53,7 @@ function ViewABook() {
                   Read book
                 </Link>
               </button>
+              <button>View: {book.noView}</button>
             </div>
           </div>
         </div>

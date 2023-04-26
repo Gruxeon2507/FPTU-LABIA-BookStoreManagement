@@ -121,9 +121,51 @@ class BookService {
     return axios.post(BOOK_BASE_REST_API_URL + "/cover/update/"+id, formData);
   }
 
+  getPagePendingBooks(pageNumber, pageSize) {
+    // console.log(
+    //   `${BOOK_BASE_REST_API_URL}/pending/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    // );
+    return axios.get(
+      `${BOOK_BASE_REST_API_URL}/pending/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+  }
+
+  getPagePublicBooks(pageNumber, pageSize) {
+    // console.log(
+    //   `${BOOK_BASE_REST_API_URL}/public/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    // );
+    return axios.get(
+      `${BOOK_BASE_REST_API_URL}/public/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+  }
+
+  getPublicBooks() {
+    // console.log(
+    //   `${BOOK_BASE_REST_API_URL}/public`
+    // );
+    return axios.get(`${BOOK_BASE_REST_API_URL}/public`);
+  }
+
+  getPendingBooks() {
+    // console.log(
+    //   `${BOOK_BASE_REST_API_URL}/pending`
+    // );
+    return axios.get(`${BOOK_BASE_REST_API_URL}/pending`);
+  }
+
+  approveBook(bookId) {
+    return axios.post(`${BOOK_BASE_REST_API_URL}/approve/${bookId}`);
+  }
+
+  deleteBook(bookId) {
+    console.log("delete " + bookId);
+    return axios.delete(`${BOOK_BASE_REST_API_URL}/delete/${bookId}`);
+  }
+
   updateNewBookPdf(formData, id) {
     return axios.post(BOOK_BASE_REST_API_URL + "/pdf/update/" +id, formData);
   }
+
 
 }
 

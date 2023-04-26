@@ -280,10 +280,16 @@ VALUES (13,1);
 INSERT INTO Book_Category(bookId,categoryId)
 VALUES (14,2);
 
+
+select * from Book;
+INSERT INTO Book_Category(bookId,categoryId)
+VALUES (18,2);
+
 INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
  VALUES ('testUser','123','testUser','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
 INSERT INTO User_Role(username,roleId)
 VALUES ('testUser',3);
+
 
 INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('testAdmin','123','testAdmin','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
