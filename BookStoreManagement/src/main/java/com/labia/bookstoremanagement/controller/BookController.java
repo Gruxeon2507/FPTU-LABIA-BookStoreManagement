@@ -302,8 +302,6 @@ public class BookController {
 
     }
 
-
-
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Book>> findAllPublic(
             @PathVariable String searchText,
@@ -313,5 +311,16 @@ public class BookController {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
     }
+    
+    @GetMapping("/sort/{type}")
+    ResponseEntity<Page<Book>> sortAllPublic(
+            @PathVariable String field,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.findAllPublic(pageable, field), HttpStatus.OK);
+    }
 
+    
 }

@@ -8,7 +8,7 @@ const Dashboard = () => {
   const [userOfBooks, setUserOfBooks] = useState({});
   const [users, setUsers] = useState([]);
   const [admins, setAdmins] = useState([]);
-
+  const user = window.localStorage.getItem('user');
   const getSomeUnpublicBooks = () => {
     BookServices.getSomeUnpublicBooks().then((response) => {
       setUnpublicBooks(response.data);
@@ -53,10 +53,11 @@ const Dashboard = () => {
   return (
     <>
       <div>
-        <Link to={"/superadmin"}>Dadshboard </Link>
+        <Link to={"/superadmin"}>Dashboard </Link>
         <Link to={"/admin/user"}>User</Link>
         <Link to={"/admin/book"}>Book </Link>
       </div>
+     
       <h2>Recent new admin</h2>
       <table className="table table-bordered ">
         <thead>
@@ -64,7 +65,7 @@ const Dashboard = () => {
           <th>Avatar</th>
           <th>Created Date</th>
           <th>Email</th>
-          <th>Action</th>
+          {/* <th>Action</th> */}
         </thead>
         <tbody>        
           {admins.map((user) => {
@@ -81,11 +82,12 @@ const Dashboard = () => {
             </td>
             <td>{user.createDate}</td>
             <td>{user.email}</td>
-            <td></td>
+            {/* <td></td> */}
           </tr>
           })}
         </tbody>
       </table>
+   
       <h2>Recent new user</h2>
       <table className="table table-bordered ">
         <thead>
@@ -93,7 +95,7 @@ const Dashboard = () => {
           <th>Avatar</th>
           <th>Created Date</th>
           <th>Email</th>
-          <th>Action</th>
+          {/* <th>Action</th> */}
         </thead>
         <tbody>
           
@@ -111,7 +113,7 @@ const Dashboard = () => {
               </td>
               <td>{user.createDate}</td>
               <td>{user.email}</td>
-              <td></td>
+              {/* <td></td> */}
             </tr>
           })}
         </tbody>

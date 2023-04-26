@@ -2,16 +2,6 @@ import React, { useEffect, useState } from "react";
 import UserServices from "../../services/UserServices";
 import { Link } from "react-router-dom";
 import { Pagination } from "antd";
-// import { Card, Form, Button, Col, InputGroup, Image } from "react-bootstrap";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faSave,
-//   faPlusSquare,
-//   faUndo,
-//   faList,
-//   faEdit,
-// } from "@fortawesome/free-solid-svg-icons";
-
 
 const ListUser = () => {
   const [users, setUsers] = useState([]);
@@ -21,6 +11,7 @@ const ListUser = () => {
   const sizePerPage = 5;
   const [currentPageUser, setCurrentPageUser] = useState(1);
   const [currentPageAdmin, setCurrentPageAdmin] = useState(1);
+  const user = window.localStorage.getItem('user');
 
   const countUser = UserServices.countUser().then((response) => {
     setTotalUsers(response.data);
@@ -82,10 +73,11 @@ const ListUser = () => {
   return (
     <>
       <div>
-        <Link to={"/superadmin"}>Dashboard </Link>
+        <Link to={"/admin"}>Dashboard </Link>
         <Link to={"/admin/user"}>User</Link>
         <Link to={"/admin/book"}>Book </Link>
       </div>
+      {user === 'khoahoc'? <div className="listAdmin">
       <h1>List Admin</h1>
       <table className="table table-bordered table-striped">
         <thead>
@@ -99,7 +91,7 @@ const ListUser = () => {
           {admins.map((user) => {
             return (
               <tr key={user.username}>
-                <td>{user.displayName}</td>
+                <td> <Link to={"/user/" + user.username} >{user.displayName}</Link></td>
                 <td>
                   <img
                     src={
@@ -131,6 +123,7 @@ const ListUser = () => {
           })}
         </tbody>
       </table>
+    
       <Pagination
         total={totalAdmins}
         defaultPageSize={sizePerPage}
@@ -142,7 +135,7 @@ const ListUser = () => {
           handlePageChangeAdmin(current);
         }}
       />
-
+  </div>:""}
       <h1>List User</h1>
       <table className="table table-bordered table-striped">
         <thead>
@@ -156,7 +149,7 @@ const ListUser = () => {
           {users.map((user) => {
             return (
               <tr key={user.username}>
-                <td>{user.displayName}</td>
+                <td><Link to={"/user/" + user.username} >{user.displayName}</Link></td>
                 <td>
                   <img
                     src={
