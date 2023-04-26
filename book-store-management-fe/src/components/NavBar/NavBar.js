@@ -4,6 +4,21 @@ import "./NavBar.scss"
 function Navbar() {
     return (
         <div>
+            <div className="authenFeature">
+                <p>Authentication Feature</p>
+                <nav>
+                <div className="navbarItem">
+                    <Link to="/login">Login</Link>
+                </div>
+                <div className="navbarItem">
+                    <Link to="/logout">Logout</Link>
+                </div>
+                <div className="navbarItem">
+                    <Link to="/session">Session Manager</Link>
+                </div>
+
+                </nav>
+            </div>
             <div className="userFeature">
                 <p>User Feature</p>
                 <nav>
@@ -12,11 +27,11 @@ function Navbar() {
                     </div>
                     <div>
 
-                        <Link to="/user">User Profile</Link>
+                        <Link to={"/user/"+window.localStorage.getItem("user")}>User Profile</Link>
                     </div>
                     <div className="navbarItem">
 
-                        <Link to="/user/setting">Account Setting</Link>
+                        <a href={"/user/setting/"+window.localStorage.getItem("user")}>Account Setting</a>
                     </div>
                     <div className="navbarItem">
 

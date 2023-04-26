@@ -293,5 +293,3 @@ INSERT INTO User_Role(username,roleId)
 VALUES ('testAdmin',3);
 
 
-
-

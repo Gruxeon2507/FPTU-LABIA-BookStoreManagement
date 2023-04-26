@@ -4,6 +4,7 @@
  */
 package com.labia.bookstoremanagement.controller;
 
+
 import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.repository.RoleRepository;
 import java.util.List;
@@ -31,4 +32,6 @@ public class RoleController {
         return roleRepository.findByUsername(username);       
     }
 
+
 }
+

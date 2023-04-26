@@ -44,7 +44,7 @@ public class Book implements Serializable {
     private int noView;
     private String authorName;
     private String description;
-    
+
     @ManyToOne
     @JoinColumn(name = "createdBy", referencedColumnName = "username")
     @JsonIgnore

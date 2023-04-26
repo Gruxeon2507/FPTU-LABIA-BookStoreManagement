@@ -36,6 +36,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     public List<Book> findByCreatedBy(User user);
 
+
+    public Book findByBookId(Integer id);
+
     public Page<Book> findByIsApproved(boolean b, Pageable pageable);
 
     public List<Book> findByIsApproved(boolean b);

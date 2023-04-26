@@ -18,4 +18,6 @@ public interface RoleRepository extends JpaRepository<Role, Integer>{
     @Query(value = "select r from Role r join r.users u where u.username = :username")
     public List<Role> findByUsername(String username);
     
+
 }
+

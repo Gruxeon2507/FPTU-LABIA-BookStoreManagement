@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author emiukhoahoc
  */
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("api/books")
 public class BookController {
@@ -49,6 +49,12 @@ public class BookController {
     List<Book> getAll() {
         return bookRepository.findAll();
     }
+
+   @GetMapping("by-id/{bookId}")
+    Book getBookById(@PathVariable("bookId") Integer id){
+        return bookRepository.findByBookId(id);
+    }
+    
 
     @GetMapping("/public")
     List<Book> getAllPublic() {
@@ -65,6 +71,7 @@ public class BookController {
         Pageable pageable = PageRequest.of(0, 12, Sort.by("bookId").descending());
         return bookRepository.findByIsApprovedFalseOrderByBookIdDesc(pageable);
     }
+
 
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {

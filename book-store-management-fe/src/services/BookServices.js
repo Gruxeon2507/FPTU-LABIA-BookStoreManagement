@@ -1,6 +1,7 @@
 import axios from "axios";
 
- const BOOK_BASE_REST_API_URL = "http://localhost:6789/api/books";
+const BOOK_BASE_REST_API_URL = "http://localhost:6789/api/books";
+
 
 class BookService{
     getAllBooks(){
@@ -37,9 +38,10 @@ class BookService{
         console.log(`${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
         return axios.get(`${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
     }
+      getBookByBookId(bookId) {
+    return axios.get(`${BOOK_BASE_REST_API_URL}/by-id/${bookId}`);
+  }
+
 }
 
 export default new BookService();
-
-
-  
