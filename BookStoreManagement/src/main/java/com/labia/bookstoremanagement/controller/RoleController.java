@@ -4,8 +4,9 @@
  */
 package com.labia.bookstoremanagement.controller;
 
-import com.labia.bookstoremanagement.model.Category;
-import com.labia.bookstoremanagement.repository.CategoryRepository;
+
+import com.labia.bookstoremanagement.model.Role;
+import com.labia.bookstoremanagement.repository.RoleRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,27 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  *
  * @author emiukhoahoc
-
  */
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"*"})
 @RestController
-@RequestMapping("api/categories")
-public class CategoryController {
+@RequestMapping("api/roles")
+public class RoleController {
+
     @Autowired
-    CategoryRepository categoryRepository;
-    
-    @GetMapping
-    List<Category> getAllCategory() {
-        return categoryRepository.findAll();
+    RoleRepository roleRepository;
+
+    @GetMapping("/{username}")
+    List<Role> getRoleByUser(@PathVariable String username) {
+        return roleRepository.findByUsername(username);       
     }
 
-    @GetMapping("by-book/{bookId}")
-    List<Category> getCategoryByBook(@PathVariable Integer bookId) {
-        return categoryRepository.getCategoryByBookId(bookId);
-    }
-    
-    
-    
-    
 
 }
+

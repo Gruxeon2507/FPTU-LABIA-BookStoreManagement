@@ -4,6 +4,7 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import React, { Component } from "react";
 import BookServices from "../../services/BookServices";
+import Alert from 'react-bootstrap/Alert';
 
 class AddBook extends Component {
   constructor(props) {
@@ -20,6 +21,8 @@ class AddBook extends Component {
       noView: null,
       authorName: "",
       selectedCategories: [],
+      error: "",
+      showError : false
     };
 
     this.changeTitleHandler = this.changeTitleHandler.bind(this);
@@ -75,8 +78,50 @@ class AddBook extends Component {
   };
 
   changeCoverPathHandler = (event) => {
+    const cover = event.target.files[0];
+
+    if (!cover) {
+      alert("Please choose a file");
+      this.setState({
+        showError : true,
+        error: "Wrong input",
+        coverPath: null,
+      });
+      return;
+    }
+
+    if (cover.size > 1024 * 1024 * 5) {
+      alert("Please choose a file less than 5MB");
+      this.setState({
+        showError : true,
+        error: "Wrong input",
+        coverPath: null,
+      });
+      return;
+    }
+
+    if (!cover.type.includes("image/")) {
+      alert("Please select an image file.");
+      this.setState({
+        showError : true,
+        error: "Wrong input",
+        coverPath: null,
+      });
+      return;
+    }
+    if (!cover.endswith(".jpg")) {
+      alert("Please choose a file .jpg");
+      this.setState({
+        showError : true,
+        error: "Wrong input",
+        coverPath: null,
+      });
+      return;
+    }
     this.setState({
-      coverPath: event.target.files[0],
+      showError : true,
+      error: "Wrong input",
+      coverPath: cover,
     });
   };
 
@@ -124,8 +169,8 @@ class AddBook extends Component {
       })
       .then((data) => {
         this.setState({
-          bookId : data.title,
-        })
+          bookId: data.title,
+        });
       });
     const formData = new FormData();
     formData.append("coverPath", this.state.coverPath);
@@ -148,6 +193,7 @@ class AddBook extends Component {
       description,
       categories,
       selectedCategories,
+      showError
     } = this.state;
     return (
       <div>
@@ -208,6 +254,7 @@ class AddBook extends Component {
               className="form-control"
               required
             ></input>
+            <div className="error">{this.state.error}</div>
             <br></br>
             <label>Cover of book</label>
             <input
@@ -217,6 +264,10 @@ class AddBook extends Component {
               className="form-control"
               required
             ></input>
+            <div style={{height : "50px"}}></div>
+            {showError ? <Alert key={'danger'} variant={'danger'}>
+              This is a {this.state.error} alert—check it out!
+            </Alert> : null}
             <br></br>
             <button className="btn btn-success" onClick={this.handleSubmit}>
               Add book

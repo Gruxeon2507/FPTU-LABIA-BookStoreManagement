@@ -55,6 +55,23 @@ function UpdateBook(props) {
   };
   const changeCoverHandler = (event) => {
     const cover = event.target.files[0];
+
+
+    if (!cover) {
+      alert('Please choose a file');
+      return;
+    }
+
+    if (cover.size > 1024 * 1024 * 5) {
+      alert('Please choose a file less than 5MB');
+      return;
+    }
+
+    if (!cover.type.includes("image/")) {
+      alert('Please select an image file.');
+      return;
+    }
+
     setBook({
       ...book,
       coverPath: cover,
@@ -100,12 +117,14 @@ function UpdateBook(props) {
         // handle error
         console.error(err);
       });
-      const formData = new FormData();
-      formData.append("pdfPath", book.pdfPath);
-      formData.append("coverPath", book.coverPath);
-      formData.append("bookId", bookId);
-      BookServices.updateNewBookCover(formData,bookId);
-      BookServices.updateNewBookPdf(formData,bookId);
+
+    const formData = new FormData();
+    formData.append("pdfPath", book.pdfPath);
+    formData.append("coverPath", book.coverPath);
+    formData.append("bookId", bookId);
+    BookServices.updateNewBookCover(formData, bookId);
+    BookServices.updateNewBookPdf(formData, bookId);
+
   };
 
   return (

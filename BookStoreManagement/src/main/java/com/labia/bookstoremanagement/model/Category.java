@@ -37,7 +37,10 @@ public class Category  implements Serializable{
     private int categoryId;
 
     @ManyToMany
-    @JoinTable(name = "Book_Category", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "bookId"))
+    @JoinTable(name = "Book_Category",
+            joinColumns = @JoinColumn(name = "categoryId"),
+            inverseJoinColumns = @JoinColumn(name = "bookId"))
+//    @JoinTable(name = "Book_Category", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "bookId"))
     @JsonIgnore
     private List<Book> books;
 

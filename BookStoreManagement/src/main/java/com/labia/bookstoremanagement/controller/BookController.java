@@ -22,7 +22,9 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -41,7 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author emiukhoahoc
  */
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("api/books")
 public class BookController {
@@ -49,6 +51,8 @@ public class BookController {
     int BookId;
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -64,9 +68,37 @@ public class BookController {
         return bookRepository.findAll();
     }
 
+   @GetMapping("by-id/{bookId}")
+    Book getBookById(@PathVariable("bookId") Integer id){
+        return bookRepository.findByBookId(id);
+    }
+    
+
+    @GetMapping("/public")
+    List<Book> getAllPublic() {
+        return bookRepository.findByIsApproved(true);
+    }
+
+    @GetMapping("/unpublic")
+    List<Book> getAllUnPublic() {
+        return bookRepository.findByIsApproved(false);
+    }
+
+    @GetMapping("/someunpublic")
+    List<Book> getSomeUnpublic() {
+        Pageable pageable = PageRequest.of(0, 12, Sort.by("bookId").descending());
+        return bookRepository.findByIsApprovedFalseOrderByBookIdDesc(pageable);
+    }
+
+
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {
         return bookRepository.getBookByUsername(username);
+    }
+
+    @GetMapping("find-by-user/{bookId}")
+    User getUserOfBook(@PathVariable Integer bookId) {
+        return bookRepository.getBookCreated(bookId);
     }
 
     @GetMapping("by-category/{categoryId}")
@@ -113,7 +145,18 @@ public class BookController {
         return books;
     }
 
-    @GetMapping("/by-categories/page/{categoryIds}")
+    @GetMapping("publicpage")
+    public List<Book> getPublicBooks(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findByIsApproved(true, pageable);
+        List<Book> books = pageBooks.getContent();
+        return books;
+    }
+
+    @GetMapping("/by-categories/publicpage/{categoryIds}")
     public List<Book> getPageBooksByCategories(
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize,
@@ -260,6 +303,18 @@ public class BookController {
             }
         }
 
+    }
+
+
+
+    @GetMapping("/search/{searchText}")
+    ResponseEntity<Page<Book>> findAllPublic(
+            @PathVariable String searchText,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
     }
 
 }

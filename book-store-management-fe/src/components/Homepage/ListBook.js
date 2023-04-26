@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BookServices from "../../services/BookServices";
 import "./ListBook.scss";
-import Card from "react-bootstrap/Card";
 import CategoryServices from "../../services/CategoryServices";
 import { Pagination } from "antd";
+import { Card } from "react-bootstrap";
+import { Button, FormControl } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const getAllBooks = () => {
-    return BookServices.getAllBooks()
+  const [condition, setCondition] = useState("");
+
+  const getAllPublicBooks = () => {
+    return BookServices.getAllPublicBooks()
       .then((response) => {
         console.log(response);
         return response.data.length;
@@ -21,14 +26,14 @@ function ListBook() {
       });
   };
 
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
-    getAllBooks().then((count) => setTotalPages(count));
+    getAllPublicBooks().then((count) => setTotalItems(count));
   }, []);
 
   const [categories, setCategories] = useState([]);
-  const sizePerPage = 4;
+  const sizePerPage = 12;
 
   const getAllCategories = () => {
     CategoryServices.getAllCategories()
@@ -50,25 +55,43 @@ function ListBook() {
         console.log(error);
       });
   };
-
-
+  const findCondition = () => {
+    setCondition(condition);
+    console.log("da click" +  encodeURIComponent(condition).replace(/%20/g, "%20"));
+    filterBook(0, sizePerPage, encodeURIComponent(condition).replace(/%20/g, "%20"));
+  };
+  const handleReset = ()=>{
+    setCondition('')
+    getPageBooks(0, sizePerPage);
+    getAllPublicBooks().then((count) => setTotalItems(count));
+  }
+  const filterBook = (pageNumber, pageSize, searchText) =>
+    BookServices.filterBook(pageNumber, pageSize, searchText).then(
+      (response) => {
+        setPageBooks(response.data.content);
+        setTotalItems(response.data.totalElements)
+        // console.log("filter" + response.data);
+      }
+    );
+  useEffect(() => {
+    filterBook(0, sizePerPage, encodeURIComponent(condition).replace(/%20/g, "%20"));
+  }, []);
   useEffect(() => {
     getAllCategories();
   }, []);
   useEffect(() => {
     getPageBooks(0, sizePerPage);
   }, []);
-
+  // console.log("search" + searchBooks);
   const handlePageChange = (current) => {
-    if(checked.length>0){
-      setCurrentPage(current);     
+    if (checked.length > 0) {
+      setCurrentPage(current);
       console.log("current" + current);
-      getPageBooksByCategories(checked.join(','),current - 1, sizePerPage);
-    }else{
-      setCurrentPage(current);     
+      getPageBooksByCategories(checked.join(","), current - 1, sizePerPage);
+    } else {
+      setCurrentPage(current);
       getPageBooks(current - 1, sizePerPage);
     }
-
   };
 
   const [checked, setChecked] = useState([]);
@@ -85,12 +108,11 @@ function ListBook() {
     });
   };
 
-  const getPageBooksByCategories = (categoryIds, pageNumber, pageSize ) => {
+  const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
-          setPageBooks(response.data);
-          console.log("response"+response.data);
-
+        setPageBooks(response.data);
+        console.log("response" + response.data);
       })
       .catch((error) => {
         console.log("loi lay ra page book");
@@ -101,26 +123,54 @@ function ListBook() {
   const getBooksByCategories = (categoryIds) => {
     BookServices.getBooksByCategories(categoryIds)
       .then((response) => {
-          setTotalPages(response.data.length);
+        setTotalItems(response.data.length);
       })
       .catch((error) => {
         console.log("loi lay ra number page book");
         console.log(error);
       });
   };
-  console.log("total page: " + totalPages);
+  console.log("total page: " + totalItems);
 
   const handleSubmit = () => {
-    setCurrentPage(1);     
+    setCurrentPage(1);
     console.log({ ids: checked });
     const categoryIds = checked.join(",");
     console.log(categoryIds);
-    getPageBooksByCategories(categoryIds,0,sizePerPage);
-    getBooksByCategories(categoryIds)
+    getPageBooksByCategories(categoryIds, 0, sizePerPage);
+    getBooksByCategories(categoryIds);
   };
 
+  console.log("condition" + condition);
   return (
     <>
+      <div className="find d-flex justify-content-center">
+        <FormControl
+          placeholder="Search"
+          name="search"
+          className={"info-border bg-dark text-white w-50 "}
+          value={condition}
+          onChange={(e) => setCondition(e.target.value)}
+        />
+        <Button
+          size="sm"
+          variant="outline-info"
+          type="button"
+          onClick={findCondition}
+        >
+          <FontAwesomeIcon icon={faSearch} />
+        </Button>
+        <Button
+          size="sm"
+          variant="outline-danger"
+          type="button"
+          onClick={() => handleReset()}
+          className="m-10"
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </Button>
+      </div>
+
       <div className="categories row">
         {categories.map((category) => (
           <div className="select col-6 col-md-3 col-sm-4 d-flex ">
@@ -166,7 +216,7 @@ function ListBook() {
       </div>
 
       <Pagination
-        total={totalPages}
+        total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>
           `${range[0]}-${range[1]} of ${total} items`
