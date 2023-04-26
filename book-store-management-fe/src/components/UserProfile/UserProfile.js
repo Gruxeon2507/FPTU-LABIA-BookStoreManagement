@@ -3,8 +3,8 @@ import UserServices from "../../services/UserServices";
 import "./UserProfile.scss";
 import BookServices from "../../services/BookServices";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom"
-import { useHistory } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function UserProfile() {
   const { userId } = useParams();
@@ -20,7 +20,9 @@ function UserProfile() {
     });
   }, [userId]);
 
-  
+  function deleteBook(bookId) {
+    BookServices.deleteBook(bookId);
+  }
 
   return (
     <div className="container">
@@ -53,8 +55,16 @@ function UserProfile() {
               <p>Tác giả: {book.authorName}</p>
               <p>Lượt xem: {book.noView}</p>
               <div className="row">
-                <Link to={"/book/update/"+book.bookId}><button className="btn btn-success">Update</button></Link>
-                <button className="btn btn-danger" onClick={BookServices.deleteBook(book.bookId)}>Delete</button>
+                <Link to={"/book/update/" + book.bookId}>
+                  <button className="btn btn-success">Update</button>
+                </Link>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {BookServices.deleteBook(book.bookId);
+                  window.location.href = ""}}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
