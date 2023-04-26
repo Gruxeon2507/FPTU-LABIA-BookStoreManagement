@@ -56,6 +56,7 @@ function UpdateBook(props) {
   const changeCoverHandler = (event) => {
     const cover = event.target.files[0];
 
+
     if (!cover) {
       alert('Please choose a file');
       return;
@@ -116,12 +117,14 @@ function UpdateBook(props) {
         // handle error
         console.error(err);
       });
+
     const formData = new FormData();
     formData.append("pdfPath", book.pdfPath);
     formData.append("coverPath", book.coverPath);
     formData.append("bookId", bookId);
     BookServices.updateNewBookCover(formData, bookId);
     BookServices.updateNewBookPdf(formData, bookId);
+
   };
 
   return (

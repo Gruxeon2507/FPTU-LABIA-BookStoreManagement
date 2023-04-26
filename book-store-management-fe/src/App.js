@@ -8,12 +8,16 @@ import AccountSetting from './components/AccountSetting/AccountSetting';
 import AddBook from './components/AddBook/AddBook';
 import RegisterUser from './components/RegisterUser/RegisterUser';
 
+
+import UpdateBook from './components/UpdateBook/UpdateBook';
+
 import LoginForm from './components/Login/Login';
 import SessionManager from './components/Authentication/SessionManager/SessionManager';
 
 import ListUser from './components/Admin/ListUser';
 import ViewABook from './components/ViewBook/ViewABook';
 import Dashboard from './components/Admin/Dashboard';
+
 
 
 function App() {
@@ -75,6 +79,9 @@ function App() {
         <Route path="/user/setting" Component={AccountSetting}></Route>
 
         <Route path="/book/add" Component={AddBook}></Route>
+
+        <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+
 
         <Route path="/superadmin" Component={Dashboard}></Route>
         <Route path="/admin/user" Component={ListUser}></Route>

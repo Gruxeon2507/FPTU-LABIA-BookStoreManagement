@@ -3,6 +3,12 @@ import UserServices from "../../services/UserServices";
 import "./UserProfile.scss";
 import BookServices from "../../services/BookServices";
 
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
+
+
 import { Link, useParams } from "react-router-dom";
 import AuthenService from "../../services/AuthenServices";
 import AuthenServices from "../../services/AuthenServices";
@@ -16,10 +22,15 @@ function UserProfile() {
         AuthenServices.getSessionUser(window.localStorage.getItem("sessionId")).then((res)=>{
             setLoginUser(res.data)
 
+
+
         })
         console.log(loginUser);
     }, []);
-    
+      function deleteBook(bookId) {
+    BookServices.deleteBook(bookId);
+  }
+
     useEffect(() => {
         console.log(window.localStorage.getItem("user"))
         console.log(window.localStorage.getItem("role"))
@@ -41,6 +52,7 @@ function UserProfile() {
     }, [userId, loginUser]);
     
 
+
     return (
         <div className="container">
             <div className="avatar">
@@ -54,23 +66,26 @@ function UserProfile() {
                 <p>Day Joined: {user.createdDate}</p>
                 <p>Last Active: {user.lastActive}</p>
             </div>
-            <div className="userBooks">
-                {
-                    books.map(
-                        book =>
-                            <div className="singleBook">
-                                <div className="bookCover">
-                                    <img src={"http://localhost:6789/api/books/cover/" + book.bookId} width={200} ></img>
-                                </div>
-                                <div className="bookContent">
-                                    <div className="bookTitle"><p >{book.title}</p></div>
-                                    <p>Tác giả: {book.authorName}</p>
-                                    <p>Lượt xem: {book.noView}</p>
-                                    <button><Link to={"../book/view/"+book.bookId}>Đọc ngay</Link></button>
-                                </div>
-                            </div>
-                    )
-                }
+
+            <div className="bookContent">
+              <div className="bookTitle">
+                <p>{book.title}</p>
+              </div>
+              <p>Tác giả: {book.authorName}</p>
+              <p>Lượt xem: {book.noView}</p>
+              <div className="row">
+                <Link to={"/book/update/" + book.bookId}>
+                  <button className="btn btn-success">Update</button>
+                </Link>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {BookServices.deleteBook(book.bookId);
+                  window.location.href = ""}}
+                >
+                  Delete
+                </button>
+              </div>
+
             </div>
           </div>
         ))}
