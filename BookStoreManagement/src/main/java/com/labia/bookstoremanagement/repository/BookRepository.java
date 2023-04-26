@@ -30,8 +30,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
 
 
-    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
-    List<Book> getBookByCategoryIds(Integer[] categoryIds);
+//    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
+//    List<Book> getBookByCategoryIds(Integer[] categoryIds);
 
     @Query(value = "SELECT * FROM Book order by bookId desc LIMIT 1", nativeQuery = true)
     Book findLastBook();
@@ -46,8 +46,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     public Book findByTitle(String title);
 
-//    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds and b.isApproved = '1'")
-//    List<Book> getBookByCategoryIds(Integer[] categoryIds);
+    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds and b.isApproved = '1'")
+    List<Book> getBookByCategoryIds(Integer[] categoryIds);
 
     @Query("select b.createdBy from Book b where b.bookId = :bookId ")
     User getBookCreated(Integer bookId);

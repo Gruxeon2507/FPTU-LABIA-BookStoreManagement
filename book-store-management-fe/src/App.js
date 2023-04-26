@@ -30,22 +30,23 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>
-
+{/* 
         <Route path="" Component={ListBook}></Route>
         <Route path="/user/:userId" Component={UserProfile}></Route>
         <Route path="/user/setting" Component={AccountSetting}></Route>
         <Route path="/admin" Component={Dashboard}></Route>
         <Route path="/admin/book" Component={AdminBooks}></Route>
         <Route path="/admin/user" Component={ListUser}></Route>
-        <Route path="/book/view/:bookId" Component={ViewABook}></Route>
+        <Route path="/book/view/:bookId" Component={ViewABook}></Route> */}
 
 
-        <Route path="/login" Component={LoginForm}></Route>
-        <Route path="/auth/register" Component={RegisterUser}></Route>
+        // <Route path="/login" Component={LoginForm}></Route>
+        // <Route path="/auth/register" Component={RegisterUser}></Route>
         {role==="Super Admin" ? 
         (
           <>
             <Route path="/admin" Component={Dashboard}></Route>
+            <Route path="/superadmin" Component={Dashboard}></Route>
             <Route path="" Component={ListBook}></Route>
             <Route path="/user/:userId" Component={UserProfile}></Route>
             <Route path="/user" Component={UserProfile}></Route>
@@ -54,6 +55,7 @@ function App() {
             <Route path="/book/view/:bookId" Component={ViewABook}></Route>
             <Route path="/book/add" Component={AddBook}></Route>
             <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+            <Route path="/admin/book" Component={AdminBooks}></Route>
           </>
         ) : (<></>)
         }
@@ -69,6 +71,7 @@ function App() {
             <Route path="/book/view/:bookId" Component={ViewABook}></Route>
             <Route path="/book/add" Component={AddBook}></Route>
             <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+            <Route path="/admin/book" Component={AdminBooks}></Route>
           </>
         ) : (<></>)
         }

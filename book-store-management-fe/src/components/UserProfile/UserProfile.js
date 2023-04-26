@@ -62,6 +62,7 @@ function UserProfile() {
             </div>
             <div className="singleBook">
                 {books.map(book =>
+                    
                     <div className="singleBook">
                         <div className="bookCover">
                             <img src={"http://localhost:6789/api/books/cover/" + book.bookId} width={200} ></img>

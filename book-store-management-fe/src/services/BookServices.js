@@ -100,7 +100,7 @@ class BookService {
   }
 
   getABookById(id) {
-    return axios.get(BOOK_BASE_REST_API_URL + "/" + id);
+    return axios.get(BOOK_BASE_REST_API_URL + "/by-id/" + id);
   }
 
 

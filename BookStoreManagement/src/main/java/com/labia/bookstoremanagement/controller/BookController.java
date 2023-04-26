@@ -74,7 +74,7 @@ public class BookController {
     @GetMapping("by-id/{bookId}")
     Book getBookById(@PathVariable("bookId") Integer id) {
         return bookRepository.findByBookId(id);
-    }
+   }
 //
 //   @GetMapping("by-id/{bookId}")
 //    Book getBookById(@PathVariable("bookId") Integer id){
