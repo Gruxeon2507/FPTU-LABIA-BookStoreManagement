@@ -6,6 +6,7 @@ package com.labia.bookstoremanagement.controller;
 
 import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.repository.BookRepository;
+import com.labia.bookstoremanagement.repository.UserRepository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,8 +22,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +41,8 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping
     List<Book> getAll() {
@@ -45,10 +50,10 @@ public class BookController {
     }
 
     @GetMapping("by-id/{bookId}")
-    Book getBookById(@PathVariable("bookId") Integer id){
+    Book getBookById(@PathVariable("bookId") Integer id) {
         return bookRepository.findByBookId(id);
     }
-    
+
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {
         return bookRepository.getBookByUsername(username);
@@ -105,21 +110,71 @@ public class BookController {
             @PathVariable("categoryIds") Integer[] categoryIds
     ) {
 
-         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds); 
-        List<Integer> bookIds= new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
+        List<Integer> bookIds = new ArrayList<>();
         for (Book book : books) {
-           bookIds.add(book.getBookId());
+            bookIds.add(book.getBookId());
         }
-        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds,pageable);
+        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds, pageable);
 //        Page<Book> pageBooks = bookRepository.getBookByBookId(1, pageable);
         List<Book> bookss = pageBooks.getContent();
         return bookss;
+    }
+
+    @GetMapping("/pending/page")
+    public List<Book> getPagePendingBook(
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize
+    ) {
+        Pageable isPageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findByIsApproved(false, isPageable);
+        for (Book book : pageBooks.getContent()) {
+            book.setCoverPath(userRepository.getUserByBooks(book).getUsername());
+            book.setPdfPath(userRepository.getUserByBooks(book).getDisplayName());
+        }
+        return pageBooks.getContent();
+    }
+
+    @GetMapping("/public/page")
+    public List<Book> getPagePublicBook(
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize
+    ) {
+        Pageable isPageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findByIsApproved(true, isPageable);
+        for (Book book : pageBooks.getContent()) {
+            book.setCoverPath(userRepository.getUserByBooks(book).getUsername());
+            book.setPdfPath(userRepository.getUserByBooks(book).getDisplayName());
+        }
+        return pageBooks.getContent();
     }
 
     @GetMapping("by-categories/{categoryIds}")
     public List<Book> getBooks(@PathVariable("categoryIds") Integer[] categoryIds) {
         List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
         return books;
+    }
+
+    @GetMapping("pending")
+    public List<Book> getPendingBooks() {
+        return bookRepository.findByIsApproved(false);
+    }
+
+    @GetMapping("public")
+    public List<Book> getPublicBooks() {
+        List<Book> books = bookRepository.findByIsApproved(true);
+        return books;
+    }
+
+    @DeleteMapping("delete/{bookId}")
+    public void deleteBook(@PathVariable("bookId") int bookId) {
+        bookRepository.deleteBookCategoryByBookId(bookId);
+        bookRepository.deleteById(bookId);
+    }
+
+    @PostMapping("approve/{bookId}")
+    public void approveBook(@PathVariable("bookId") int bookId) {
+        bookRepository.updateBookStatus(bookId);
     }
 }

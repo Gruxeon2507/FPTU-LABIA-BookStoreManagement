@@ -4,6 +4,7 @@
  */
 package com.labia.bookstoremanagement.repository;
 
+import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.User;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -40,5 +41,11 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Transactional
     @Query(value = "INSERT INTO User_Role (username, roleId) VALUES (:username, :roleId)", nativeQuery = true)
     void addUserRole(@Param("username") String username, @Param("roleId") Integer roleId);
+    
+//    public User getUserByBookId(int bookId);
+
+//    public User getUserByBooks(int bookId);
+
+    public User getUserByBooks(Book book);
 
 }

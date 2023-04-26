@@ -51,7 +51,6 @@ function ListBook() {
       });
   };
 
-
   useEffect(() => {
     getAllCategories();
   }, []);
@@ -60,15 +59,14 @@ function ListBook() {
   }, []);
 
   const handlePageChange = (current) => {
-    if(checked.length>0){
-      setCurrentPage(current);     
+    if (checked.length > 0) {
+      setCurrentPage(current);
       console.log("current" + current);
-      getPageBooksByCategories(checked.join(','),current - 1, sizePerPage);
-    }else{
-      setCurrentPage(current);     
+      getPageBooksByCategories(checked.join(","), current - 1, sizePerPage);
+    } else {
+      setCurrentPage(current);
       getPageBooks(current - 1, sizePerPage);
     }
-
   };
 
   const [checked, setChecked] = useState([]);
@@ -85,12 +83,11 @@ function ListBook() {
     });
   };
 
-  const getPageBooksByCategories = (categoryIds, pageNumber, pageSize ) => {
+  const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
-          setPageBooks(response.data);
-          console.log("response"+response.data);
-
+        setPageBooks(response.data);
+        console.log("response" + response.data);
       })
       .catch((error) => {
         console.log("loi lay ra page book");
@@ -101,7 +98,7 @@ function ListBook() {
   const getBooksByCategories = (categoryIds) => {
     BookServices.getBooksByCategories(categoryIds)
       .then((response) => {
-          setTotalPages(response.data.length);
+        setTotalPages(response.data.length);
       })
       .catch((error) => {
         console.log("loi lay ra number page book");
@@ -111,12 +108,12 @@ function ListBook() {
   console.log("total page: " + totalPages);
 
   const handleSubmit = () => {
-    setCurrentPage(1);     
+    setCurrentPage(1);
     console.log({ ids: checked });
     const categoryIds = checked.join(",");
     console.log(categoryIds);
-    getPageBooksByCategories(categoryIds,0,sizePerPage);
-    getBooksByCategories(categoryIds)
+    getPageBooksByCategories(categoryIds, 0, sizePerPage);
+    getBooksByCategories(categoryIds);
   };
 
   return (

@@ -280,6 +280,10 @@ VALUES (13,1);
 INSERT INTO Book_Category(bookId,categoryId)
 VALUES (14,2);
 
+select * from Book;
+INSERT INTO Book_Category(bookId,categoryId)
+VALUES (18,2);
+
 
 
 
