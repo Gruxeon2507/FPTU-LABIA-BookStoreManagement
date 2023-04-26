@@ -7,7 +7,7 @@ import { Pagination } from "antd";
 import { Card } from "react-bootstrap";
 import { Button, FormControl } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faTimes, faList } from "@fortawesome/free-solid-svg-icons";
 
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
@@ -57,24 +57,33 @@ function ListBook() {
   };
   const findCondition = () => {
     setCondition(condition);
-    console.log("da click" +  encodeURIComponent(condition).replace(/%20/g, "%20"));
-    filterBook(0, sizePerPage, encodeURIComponent(condition).replace(/%20/g, "%20"));
+    console.log(
+      "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
+    filterBook(
+      0,
+      sizePerPage,
+      encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
   };
-  const handleReset = ()=>{
-    setCondition('')
+  const handleReset = () => {
+    setCondition("");
     getPageBooks(0, sizePerPage);
     getAllPublicBooks().then((count) => setTotalItems(count));
-  }
+  };
   const filterBook = (pageNumber, pageSize, searchText) =>
     BookServices.filterBook(pageNumber, pageSize, searchText).then(
       (response) => {
         setPageBooks(response.data.content);
-        setTotalItems(response.data.totalElements)
-        // console.log("filter" + response.data);
+        setTotalItems(response.data.totalElements);
       }
     );
   useEffect(() => {
-    filterBook(0, sizePerPage, encodeURIComponent(condition).replace(/%20/g, "%20"));
+    filterBook(
+      0,
+      sizePerPage,
+      encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
   }, []);
   useEffect(() => {
     getAllCategories();
@@ -82,7 +91,7 @@ function ListBook() {
   useEffect(() => {
     getPageBooks(0, sizePerPage);
   }, []);
-  // console.log("search" + searchBooks);
+
   const handlePageChange = (current) => {
     if (checked.length > 0) {
       setCurrentPage(current);
@@ -141,34 +150,48 @@ function ListBook() {
     getBooksByCategories(categoryIds);
   };
 
-  console.log("condition" + condition);
   return (
     <>
       <div className="find d-flex justify-content-center">
-        <FormControl
-          placeholder="Search"
-          name="search"
-          className={"info-border bg-dark text-white w-50 "}
-          value={condition}
-          onChange={(e) => setCondition(e.target.value)}
-        />
-        <Button
-          size="sm"
-          variant="outline-info"
-          type="button"
-          onClick={findCondition}
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </Button>
-        <Button
-          size="sm"
-          variant="outline-danger"
-          type="button"
-          onClick={() => handleReset()}
-          className="m-10"
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </Button>
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-info"
+            type="button"
+            onClick={handleReset}
+          >
+            <FontAwesomeIcon icon={faList} />
+          </Button>
+        </div>
+        {/* <div className="itemSearch"> */}
+          <FormControl
+            placeholder="Search"
+            name="search"
+            className={"info-border bg-dark text-white w-50 "}
+            value={condition}
+            onChange={(e) => setCondition(e.target.value)}
+          />
+        {/* </div> */}
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-info"
+            type="button"
+            onClick={findCondition}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </Button>
+        </div>
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-danger"
+            type="button"
+            onClick={() => handleReset()}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </Button>
+        </div>
       </div>
 
       <div className="categories row">
@@ -186,7 +209,9 @@ function ListBook() {
           </div>
         ))}
       </div>
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit} className="btn btn-success">
+        Submit
+      </button>
 
       <div className="list-books row">
         {pageBooks.map((book) => (
@@ -206,6 +231,7 @@ function ListBook() {
               <Card.Body>
                 <Card.Title>{book.title}</Card.Title>
                 <Card.Text>{book.authorName}</Card.Text>
+                <Card.Text>{book.price}</Card.Text>
                 <Link to={"/book/view/" + book.bookId} className="btn btn-info">
                   View{" "}
                 </Link>
