@@ -75,12 +75,12 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "delete from Book_Category where bookId = ?1", nativeQuery = true)
     public void deleteBookCategoryByBookId(@Param("bookId") int bookId);
 
-
-    public Book findByBookId(Integer id);
-
-    public Page<Book> findByIsApproved(boolean b, Pageable pageable);
-
-    public List<Book> findByIsApproved(boolean b);
+//
+//    public Book findByBookId(Integer id);
+//
+//    public Page<Book> findByIsApproved(boolean b, Pageable pageable);
+//
+//    public List<Book> findByIsApproved(boolean b);
 
     List<Book> findByIsApprovedFalseOrderByBookIdDesc(Pageable pageable);
 

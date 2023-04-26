@@ -13,7 +13,7 @@ function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [condition, setCondition] = useState("");
-
+  
   const getAllPublicBooks = () => {
     return BookServices.getAllPublicBooks()
       .then((response) => {
@@ -134,7 +134,7 @@ function ListBook() {
   const getBooksByCategories = (categoryIds) => {
     BookServices.getBooksByCategories(categoryIds)
       .then((response) => {
-        setTotalPages(response.data.length);
+        setTotalItems(response.data.length);
       })
       .catch((error) => {
         console.log("loi lay ra number page book");

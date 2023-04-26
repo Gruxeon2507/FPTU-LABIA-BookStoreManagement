@@ -75,17 +75,14 @@ public class BookController {
     Book getBookById(@PathVariable("bookId") Integer id) {
         return bookRepository.findByBookId(id);
     }
-
-   @GetMapping("by-id/{bookId}")
-    Book getBookById(@PathVariable("bookId") Integer id){
-        return bookRepository.findByBookId(id);
-    }
+//
+//   @GetMapping("by-id/{bookId}")
+//    Book getBookById(@PathVariable("bookId") Integer id){
+//        return bookRepository.findByBookId(id);
+//    }
     
 
-    @GetMapping("/public")
-    List<Book> getAllPublic() {
-        return bookRepository.findByIsApproved(true);
-    }
+//
 
     @GetMapping("/unpublic")
     List<Book> getAllUnPublic() {
@@ -303,11 +300,11 @@ public class BookController {
         return extension;
     }
 
-    @DeleteMapping("/delete/{bookId}")
-    public void deleteBook(@PathVariable("bookId") Integer bookId) {
-        categoryRepository.deleteBook_Category(bookId);
-        bookRepository.deleteById(bookId);
-    }
+//    @DeleteMapping("/delete/{bookId}")
+//    public void deleteBook(@PathVariable("bookId") Integer bookId) {
+//        categoryRepository.deleteBook_Category(bookId);
+//        bookRepository.deleteById(bookId);
+//    }
 
 //    @GetMapping("/{bookId}")
 //    public Book getBookById(@PathVariable("bookId") Integer bookId) {

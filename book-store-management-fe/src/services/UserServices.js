@@ -44,7 +44,7 @@ class UserServices{
         // console.log("calling")
         // console.log(axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`) + "hello");
         return axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`)
-
+    }
     countUser(){
         return axios.get(USER_BASE_REST_API_URL+'/onlyuser/count');
     }
