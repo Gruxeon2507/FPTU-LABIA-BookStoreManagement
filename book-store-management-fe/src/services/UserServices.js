@@ -6,8 +6,14 @@ class UserServices{
     getAllUser(){
         return axios.get(USER_BASE_REST_API_URL);
     }
-    getUserForSuperAdmin(){
-        return axios.get(USER_BASE_REST_API_URL + '/superadmin');
+    getOnlyAdmin(pageNumber, pageSize){
+        console.log(`${USER_BASE_REST_API_URL}/onlyadmin?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${USER_BASE_REST_API_URL}/onlyadmin?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    }
+
+    getOnlyUser(pageNumber, pageSize){
+        console.log(`USER_BASE_REST_API_URL/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${USER_BASE_REST_API_URL}/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`);
     }
     getUserByUserName(id){
         return axios.get(USER_BASE_REST_API_URL+"/"+id);
@@ -19,6 +25,10 @@ class UserServices{
         return axios.post(USER_BASE_REST_API_URL+"/avatar/upload",formData)
     }
 
+
+    registerUserAvatar(formData){
+        return axios.post(USER_BASE_REST_API_URL+"/register/avatar/upload",formData)
+    }
     deleteUser(username){
         return axios.delete(USER_BASE_REST_API_URL + '/' + username);
     }
@@ -29,10 +39,19 @@ class UserServices{
         return axios.post(USER_BASE_REST_API_URL + '/promote/' + username);
     }
 
+
     getUserByBookId(bookId){
         // console.log("calling")
         // console.log(axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`) + "hello");
         return axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`)
+
+    countUser(){
+        return axios.get(USER_BASE_REST_API_URL+'/onlyuser/count');
+    }
+    countAdmin(){
+        return axios.get(USER_BASE_REST_API_URL+'/onlyadmin/count');
+
+
     }
 }
 

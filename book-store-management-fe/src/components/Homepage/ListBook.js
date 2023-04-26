@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BookServices from "../../services/BookServices";
 import "./ListBook.scss";
-import Card from "react-bootstrap/Card";
 import CategoryServices from "../../services/CategoryServices";
 import { Pagination } from "antd";
+import { Card } from "react-bootstrap";
+import { Button, FormControl } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faTimes, faList } from "@fortawesome/free-solid-svg-icons";
 
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const getAllBooks = () => {
-    return BookServices.getAllBooks()
+  const [condition, setCondition] = useState("");
+
+  const getAllPublicBooks = () => {
+    return BookServices.getAllPublicBooks()
       .then((response) => {
         console.log(response);
         return response.data.length;
@@ -21,14 +26,14 @@ function ListBook() {
       });
   };
 
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
-    getAllBooks().then((count) => setTotalPages(count));
+    getAllPublicBooks().then((count) => setTotalItems(count));
   }, []);
 
   const [categories, setCategories] = useState([]);
-  const sizePerPage = 4;
+  const sizePerPage = 12;
 
   const getAllCategories = () => {
     CategoryServices.getAllCategories()
@@ -50,6 +55,37 @@ function ListBook() {
         console.log(error);
       });
   };
+
+  const findCondition = () => {
+    setCondition(condition);
+    console.log(
+      "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
+    filterBook(
+      0,
+      sizePerPage,
+      encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
+  };
+  const handleReset = () => {
+    setCondition("");
+    getPageBooks(0, sizePerPage);
+    getAllPublicBooks().then((count) => setTotalItems(count));
+  };
+  const filterBook = (pageNumber, pageSize, searchText) =>
+    BookServices.filterBook(pageNumber, pageSize, searchText).then(
+      (response) => {
+        setPageBooks(response.data.content);
+        setTotalItems(response.data.totalElements);
+      }
+    );
+  useEffect(() => {
+    filterBook(
+      0,
+      sizePerPage,
+      encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
+  }, []);
 
   useEffect(() => {
     getAllCategories();
@@ -105,7 +141,7 @@ function ListBook() {
         console.log(error);
       });
   };
-  console.log("total page: " + totalPages);
+  console.log("total page: " + totalItems);
 
   const handleSubmit = () => {
     setCurrentPage(1);
@@ -118,6 +154,48 @@ function ListBook() {
 
   return (
     <>
+      <div className="find d-flex justify-content-center">
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-info"
+            type="button"
+            onClick={handleReset}
+          >
+            <FontAwesomeIcon icon={faList} />
+          </Button>
+        </div>
+        {/* <div className="itemSearch"> */}
+          <FormControl
+            placeholder="Search"
+            name="search"
+            className={"info-border bg-dark text-white w-50 "}
+            value={condition}
+            onChange={(e) => setCondition(e.target.value)}
+          />
+        {/* </div> */}
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-info"
+            type="button"
+            onClick={findCondition}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </Button>
+        </div>
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-danger"
+            type="button"
+            onClick={() => handleReset()}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </Button>
+        </div>
+      </div>
+
       <div className="categories row">
         {categories.map((category) => (
           <div className="select col-6 col-md-3 col-sm-4 d-flex ">
@@ -133,7 +211,9 @@ function ListBook() {
           </div>
         ))}
       </div>
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit} className="btn btn-success">
+        Submit
+      </button>
 
       <div className="list-books row">
         {pageBooks.map((book) => (
@@ -153,6 +233,7 @@ function ListBook() {
               <Card.Body>
                 <Card.Title>{book.title}</Card.Title>
                 <Card.Text>{book.authorName}</Card.Text>
+                <Card.Text>{book.price}</Card.Text>
                 <Link to={"/book/view/" + book.bookId} className="btn btn-info">
                   View{" "}
                 </Link>
@@ -163,7 +244,7 @@ function ListBook() {
       </div>
 
       <Pagination
-        total={totalPages}
+        total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>
           `${range[0]}-${range[1]} of ${total} items`

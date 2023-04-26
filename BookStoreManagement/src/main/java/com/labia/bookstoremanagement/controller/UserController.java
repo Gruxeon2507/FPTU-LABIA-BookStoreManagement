@@ -4,21 +4,35 @@
  */
 package com.labia.bookstoremanagement.controller;
 
+
 import com.labia.bookstoremanagement.model.ResponseObject;
 import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.Category;
+
 import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.BookRepository;
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
+import com.labia.bookstoremanagement.utils.AuthorizationUtils;
+import com.labia.bookstoremanagement.utils.DateTimeUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,7 +53,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author emiukhoahoc
  */
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -61,11 +75,6 @@ public class UserController {
     @GetMapping("superadmin")
     List<User> getUserForSuperAdmin() {
         return userRepository.getUserExceptSuperAdmin();
-    }
-
-    @GetMapping("admin")
-    List<User> getUserForAdmin() {
-        return userRepository.getUserExceptAdmin();
     }
 
     @GetMapping("/{username}")
@@ -122,6 +131,34 @@ public class UserController {
 
         return extension;
     }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        user.setAvatarPath("avatar/"+user.getUsername()+".jpg");
+        user.setPassword(AuthorizationUtils.hashPassword(user.getPassword()));
+        user.setCreateDate(DateTimeUtils.getSqlDateNow());
+        user.setLastActive(DateTimeUtils.getSqlTimeStampNow());
+        userRepository.save(user);
+        userRepository.saveUser_Role(user.getUsername(), 3);
+         return userRepository.save(user);
+    }
+    
+    @PostMapping("/register/avatar/upload")
+    public void registerFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(username + ".jpg");
+            try {
+                // Save the file to the uploads directory
+
+                String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+   
 
     @DeleteMapping("/{username}")
     ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
@@ -189,9 +226,54 @@ public class UserController {
         );
     }
 
+
     @GetMapping("by-book/{bookId}")
     User getUserByBookId(@PathVariable("bookId") int bookId) {
         Book book = bookRepository.findByBookId(bookId);
         return userRepository.getUserByBooks(book);
     }
+
+    @GetMapping("/onlyuser")
+    public List<User> getSomeUsersByCondition(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
+        //        return userRepository.findAll(pageable).getContent();       
+        return userRepository.getOnlyRoleUser(pageable);
+    }
+
+    @GetMapping("/onlyuser/count")
+    public int countUser() {
+        return userRepository.countOnlyRoleUser();
+    }
+
+//    @GetMapping("/onlyadmin")
+//    List<User> getRoleAdmin() {
+//        String username = "khoahoc";
+//        return userRepository.getOnlyRoleAdmin(username);
+//    }
+    @GetMapping("/onlyadmin")
+    public List<User> getSomeAdminsByCondition(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        String username = "khoahoc";
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
+        return userRepository.getOnlyRoleAdmin(username, pageable);
+    }
+
+    @GetMapping("/onlyadmin/count")
+    public int countAdmin() {
+        String username = "khoahoc";
+        return userRepository.countOnlyRoleAdmin(username);
+    }
+    
+    @GetMapping("/search/{searchText}")
+    ResponseEntity<Page<User>> findAll(Pageable pageable,@PathVariable String searchText){
+        return new ResponseEntity<>(userRepository.findAll(pageable, searchText), HttpStatus.OK);
+    }
+
+
+
 }

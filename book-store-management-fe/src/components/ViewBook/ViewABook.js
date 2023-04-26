@@ -18,7 +18,8 @@ function ViewABook() {
     });
   }, [bookId]);
 
-  if (book.approved !== undefined && book.approved) {
+
+  if (book.approved != undefined && book.approved) {
     return (
       <div className="container">
         <div className="meta-info">

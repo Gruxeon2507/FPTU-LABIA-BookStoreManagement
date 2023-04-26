@@ -11,7 +11,7 @@ class ListBook extends Component {
     }
 
     componentDidMount(){
-        BookServices.getBook().then((res) => {
+        BookServices.getAllBooks().then((res) => {
             this.setState({books:res.data})
         })
     }
