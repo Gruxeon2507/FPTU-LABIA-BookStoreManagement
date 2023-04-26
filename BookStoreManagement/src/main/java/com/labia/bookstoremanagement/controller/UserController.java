@@ -16,17 +16,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,11 +65,6 @@ public class UserController {
     @GetMapping("superadmin")
     List<User> getUserForSuperAdmin() {
         return userRepository.getUserExceptSuperAdmin();
-    }
-
-    @GetMapping("admin")
-    List<User> getUserForAdmin() {
-        return userRepository.getUserExceptAdmin();
     }
 
     @GetMapping("/{username}")
@@ -123,7 +118,7 @@ public class UserController {
         if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
             extension = fileName.substring(dotIndex + 1);
         }
-        
+
         return extension;
     }
 
@@ -155,7 +150,7 @@ public class UserController {
             userRepository.delete(user);
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "delete user successfully","")
+                    new ResponseObject("ok", "delete user successfully", "")
             );
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -192,4 +187,46 @@ public class UserController {
                 new ResponseObject("failed", "Cannot find user to add role", "")
         );
     }
+
+    @GetMapping("/onlyuser")
+    public List<User> getSomeUsersByCondition(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
+        //        return userRepository.findAll(pageable).getContent();       
+        return userRepository.getOnlyRoleUser(pageable);
+    }
+
+    @GetMapping("/onlyuser/count")
+    public int countUser() {
+        return userRepository.countOnlyRoleUser();
+    }
+
+//    @GetMapping("/onlyadmin")
+//    List<User> getRoleAdmin() {
+//        String username = "khoahoc";
+//        return userRepository.getOnlyRoleAdmin(username);
+//    }
+    @GetMapping("/onlyadmin")
+    public List<User> getSomeAdminsByCondition(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        String username = "khoahoc";
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
+        return userRepository.getOnlyRoleAdmin(username, pageable);
+    }
+
+    @GetMapping("/onlyadmin/count")
+    public int countAdmin() {
+        String username = "khoahoc";
+        return userRepository.countOnlyRoleAdmin(username);
+    }
+    
+    @GetMapping("/search/{searchText}")
+    ResponseEntity<Page<User>> findAll(Pageable pageable,@PathVariable String searchText){
+        return new ResponseEntity<>(userRepository.findAll(pageable, searchText), HttpStatus.OK);
+    }
+
 }

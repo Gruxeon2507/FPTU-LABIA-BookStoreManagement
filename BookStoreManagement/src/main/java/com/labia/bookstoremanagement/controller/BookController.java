@@ -5,7 +5,9 @@
 package com.labia.bookstoremanagement.controller;
 
 import com.labia.bookstoremanagement.model.Book;
+import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.BookRepository;
+import com.labia.bookstoremanagement.repository.UserRepository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,7 +19,9 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,20 +42,45 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping
     List<Book> getAll() {
         return bookRepository.findAll();
     }
 
-    @GetMapping("by-id/{bookId}")
+   @GetMapping("by-id/{bookId}")
     Book getBookById(@PathVariable("bookId") Integer id){
         return bookRepository.findByBookId(id);
     }
     
+
+    @GetMapping("/public")
+    List<Book> getAllPublic() {
+        return bookRepository.findByIsApproved(true);
+    }
+
+    @GetMapping("/unpublic")
+    List<Book> getAllUnPublic() {
+        return bookRepository.findByIsApproved(false);
+    }
+
+    @GetMapping("/someunpublic")
+    List<Book> getSomeUnpublic() {
+        Pageable pageable = PageRequest.of(0, 12, Sort.by("bookId").descending());
+        return bookRepository.findByIsApprovedFalseOrderByBookIdDesc(pageable);
+    }
+
+
     @GetMapping("by-user/{username}")
     List<Book> getBookByUser(@PathVariable String username) {
         return bookRepository.getBookByUsername(username);
+    }
+
+    @GetMapping("find-by-user/{bookId}")
+    User getUserOfBook(@PathVariable Integer bookId) {
+        return bookRepository.getBookCreated(bookId);
     }
 
     @GetMapping("by-category/{categoryId}")
@@ -98,20 +127,31 @@ public class BookController {
         return books;
     }
 
-    @GetMapping("/by-categories/page/{categoryIds}")
+    @GetMapping("publicpage")
+    public List<Book> getPublicBooks(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findByIsApproved(true, pageable);
+        List<Book> books = pageBooks.getContent();
+        return books;
+    }
+
+    @GetMapping("/by-categories/publicpage/{categoryIds}")
     public List<Book> getPageBooksByCategories(
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize,
             @PathVariable("categoryIds") Integer[] categoryIds
     ) {
 
-         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds); 
-        List<Integer> bookIds= new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
+        List<Integer> bookIds = new ArrayList<>();
         for (Book book : books) {
-           bookIds.add(book.getBookId());
+            bookIds.add(book.getBookId());
         }
-        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds,pageable);
+        Page<Book> pageBooks = bookRepository.findByBookIdIn(bookIds, pageable);
 //        Page<Book> pageBooks = bookRepository.getBookByBookId(1, pageable);
         List<Book> bookss = pageBooks.getContent();
         return bookss;
@@ -121,5 +161,15 @@ public class BookController {
     public List<Book> getBooks(@PathVariable("categoryIds") Integer[] categoryIds) {
         List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
         return books;
+    }
+
+    @GetMapping("/search/{searchText}")
+    ResponseEntity<Page<Book>> findAllPublic(
+            @PathVariable String searchText,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
     }
 }

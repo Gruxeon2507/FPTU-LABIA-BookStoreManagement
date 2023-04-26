@@ -4,10 +4,6 @@
  */
 package com.labia.bookstoremanagement.controller;
 
-/**
- *
- * @author kmd
- */
 
 import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.repository.RoleRepository;
@@ -36,4 +32,6 @@ public class RoleController {
         return roleRepository.findByUsername(username);       
     }
 
+
 }
+

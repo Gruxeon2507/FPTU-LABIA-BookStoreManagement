@@ -95,8 +95,36 @@ SELECT * FROM Book_Category;
 SELECT * FROM User_Role ;
 SELECT * FROM Role_Feature;
 */
+/*
+ select
+        * 
+    from
+        `User` u 
+    where
+        u.username not in (
+            select
+                us.username 
+            from
+                `User` us 
+            join
+                User_Role ur 
+                    on us.username = ur.username 
+            where
+                ur.roleId = 1)
+select * from `User` u where u.username not in (select us.username from `User` us join User_Role ur on us.username = ur.username where ur.roleId = 2 and us.username = 'maiphuonghoang' or ur.roleId = 1)
+INSERT INTO `User`(username,`password`,displayName)
+VALUES ('test','123','Em Yêu Khoa Học');
+*/
 
+/*
+select * from `User` u join User_Role ru  on u.username = ru.username  where ru.roleId = 2 and u.username not in (select us.username from `User` us 
+join User_Role ur on us.username = ur.username 
+where ur.roleId = 2 and us.username = 'khoahoc' or ur.roleId = 1)
 
+select * from `User` us WHERE us.username in (
+select u.username from `User` u join User_Role ur  on u.username = ur.username GROUP BY u.username
+HAVING  COUNT(roleId) = 1) 
+*/
 
 
 

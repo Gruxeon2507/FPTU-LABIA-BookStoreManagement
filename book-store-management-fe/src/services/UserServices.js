@@ -6,8 +6,14 @@ class UserServices{
     getAllUser(){
         return axios.get(USER_BASE_REST_API_URL);
     }
-    getUserForSuperAdmin(){
-        return axios.get(USER_BASE_REST_API_URL + '/superadmin');
+    getOnlyAdmin(pageNumber, pageSize){
+        console.log(`${USER_BASE_REST_API_URL}/onlyadmin?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${USER_BASE_REST_API_URL}/onlyadmin?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    }
+
+    getOnlyUser(pageNumber, pageSize){
+        console.log(`USER_BASE_REST_API_URL/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${USER_BASE_REST_API_URL}/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`);
     }
     getUserByUserName(id){
         return axios.get(USER_BASE_REST_API_URL+"/"+id);
@@ -27,6 +33,12 @@ class UserServices{
     }
     promoteAdmin(username){
         return axios.post(USER_BASE_REST_API_URL + '/promote/' + username);
+    }
+    countUser(){
+        return axios.get(USER_BASE_REST_API_URL+'/onlyuser/count');
+    }
+    countAdmin(){
+        return axios.get(USER_BASE_REST_API_URL+'/onlyadmin/count');
     }
 }
 
