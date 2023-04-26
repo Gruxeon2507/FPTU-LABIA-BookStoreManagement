@@ -30,6 +30,20 @@ class BookService{
     getBooksByCategories(categoryIds){
         return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/${categoryIds}`);
     }
+
+
+    updateBookCover(formData){
+        return axios.post(BOOK_BASE_REST_API_URL+"/cover/upload",formData)
+    }
+
+    updateBookpdf(formData){
+        return axios.post(BOOK_BASE_REST_API_URL+"/pdf/upload",formData)
+    }
+
+    deleteBook(bookId){
+        return axios.delete(BOOK_BASE_REST_API_URL+"/delete/"+bookId)
+    }
+
     getUserOfBook(bookId){
         console.log(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
         return axios.get(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
@@ -41,6 +55,7 @@ class BookService{
       getBookByBookId(bookId) {
     return axios.get(`${BOOK_BASE_REST_API_URL}/by-id/${bookId}`);
   }
+
 
 }
 

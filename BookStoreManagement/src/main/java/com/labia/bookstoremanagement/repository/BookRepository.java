@@ -26,6 +26,23 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
     List<Book> getBookByCategoryId(Integer categoryId);
 
+
+    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
+    List<Book> getBookByCategoryIds(Integer[] categoryIds);
+
+    @Query(value = "SELECT * FROM Book order by bookId desc LIMIT 1", nativeQuery = true)
+    Book findLastBook();
+
+    @Query(value = "SELECT AUTO_INCREMENT\n"ssssssssssssssssssssssssssssssssss
+            + "FROM information_schema.TABLES\n"
+            + "WHERE TABLE_SCHEMA = 'fu_labia_bookstoremanagement'\n"
+            + "AND TABLE_NAME = 'Book'", nativeQuery = true)
+    int findLastindex();
+
+    public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
+
+    public Book findByTitle(String title);
+
     @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds and b.isApproved = '1'")
     List<Book> getBookByCategoryIds(Integer[] categoryIds);
 
@@ -48,5 +65,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "select * from Book b where (b.isApproved = '1') "
             + "and (b.title LIKE %?1% OR b.price LIKE %?1% OR b.authorName LIKE %?1%)" , nativeQuery = true)
     Page<Book> findAllPublic(Pageable pageable, String searchText);
+
 
 }

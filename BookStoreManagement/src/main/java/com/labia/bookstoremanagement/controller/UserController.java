@@ -4,18 +4,26 @@
  */
 package com.labia.bookstoremanagement.controller;
 
+
 import com.labia.bookstoremanagement.model.ResponseObject;
 import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.Category;
+
 import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.BookRepository;
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
+import com.labia.bookstoremanagement.utils.AuthorizationUtils;
+import com.labia.bookstoremanagement.utils.DateTimeUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -121,6 +129,34 @@ public class UserController {
 
         return extension;
     }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        user.setAvatarPath("avatar/"+user.getUsername()+".jpg");
+        user.setPassword(AuthorizationUtils.hashPassword(user.getPassword()));
+        user.setCreateDate(DateTimeUtils.getSqlDateNow());
+        user.setLastActive(DateTimeUtils.getSqlTimeStampNow());
+        userRepository.save(user);
+        userRepository.saveUser_Role(user.getUsername(), 3);
+         return userRepository.save(user);
+    }
+    
+    @PostMapping("/register/avatar/upload")
+    public void registerFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(username + ".jpg");
+            try {
+                // Save the file to the uploads directory
+
+                String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+   
 
     @DeleteMapping("/{username}")
     ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
@@ -228,5 +264,6 @@ public class UserController {
     ResponseEntity<Page<User>> findAll(Pageable pageable,@PathVariable String searchText){
         return new ResponseEntity<>(userRepository.findAll(pageable, searchText), HttpStatus.OK);
     }
+
 
 }

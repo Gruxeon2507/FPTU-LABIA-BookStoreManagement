@@ -35,5 +35,7 @@ public class CategoryController {
     List<Category> getCategoryByBook(@PathVariable Integer bookId) {
         return categoryRepository.getCategoryByBookId(bookId);
     }
+    
+    
 
 }

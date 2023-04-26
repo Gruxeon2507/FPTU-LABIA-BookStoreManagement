@@ -5,8 +5,10 @@
 package com.labia.bookstoremanagement.controller;
 
 import com.labia.bookstoremanagement.model.Book;
+import com.labia.bookstoremanagement.model.Category;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.BookRepository;
+import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -24,12 +27,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -39,11 +47,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/books")
 public class BookController {
-
+    int BookId;
     @Autowired
     BookRepository bookRepository;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    private final String COVER_UPLOAD_DIR = "/cover/";
+    private final String PDF_UPLOAD_DIR = "/pdf/";
 
     @GetMapping
     List<Book> getAll() {
@@ -162,6 +179,80 @@ public class BookController {
         List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
         return books;
     }
+    
+
+    @PostMapping("add")
+    public Book addBook(@RequestBody Book book) {
+        User u = userRepository.findByUsername("giangpt");
+        book.setCreatedBy(u);
+        book.setNoSale(0);
+        book.setNoView(0);
+        book.setApproved(false);
+        bookRepository.save(book);
+//        Book temp = bookRepository.findByTitle(book.getTitle());
+        BookId = book.getBookId();
+        book.setCoverPath("cover/" +book.getBookId() + ".jpg");
+        book.setPdfPath("pdf/" + book.getBookId() + ".pdf");
+        bookRepository.save(book);
+
+//        categoryRepository.saveBook_Category(41,1);
+        for (Category c : book.getCategories()) {
+            categoryRepository.saveBook_Category(book.getBookId(), c.getCategoryId());
+        }
+        return book;
+    }
+    
+
+    @PostMapping("/cover/upload")
+    public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(BookId+ ".jpg");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + COVER_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @PostMapping("/pdf/upload")
+    public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(BookId+ ".pdf");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private static String getFileExtension(String fileName) {
+        String extension = "";
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            extension = fileName.substring(dotIndex + 1);
+        }
+        return extension;
+    }
+
+    @DeleteMapping("/delete/{bookId}")
+    public void deleteBook(@PathVariable("bookId") Integer bookId) {
+        categoryRepository.deleteBook_Category(bookId);
+        bookRepository.deleteById(bookId);
+    }
+    
+    
+
+
 
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Book>> findAllPublic(
@@ -172,4 +263,5 @@ public class BookController {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
     }
+
 }

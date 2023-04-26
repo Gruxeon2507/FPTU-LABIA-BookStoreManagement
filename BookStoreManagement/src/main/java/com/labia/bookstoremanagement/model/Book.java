@@ -38,6 +38,7 @@ public class Book implements Serializable {
     private String title;
     private String pdfPath;
     private String coverPath;
+    private String description;
     private boolean isApproved;
     private float price;
     private int noSale;

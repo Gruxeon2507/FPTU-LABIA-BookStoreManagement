@@ -5,10 +5,14 @@
 package com.labia.bookstoremanagement.repository;
 
 import com.labia.bookstoremanagement.model.User;
+
+import javax.transaction.Transactional;
+
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +25,12 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends JpaRepository<User, String> {
 
     User findByUsername(String username);
+
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO User_Role(username, roleId) VALUES ( :username, :roleId);", nativeQuery = true)
+    void saveUser_Role(@Param("username") String username, @Param("roleId") Integer roleId);
 
     @Query(value = "select * from `User` u where u.username not in (select us.username from `User` us join User_Role ur on us.username = ur.username where ur.roleId = 1)", nativeQuery = true)
     List<User> getUserExceptSuperAdmin();
@@ -62,5 +72,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("FROM User u WHERE u.displayName LIKE %:searchText% OR u.email LIKE %:searchText%")
     Page<User> findAll(Pageable pageable, @Param("searchText") String searchText);
+
 
 }

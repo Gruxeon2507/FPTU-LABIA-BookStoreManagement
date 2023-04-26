@@ -1,7 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import UserServices from "../../services/UserServices";
-import "./UserProfile.scss"
+import "./UserProfile.scss";
 import BookServices from "../../services/BookServices";
+
 import { Link, useParams } from "react-router-dom";
 import AuthenService from "../../services/AuthenServices";
 import AuthenServices from "../../services/AuthenServices";
@@ -71,8 +72,11 @@ function UserProfile() {
                     )
                 }
             </div>
-        </div>
-    );
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default UserProfile;

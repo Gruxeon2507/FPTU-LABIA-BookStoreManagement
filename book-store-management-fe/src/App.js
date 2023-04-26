@@ -4,12 +4,17 @@ import UserProfile from './components/UserProfile/UserProfile';
 import { BrowserRouter as Router, Routes,Route} from "react-router-dom";
 import Navbar from './components/NavBar/NavBar';
 import AccountSetting from './components/AccountSetting/AccountSetting';
+
+import AddBook from './components/AddBook/AddBook';
+import RegisterUser from './components/RegisterUser/RegisterUser';
+
 import LoginForm from './components/Login/Login';
 import SessionManager from './components/Authentication/SessionManager/SessionManager';
 
 import ListUser from './components/Admin/ListUser';
 import ViewABook from './components/ViewBook/ViewABook';
 import Dashboard from './components/Admin/Dashboard';
+
 
 function App() {
   const role = window.localStorage.getItem("role");
@@ -65,10 +70,15 @@ function App() {
         <Route path='*' Component={AccessDenied}></Route>
 
         <Route path="" Component={ListBook}></Route>
+        <Route path="/auth/register" Component={RegisterUser}></Route>
         <Route path="/user/:userId" Component={UserProfile}></Route>
         <Route path="/user/setting" Component={AccountSetting}></Route>
+
+        <Route path="/book/add" Component={AddBook}></Route>
+
         <Route path="/superadmin" Component={Dashboard}></Route>
         <Route path="/admin/user" Component={ListUser}></Route>
+
       </Routes>
       
     </div>
