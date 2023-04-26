@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -61,7 +62,7 @@ public class BookController {
 
     @GetMapping("/someunpublic")
     List<Book> getSomeUnpublic() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("bookId").descending());
+        Pageable pageable = PageRequest.of(0, 12, Sort.by("bookId").descending());
         return bookRepository.findByIsApprovedFalseOrderByBookIdDesc(pageable);
     }
 
@@ -155,4 +156,13 @@ public class BookController {
         return books;
     }
 
+    @GetMapping("/search/{searchText}")
+    ResponseEntity<Page<Book>> findAllPublic(
+            @PathVariable String searchText,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
+    }
 }

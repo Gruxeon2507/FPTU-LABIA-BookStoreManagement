@@ -2,6 +2,17 @@ import React, { useEffect, useState } from "react";
 import UserServices from "../../services/UserServices";
 import { Link } from "react-router-dom";
 import { Pagination } from "antd";
+// import { Card, Form, Button, Col, InputGroup, Image } from "react-bootstrap";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faSave,
+//   faPlusSquare,
+//   faUndo,
+//   faList,
+//   faEdit,
+// } from "@fortawesome/free-solid-svg-icons";
+
+
 const ListUser = () => {
   const [users, setUsers] = useState([]);
   const [admins, setAdmins] = useState([]);
@@ -82,7 +93,6 @@ const ListUser = () => {
           <th>Avatar</th>
           <th>Created Date</th>
           <th>Email</th>
-          <th>Role</th>
           <th>Action</th>
         </thead>
         <tbody>
@@ -101,7 +111,6 @@ const ListUser = () => {
                 </td>
                 <td>{user.createDate}</td>
                 <td>{user.email}</td>
-                <td>Admin</td>
 
                 <td>
                   <button
@@ -141,7 +150,6 @@ const ListUser = () => {
           <th>Avatar</th>
           <th>Created Date</th>
           <th>Email</th>
-          <th>Role</th>
           <th>Action</th>
         </thead>
         <tbody>
@@ -160,7 +168,6 @@ const ListUser = () => {
                 </td>
                 <td>{user.createDate}</td>
                 <td>{user.email}</td>
-                <td>User</td>
 
                 <td>
                   <button
@@ -192,6 +199,7 @@ const ListUser = () => {
           handlePageChangeUser(current);
         }}
       />
+
     </>
   );
 };

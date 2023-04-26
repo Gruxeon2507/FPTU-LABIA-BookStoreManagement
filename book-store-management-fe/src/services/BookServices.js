@@ -33,6 +33,10 @@ class BookService{
         console.log(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
         return axios.get(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
     }
+    filterBook(pageNumber, pageSize, searchText){
+        console.log(`${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return axios.get(`${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    }
 }
 
 export default new BookService();
