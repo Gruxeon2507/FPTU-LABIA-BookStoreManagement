@@ -28,7 +28,7 @@ class UserServices{
 
     registerUserAvatar(formData){
         return axios.post(USER_BASE_REST_API_URL+"/register/avatar/upload",formData)
-
+    }
     deleteUser(username){
         return axios.delete(USER_BASE_REST_API_URL + '/' + username);
     }

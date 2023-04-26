@@ -4,7 +4,6 @@ import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const AccountSetting = () => {
-  const { userId } = useParams();
   const [user, setUser] = useState({});
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,7 +13,7 @@ const AccountSetting = () => {
 //   const history = useHistory();
 
   useEffect(() => {
-    UserServices.getUserByUserName(userId).then((res) => {
+    UserServices.getUserByUserName(window.localStorage.getItem("user")).then((res) => {
       setUser(res.data);
       setDisplayName(res.data.displayName);
       setEmail(res.data.email);

@@ -5,7 +5,7 @@ USE FU_LABIA_BookStoreManagement;
 
 CREATE TABLE `User`(
 	username varchar(50),
-    `password` varchar(50),
+    `password` varchar(100),
     displayName nvarchar (150),
     dob date,
     email varchar(150),

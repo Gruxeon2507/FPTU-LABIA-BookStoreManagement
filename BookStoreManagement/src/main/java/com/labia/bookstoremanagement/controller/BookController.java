@@ -55,9 +55,6 @@ public class BookController {
     UserRepository userRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     CategoryRepository categoryRepository;
 
     private final String COVER_UPLOAD_DIR = "/cover/";
@@ -249,10 +246,10 @@ public class BookController {
         bookRepository.deleteById(bookId);
     }
 
-    @GetMapping("/{bookId}")
-    public Book getBookById(@PathVariable("bookId") Integer bookId) {
-        return bookRepository.findById(bookId).get();
-    }
+//    @GetMapping("/{bookId}")
+//    public Book getBookById(@PathVariable("bookId") Integer bookId) {
+//        return bookRepository.findById(bookId).get();
+//    }
 
     @PostMapping("/update/{bookId}")
     Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {

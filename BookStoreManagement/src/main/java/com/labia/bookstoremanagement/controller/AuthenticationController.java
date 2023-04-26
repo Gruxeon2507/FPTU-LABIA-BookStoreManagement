@@ -6,6 +6,7 @@ package com.labia.bookstoremanagement.controller;
 
 import com.labia.bookstoremanagement.model.Session;
 import com.labia.bookstoremanagement.model.User;
+import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -36,7 +37,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = userRepository.findByUsername(credentials.getUsername());
-        if (user != null && user.getPassword().equals(credentials.getPassword())) {
+        if (user != null && (user.getPassword().equals(credentials.getPassword())||AuthorizationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
             HttpSession session = request.getSession();
             user.setPassword("");
             String sessionId = UUID.randomUUID().toString();

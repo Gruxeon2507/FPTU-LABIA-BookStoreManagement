@@ -36,7 +36,7 @@ function Navbar() {
                     </div>
                     <div className="navbarItem">
 
-                        <a href={"/user/setting/"+window.localStorage.getItem("user")}>Account Setting</a>
+                        <a href={"/user/setting"}>Account Setting</a>
                     </div>
                     <div className="navbarItem">
 
