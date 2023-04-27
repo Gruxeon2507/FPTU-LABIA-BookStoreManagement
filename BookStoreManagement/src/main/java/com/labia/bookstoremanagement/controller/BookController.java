@@ -67,11 +67,10 @@ public class BookController {
         return bookRepository.findAll();
     }
 
-   @GetMapping("by-id/{bookId}")
-    Book getBookById(@PathVariable("bookId") Integer id){
-        return bookRepository.findByBookId(id);
-    }
-    
+//   @GetMapping("by-id/{bookId}")
+//    Book getBookById(@PathVariable("bookId") Integer id){
+//        return bookRepository.findByBookId(id);
+//    }
 
     @GetMapping("/public")
     List<Book> getAllPublic() {
@@ -249,8 +248,67 @@ public class BookController {
         categoryRepository.deleteBook_Category(bookId);
         bookRepository.deleteById(bookId);
     }
+<<<<<<< Updated upstream
     
     
+=======
+
+    @GetMapping("/{bookId}")
+    public Book getBookById(@PathVariable("bookId") Integer bookId) {
+        return bookRepository.findById(bookId).get();
+    }
+
+    @PostMapping("/update/{bookId}")
+    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
+        Optional<Book> book = bookRepository.findById(bookId);
+        book.get().setTitle(updateBook.getTitle());
+        book.get().setDescription(updateBook.getDescription());
+        book.get().setAuthorName(updateBook.getAuthorName());
+        if (updateBook.getCategories().isEmpty()) {
+            categoryRepository.deleteBook_Category(bookId);
+        } else {
+            if (!book.get().getCategories().equals(updateBook.getCategories())) {
+                categoryRepository.deleteBook_Category(bookId);
+                for (Category c : updateBook.getCategories()) {
+                    categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+                }
+            }
+        }
+        return bookRepository.save(book.get());
+    }
+
+    @PostMapping("/cover/update/{bookId}")
+    public void updateCoverFile(@RequestParam("coverPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(bookId + ".jpg");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + COVER_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @PostMapping("/pdf/update/{bookId}")
+    public void updatePdfFile(@RequestParam("pdfPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(bookId + ".pdf");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+>>>>>>> Stashed changes
 
 
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import UserServices from "../../services/UserServices";
+import Alert from "react-bootstrap/Alert";
 
 class RegisterUser extends Component {
   constructor(props) {
@@ -11,6 +12,12 @@ class RegisterUser extends Component {
       email: "",
       dob: "",
       avatarPath: null,
+      errorUsername: "",
+      showErrorUsername: false,
+      errorDisplayName: "",
+      showErrorDisplayName: false,
+      errorAvatar: "",
+      showErrorAvatar: false,
     };
 
     this.changeUsernameHandler = this.changeUsernameHandler.bind(this);
@@ -21,7 +28,21 @@ class RegisterUser extends Component {
   }
 
   changeUsernameHandler = (event) => {
-    this.setState({ username: event.target.value });
+    const inputUsername = event.target.value;
+    const regex = /^[a-zA-Z0-9\s]*$/;
+    if (!regex.test(inputUsername)) {
+      this.setState({
+        showErrorUsername: true,
+        errorUsername: "Please just input characters and numbers",
+      });
+      return;
+    }
+
+    this.setState({
+      showErrorUsername: false,
+      errorUsername: "",
+      username: inputUsername,
+    });
   };
 
   changePasswordHandler = (event) => {
@@ -29,15 +50,68 @@ class RegisterUser extends Component {
   };
 
   changeDisplayNameHandler = (event) => {
-    this.setState({ displayName: event.target.value });
+    const inputDisplayName = event.target.value;
+    const regex =
+      /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    if (!regex.test(inputDisplayName)) {
+      this.setState({
+        showErrorDisplayName: true,
+        errorDisplayName: "Please just input characters and numbers and not empty",
+      });
+      return;
+    }
+
+    this.setState({
+      showErrorDisplayName: false,
+      errorDisplayName: "",
+      displayName: inputDisplayName,
+    });
   };
 
   changeEmailHandler = (event) => {
-    this.setState({ email: event.target.value });
+    const formattedEmail = event.target.value.trim().toLowerCase();
+    this.setState({ email: formattedEmail });
   };
 
   changeAvatarPathHandler = (event) => {
-    this.setState({ avatarPath: event.target.files[0], });
+    const avatar = event.target.files[0];
+    if (!avatar) {
+      // alert("Please choose a file");
+      this.setState({
+        showErrorAvatar: true,
+        errorAvatar:
+          "Wrong file type (Please input JPEG File) and less than 5MB",
+        avatarPath: null,
+      });
+      return;
+    }
+
+    if (avatar.size > 1024 * 1024 * 5) {
+      // alert("Please choose a file less than 5MB");
+      this.setState({
+        showErrorAvatar: true,
+        errorAvatar:
+          "Wrong file type (Please input JPEG File) and less than 5MB",
+        avatarPath: null,
+      });
+      return;
+    }
+
+    if (!avatar.type.includes("image/jpeg")) {
+      // alert("Please select an image file.");
+      this.setState({
+        showErrorAvatar: true,
+        errorAvatar:
+          "Wrong file type (Please input JPEG File) and less than 5MB",
+      });
+      return;
+    }
+
+    this.setState({
+      showErrorAvatar: false,
+      errorAvatar: "",
+      avatarPath: event.target.files[0],
+    });
   };
 
   changeDobHandler = (event) => {
@@ -45,8 +119,20 @@ class RegisterUser extends Component {
   };
 
   handleSubmit = (event) => {
-    const { username, password, displayName, email, dob, avatarPath } =
-      this.state;
+    const {
+      username,
+      password,
+      displayName,
+      email,
+      dob,
+      avatarPath,
+      errorUsername,
+      showErrorUsername,
+      errorDisplayName,
+      showErrorDisplayName,
+      errorAvatar,
+      showErrorAvatar,
+    } = this.state;
 
     const user = {
       username: username,
@@ -56,6 +142,12 @@ class RegisterUser extends Component {
       dob: dob,
     };
 
+    if(showErrorAvatar || 
+      showErrorDisplayName ||
+      showErrorUsername ){
+        alert('can not load data to register!!!');
+        return;
+      }
     fetch("http://localhost:6789/api/users/register", {
       method: "POST",
       headers: {
@@ -67,13 +159,27 @@ class RegisterUser extends Component {
       .then((data) => {
         // Handle API response
       });
-      const formData = new FormData();
-      formData.append("avatarPath", this.state.avatarPath);
-      formData.append("username", this.state.username);
-      UserServices.registerUserAvatar(formData);
-    };
+    const formData = new FormData();
+    formData.append("avatarPath", this.state.avatarPath);
+    formData.append("username", this.state.username);
+    UserServices.registerUserAvatar(formData);
+  };
 
   render() {
+    const {
+      username,
+      password,
+      displayName,
+      email,
+      dob,
+      avatarPath,
+      errorUsername,
+      showErrorUsername,
+      errorDisplayName,
+      showErrorDisplayName,
+      errorAvatar,
+      showErrorAvatar,
+    } = this.state;
     return (
       <div>
         <div className="container">
@@ -88,6 +194,14 @@ class RegisterUser extends Component {
               className="form-control"
               required
             />
+             {showErrorUsername ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorUsername}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
             <label>Password:</label>
             <input
@@ -111,11 +225,19 @@ class RegisterUser extends Component {
               className="form-control"
               required
             />
+            {showErrorDisplayName ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorDisplayName}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
 
             <label>Email:</label>
             <input
-              type="text"
+              type="email"
               value={this.state.email}
               name="email"
               onChange={this.changeEmailHandler}
@@ -145,6 +267,14 @@ class RegisterUser extends Component {
               className="form-control"
               required
             ></input>
+            {showErrorAvatar ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorAvatar}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
             <button className="btn btn-success" onClick={this.handleSubmit}>
               Register

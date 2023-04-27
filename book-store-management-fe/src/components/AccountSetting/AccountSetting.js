@@ -2,18 +2,28 @@ import React, { useState, useEffect } from "react";
 import UserServices from "../../services/UserServices";
 import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
 
 const AccountSetting = () => {
   const { userId } = useParams();
   const [user, setUser] = useState({});
   const [displayName, setDisplayName] = useState("");
+  const [checkDisplayName, setCheckDisplayName] = useState(false);
+  const [messageDisplayName, setMessageDisplayName] = useState(
+    "Please just input characters and numbers and vietnamese characters"
+  );
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [username, setUsername] = useState("");
   const [avatarPath, setAvatarPath] = useState(null);
-//   const history = useHistory();
+  const [checkAvatarPath, setCheckAvatarPath] = useState(false);
+  const [messageAvatarPath, setMessageAvatarPath] = useState(
+    "Please just input file JPEG and file size less than 5MB"
+  );
+  //   const history = useHistory();
 
   useEffect(() => {
+<<<<<<< Updated upstream
     UserServices.getUserByUserName(userId).then((res) => {
       setUser(res.data);
       setDisplayName(res.data.displayName);
@@ -21,6 +31,17 @@ const AccountSetting = () => {
       setDob(res.data.dob);
       setUsername(res.data.username);
     });
+=======
+    UserServices.getUserByUserName(window.localStorage.getItem("user")).then(
+      (res) => {
+        setUser(res.data);
+        setDisplayName(res.data.displayName);
+        setEmail(res.data.email);
+        setDob(res.data.dob);
+        setUsername(res.data.username);
+      }
+    );
+>>>>>>> Stashed changes
   }, []);
 
   const saveUser = (e) => {
@@ -32,6 +53,11 @@ const AccountSetting = () => {
       username: username,
     };
 
+    if (checkDisplayName || checkAvatarPath) {
+      alert("can not load data to update!!!");
+      return;
+    }
+
     console.log(JSON.stringify(User));
     UserServices.updateUserInformation(User);
     let temp = avatarPath;
@@ -41,24 +67,51 @@ const AccountSetting = () => {
       formData.append("username", username);
       UserServices.updateUserAvatar(formData);
     }
-    window.location.href="/user/"+username
+    window.location.href = "/user/" + username;
   };
 
   const changeGmailHandler = (event) => {
     setEmail(event.target.value);
   };
   const changeDisplayNameHandler = (event) => {
-    setDisplayName(event.target.value);
+    const inputDisplayName = event.target.value;
+    const regex =
+      /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    if (!regex.test(inputDisplayName)) {
+      setCheckDisplayName(true);
+      return;
+    }
+    setCheckDisplayName(false);
+    setDisplayName(inputDisplayName);
   };
   const changeDobHandler = (event) => {
     setDob(event.target.value);
   };
   const changeAvatarHandler = (event) => {
-    setAvatarPath(event.target.files[0]);
+    const avatar = event.target.files[0];
+    if (!avatar) {
+      // alert("Please choose a file");
+      setCheckAvatarPath(true);
+      return;
+    }
+
+    if (avatar.size > 1024 * 1024 * 5) {
+      // alert("Please choose a file less than 5MB");
+      setCheckAvatarPath(true);
+      return;
+    }
+
+    if (!avatar.type.includes("image/jpeg")) {
+      // alert("Please select an image file.");
+      setCheckAvatarPath(true);
+      return;
+    }
+    setCheckAvatarPath(false);
+    setAvatarPath(avatar);
   };
 
   const cancel = (e) => {
-    window.location.href="/user/"+username
+    window.location.href = "/user/" + username;
   };
 
   return (
@@ -71,35 +124,46 @@ const AccountSetting = () => {
           name="displayName"
           onChange={changeDisplayNameHandler}
         />
-
+        {checkDisplayName ? (
+          <>
+            <div style={{ height: "10px" }}></div>
+            <Alert key={"danger"} variant={"danger"}>
+              {messageDisplayName}
+            </Alert>
+          </>
+        ) : null}
+        <br></br>
         <input
           type="file"
           name="avatarPath"
           onChange={changeAvatarHandler}
         ></input>
-
+        {checkAvatarPath ? (
+          <>
+            <div style={{ height: "10px" }}></div>
+            <Alert key={"danger"} variant={"danger"}>
+              {messageAvatarPath}
+            </Alert>
+          </>
+        ) : null}
+        <br></br>
         <label name="email">Email: </label>
         <input
-          type="text"
+          type="email"
           value={email}
           name="email"
           onChange={changeGmailHandler}
         />
-
+        <br></br>
         <label name="dob">DoB: </label>
-        <input
-          type="date"
-          value={dob}
-          name="dob"
-          onChange={changeDobHandler}
-        />
+        <input type="date" value={dob} name="dob" onChange={changeDobHandler} />
         <input type="submit" value="update" />
-
+        <br></br>
         <button className="btn btn-success" onClick={saveUser}>
           Save
         </button>
-        <button className="btn btn-danger" >
-          <Link to={"../../user/"+username}>Cancel</Link>
+        <button className="btn btn-danger">
+          <Link to={"../../user/" + username}>Cancel</Link>
         </button>
       </form>
     </div>
@@ -111,7 +175,7 @@ export default AccountSetting;
 // import React, { Component } from "react";
 // import UserServices from "../../services/UserServices";
 // import {Link} from "react-router-dom"
-// import { useHistory } from 'react-router-dom';  
+// import { useHistory } from 'react-router-dom';
 
 // class AccountSetting extends Component {
 //     constructor(props) {
@@ -135,7 +199,7 @@ export default AccountSetting;
 //     componentDidMount() {
 //         UserServices.getUserByUserName("duckm").then((res) => {
 //             this.setState({ user: res.data });
-//             this.setState({displayName: this.state.user.displayName});  
+//             this.setState({displayName: this.state.user.displayName});
 //             this.setState({email: this.state.user.email});
 //             this.setState({dob: this.state.user.dob});
 //             this.setState({username: this.state.user.username});
@@ -145,9 +209,9 @@ export default AccountSetting;
 //     saveUser(e) {
 //         e.preventDefault();
 //         let User = {email: this.state.email, displayName: this.state.displayName, dob: this.state.dob,username: this.state.username};
-        
-//         console.log(JSON.stringify(User));    
-//         UserServices.updateUserInformation(User)  
+
+//         console.log(JSON.stringify(User));
+//         UserServices.updateUserInformation(User)
 //         let avatarPath=this.state.avatarPath
 //         if(avatarPath !== null){
 //             const formData = new FormData();
@@ -155,7 +219,7 @@ export default AccountSetting;
 //             formData.append('username',this.state.username)
 //             UserServices.updateUserAvatar(formData)
 //         }
-        
+
 //     }
 
 //     changeGmailHandler(event) {
@@ -172,7 +236,7 @@ export default AccountSetting;
 //     }
 
 //     cancel() {
-        
+
 //     }
 
 //     render() {

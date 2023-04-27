@@ -69,8 +69,40 @@ function UserProfile() {
                                     <button><Link to={"../book/view/"+book.bookId}>Đọc ngay</Link></button>
                                 </div>
                             </div>
+<<<<<<< Updated upstream
                     )
                 }
+=======
+                            <p>Tác giả: {book.authorName}</p>
+                            <p>Lượt xem: {book.noView}</p>
+                            <div className="row">
+                                {user.username===window.localStorage.getItem("user")?(
+                                <div>
+                                        
+                               
+                                <Link to={"/book/update/" + book.bookId}>
+                                    <button className="btn btn-success">Update</button>
+                                </Link>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => {
+                                        BookServices.deleteBook(book.bookId);
+                                        window.location.href = ""
+                                    }}
+                                >
+                                    Delete
+                                </button>
+                                </div>):(<></>)
+
+                                }
+                                
+                            </div>
+
+                        </div>
+                    </div>
+
+                )}
+>>>>>>> Stashed changes
             </div>
           </div>
         ))}
