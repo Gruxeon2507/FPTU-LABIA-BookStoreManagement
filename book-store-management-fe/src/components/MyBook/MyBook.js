@@ -57,6 +57,9 @@ const MyBook = () => {
 
   return (
     <>
+    <div>
+    <span className='sign-in btn--form'><Link to="/book/add">Add A New Book</Link></span>
+    </div>
       <div className="pending-book">
         <h1>Pending Books</h1>
         <table className="table table-bordered table-striped">
