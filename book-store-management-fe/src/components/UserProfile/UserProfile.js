@@ -17,9 +17,6 @@ function UserProfile() {
     useEffect(() => {
         AuthenServices.getSessionUser(window.localStorage.getItem("sessionId")).then((res) => {
             setLoginUser(res.data)
-
-
-
         })
         console.log(loginUser);
     }, []);
@@ -34,7 +31,7 @@ function UserProfile() {
                 setUser(res.data);
                 setLoginUser(res.data.roles[0].rolerName);
             });
-            BookServices.getBookByUser(userId).then((res) => {
+            BookServices.getPublicBookByUser(userId).then((res) => {
                 setBooks(res.data);
             });
         } else {
@@ -73,6 +70,7 @@ function UserProfile() {
                                 <label for="dob">Date Of Birth: </label>
                                 <input type="text" value={user.dob} disabled />
                             </div>
+
 
                         </div>
                         <div className="user-info-form-1">

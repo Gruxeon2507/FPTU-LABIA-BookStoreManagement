@@ -2,44 +2,36 @@ import React, { useState, useEffect } from "react";
 import UserServices from "../../services/UserServices";
 import BookServices from "../../services/BookServices";
 import { Link } from "react-router-dom";
-import { Button, Pagination } from "antd";
+import { Pagination } from "antd";
 
-const AdminBooks = () => {
+const MyBook = () => {
   const pageSize = 2;
   const [currentPage, setCurrentPage] = useState(1);
   // const [totalPages, setTotalPages] = useState(1);
   const [pagePendingBooks, setPagePendingBooks] = useState([]);
   const [pagePublicBooks, setPagePublicBooks] = useState([]);
-  const [noPendingBooks, setNoPendingBooks] = useState([]);
-  const [noPublicBooks, setNoPublicBooks] = useState([]);
+  const [noPagePublicBooks, setNoPagePublicBooks] = useState([]);
+  const [noPagePendingBooks, setNoPagePendingBooks] = useState([]);
+
+  const username = window.localStorage.getItem('user');
 
   // pending books of current page
   const getPagePendingBooks = (pageNumber, pageSize) => {
-    BookServices.getPagePendingBooks(pageNumber, pageSize).then((res) => {
-      setPagePendingBooks(res.data);
+    
+    BookServices.getUnPublicBookByUsernamePage(username, pageNumber, pageSize).then((res) => {
+      setPagePendingBooks(res.data.content);
+      setNoPagePendingBooks(res.data.totalElements)
     });
   };
 
   // public books of current page
   const getPagePublicBooks = (pageNumber, pageSize) => {
-    BookServices.getPagePublicBooks(pageNumber, pageSize).then((res) => {
-      setPagePublicBooks(res.data);
+    BookServices.getPublicBookByUsernamePage(username,pageNumber, pageSize).then((res) => {
+      setPagePublicBooks(res.data.content);
+      setNoPagePublicBooks(res.data.totalElements)
     });
   };
 
-  // total number of pending books
-  const getNoPendingBooks = () => {
-    return BookServices.getPendingBooks().then((res) => {
-      return res.data.length;
-    });
-  };
-
-  // total number of public books
-  const getNoPublicBooks = () => {
-    return BookServices.getPublicBooks().then((res) => {
-      return res.data.length;
-    });
-  };
 
   const handleChangePublic = (current) => {
     getPagePublicBooks(current - 1, pageSize);
@@ -51,28 +43,13 @@ const AdminBooks = () => {
   };
 
   useEffect(() => {
-    getNoPendingBooks().then((res) => {
-      setNoPendingBooks(res);
-    });
-    getNoPublicBooks().then((res) => {
-      setNoPublicBooks(res);
-    });
-
     getPagePendingBooks(0, pageSize);
+
     getPagePublicBooks(0, pageSize);
   }, []);
 
-  pagePendingBooks.map((book) => {
-    UserServices.getUserByBookId(book.bookId).then((res) => {
-      book.addedBy = res.data.displayName;
-    });
-  });
 
-  const approveBook = (bookId) => {
-    BookServices.approveBook(bookId);
-    window.location.href = "";
-  };
-  // console.log(book.addedBy);
+
   const deleteBook = (bookId) => {
     BookServices.deleteBook(bookId);
     window.location.href = "";
@@ -81,11 +58,6 @@ const AdminBooks = () => {
   return (
     <>
       <div className="pending-book">
-      <nav className="admin-nav">
-        <Link to={"/admin"}>Dashboard </Link>
-        <Link to={"/admin/user"}>User</Link>
-        <Link to={"/admin/book"}>Book </Link>
-      </nav>
         <h1>Pending Books</h1>
         <table className="table table-bordered table-striped">
           <thead>
@@ -93,7 +65,6 @@ const AdminBooks = () => {
             <th>Author</th>
             <th>Image</th>
             <th>Description</th>
-            <th>Added by</th>
             <th>Action</th>
           </thead>
           <tbody>
@@ -118,20 +89,16 @@ const AdminBooks = () => {
                     </Link>
                   </button>
                 </td>
-                <td className="align-middle text-start">{book.description}</td>
-                <td className="align-middle text-start">
-                  <Button>
-                    <Link to={"http://localhost:3000/user/" + book.coverPath}>
-                      {book.pdfPath}
-                    </Link>
-                  </Button>
-                </td>
+                <td className="align-middle text-start">{book.description}</td>               
                 <td className="align-middle">
-                  <button
-                    className="btn btn-success"
-                    onClick={() => approveBook(book.bookId)}
+                  <button className="btn btn-success"                   
                   >
-                    Approve
+                    <Link
+                      to={"http://localhost:3000/book/update/" + book.bookId}
+                      target="_blank"
+                    >
+                      Update
+                    </Link>
                   </button>
                   <br />
                   <br />
@@ -149,7 +116,7 @@ const AdminBooks = () => {
       </div>
 
       <Pagination
-        total={noPendingBooks}
+        total={noPagePendingBooks}
         showTotal={(total, range) =>
           `${range[0]}-${range[1]} of ${total} items`
         }
@@ -168,8 +135,6 @@ const AdminBooks = () => {
             <th>Author</th>
             <th>Image</th>
             <th>Description</th>
-            <th>Added by</th>
-            <th>Action</th>
           </thead>
           <tbody>
             {/* {console.log(pagePublicBooks)} */}
@@ -196,23 +161,7 @@ const AdminBooks = () => {
                   </button>
                 </td>
                 <td className="align-middle text-start">{book.description}</td>
-                <td className="align-middle text-start">
-                  <Button>
-                    <Link to={"http://localhost:3000/user/" + book.coverPath}>
-                      {book.pdfPath}
-                    </Link>
-                  </Button>
-                </td>
-                <td className="align-middle">
-                  <br />
-                  <br />
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteBook(book.bookId)}
-                  >
-                    Delete
-                  </button>
-                </td>
+            
               </tr>
             ))}
           </tbody>
@@ -220,7 +169,7 @@ const AdminBooks = () => {
       </div>
 
       <Pagination
-        total={noPublicBooks}
+        total={noPagePublicBooks}
         showTotal={(total, range) =>
           `${range[0]}-${range[1]} of ${total} items`
         }
@@ -234,4 +183,4 @@ const AdminBooks = () => {
   );
 };
 
-export default AdminBooks;
+export default MyBook;

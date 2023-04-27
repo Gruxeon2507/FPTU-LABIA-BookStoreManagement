@@ -110,7 +110,6 @@ function ListBook() {
   };
 
   const [checked, setChecked] = useState([]);
-  console.log(checked);
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
@@ -122,7 +121,10 @@ function ListBook() {
       }
     });
   };
-
+  useEffect(() => {
+      handleSubmit();
+  }, [checked]);
+  
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
@@ -147,13 +149,17 @@ function ListBook() {
   };
   console.log("total page: " + totalItems);
 
-  const handleSubmit = () => {
-    setCurrentPage(1);
-    console.log({ ids: checked });
-    const categoryIds = checked.join(",");
-    console.log(categoryIds);
-    getPageBooksByCategories(categoryIds, 0, sizePerPage);
-    getBooksByCategories(categoryIds);
+  const handleSubmit = (categoryId) => {
+    if(checked.length!==0){
+      handleCheck(categoryId)
+      console.log("check on submit:" + checked);
+      setCurrentPage(1);
+      console.log({ ids: checked });
+      const categoryIds = checked.join(",");
+      console.log(categoryIds);
+      getPageBooksByCategories(categoryIds, 0, sizePerPage);
+      getBooksByCategories(categoryIds);
+    }
   };
   const [isVisible, setIsVisible] = useState(false);
 
@@ -223,9 +229,6 @@ function ListBook() {
             </label>
           </div>
         ))}
-        <button onClick={handleSubmit} className="btn btn-success">
-          Submit
-        </button>
       </div>
       }
 
