@@ -53,6 +53,20 @@ class UserServices{
 
 
     }
+    exportUserToExcel(){
+        return axios({
+            url: USER_BASE_REST_API_URL + '/export',
+            method: 'GET',
+            responseType: 'blob'
+          }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'users.xlsx');
+            document.body.appendChild(link);
+            link.click();
+          });
+    }
 }
 
 export default new UserServices();

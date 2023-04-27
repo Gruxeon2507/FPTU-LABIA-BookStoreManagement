@@ -122,7 +122,9 @@ function ListBook() {
     });
   };
   useEffect(() => {
-      handleSubmit();
+    if(checked.length!==0){
+
+      handleSubmit();}
   }, [checked]);
   
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
@@ -150,7 +152,6 @@ function ListBook() {
   console.log("total page: " + totalItems);
 
   const handleSubmit = (categoryId) => {
-    if(checked.length!==0){
       handleCheck(categoryId)
       console.log("check on submit:" + checked);
       setCurrentPage(1);
@@ -159,7 +160,6 @@ function ListBook() {
       console.log(categoryIds);
       getPageBooksByCategories(categoryIds, 0, sizePerPage);
       getBooksByCategories(categoryIds);
-    }
   };
   const [isVisible, setIsVisible] = useState(false);
 
