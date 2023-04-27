@@ -52,14 +52,14 @@ const Dashboard = () => {
 
   return (
     <>
-      <div>
-        <Link to={"/superadmin"}>Dashboard </Link>
+      <nav className="admin-nav">
+        <Link to={"/admin"}>Dashboard </Link>
         <Link to={"/admin/user"}>User</Link>
         <Link to={"/admin/book"}>Book </Link>
-      </div>
+      </nav>
       {window.localStorage.getItem("role")==="Super Admin"?(<div className="listAdmin">
         <h2>Recent new admin</h2>
-        <table className="table table-bordered ">
+        <table className="table table-bordered table-striped">
           <thead>
             <th>Name</th>
             <th>Avatar</th>
@@ -92,7 +92,7 @@ const Dashboard = () => {
       
 
       <h2>Recent new user</h2>
-      <table className="table table-bordered ">
+      <table className="table table-bordered table-striped ">
         <thead>
           <th>Name</th>
           <th>Avatar</th>

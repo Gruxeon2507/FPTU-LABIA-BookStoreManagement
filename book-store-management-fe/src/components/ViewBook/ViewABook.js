@@ -30,7 +30,7 @@ function ViewABook() {
               alt={book.title}
             ></img>
           </div>
-          <div className="content right">
+          <div className="content right" style={{marginRight:"30px"}}>
             <div className="header">
               <h3>{book.title}</h3>
               <h6>{book.authorName}</h6>

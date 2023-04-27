@@ -30,7 +30,9 @@ function App() {
   const role = window.localStorage.getItem("role");
   return (
     <div className="App">
-      <Navbar />
+      {role?
+        (<Navbar />):""
+      }
       <Routes>
 {/* 
         <Route path="" Component={ListBook}></Route>
@@ -42,8 +44,8 @@ function App() {
         <Route path="/book/view/:bookId" Component={ViewABook}></Route> */}
 
 
-        // <Route path="/login" Component={LoginForm}></Route>
-        // <Route path="/register" Component={RegisterUser}></Route>
+         <Route path="/login" Component={LoginForm}></Route>
+         <Route path="/register" Component={RegisterUser}></Route>
         {role==="Super Admin" ? 
         (
           <>
@@ -99,7 +101,11 @@ function App() {
 
 
       </Routes>
-      <Footer />
+      <div className="footer-class">
+
+      
+      </div>
+      {/* <Footer /> */}
     </div>
    );
 }

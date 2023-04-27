@@ -174,6 +174,7 @@ function ListBook() {
             size="sm"
             variant="outline-info"
             type="button"
+            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
             // onClick={handleReset}
             onClick={handleButtonClick}
           >
@@ -195,6 +196,7 @@ function ListBook() {
             size="sm"
             variant="outline-info"
             type="button"
+            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
             onClick={findCondition}
             
           >
@@ -206,6 +208,7 @@ function ListBook() {
             size="sm"
             variant="outline-danger"
             type="button"
+            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
             onClick={() => handleReset()}
           >
             <FontAwesomeIcon icon={faTimes} />
@@ -237,7 +240,7 @@ function ListBook() {
               book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
-            <Card className="card" style={{ width: "23rem", height:"30rem"}}>
+            <Card className="card" style={{ width: "19rem", height:"26rem"}}>
               <div className="cover">
                 <Card.Img
                   variant="top"
@@ -246,11 +249,16 @@ function ListBook() {
                 />
               </div>
               <Card.Body style={{height:"16rem"}}>
-                <Card.Title>{book.title}</Card.Title>
-                <Card.Text>{book.authorName}</Card.Text>
-                <Card.Text>{book.price}</Card.Text>
-                <Link to={"/book/view/" + book.bookId} className="btn btn-info">
-                  View{" "}
+                <Card.Title
+                  style={{ height: "3rem" ,width: "auto",display:"flex",alignItems:"center",justifyContent:"center",color:"#1a1668",fontWeight:"800"}}
+                >{book.title}</Card.Title>
+                <Card.Text
+                style={{ height: "2rem" ,width: "auto",color:"#eaa451",fontWeight:"bold"}}
+                >{book.authorName}</Card.Text>
+                {/* <Card.Text
+                style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text> */}
+                <Link to={"/book/view/" + book.bookId} className="btn btn-info" style={{backgroundColor:"#1a1668",color:"white"}}>
+                  Đọc Ngay{" "}
                 </Link>
               </Card.Body>
             </Card>
@@ -259,6 +267,7 @@ function ListBook() {
       </div>
 
       <Pagination
+      style={{borderColor:"#eaa451",color:"black",boxShadow:"none",margin:"5px"}}
         total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>

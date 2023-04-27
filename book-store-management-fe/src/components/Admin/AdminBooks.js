@@ -81,6 +81,11 @@ const AdminBooks = () => {
   return (
     <>
       <div className="pending-book">
+      <nav className="admin-nav">
+        <Link to={"/admin"}>Dashboard </Link>
+        <Link to={"/admin/user"}>User</Link>
+        <Link to={"/admin/book"}>Book </Link>
+      </nav>
         <h1>Pending Books</h1>
         <table className="table table-bordered table-striped">
           <thead>

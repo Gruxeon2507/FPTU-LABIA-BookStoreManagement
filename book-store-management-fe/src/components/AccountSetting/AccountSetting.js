@@ -62,7 +62,7 @@ const AccountSetting = () => {
 
   return (
     <div>
-      <form>
+      {/* <form>
         <label name="displayName">Display Name: </label>
         <input
           type="text"
@@ -100,7 +100,79 @@ const AccountSetting = () => {
         <button className="btn btn-danger" >
           <Link to={"../../user/"+username}>Cancel</Link>
         </button>
-      </form>
+      </form> */}
+
+      <div className="container">
+          <h2 className="login-title">Account Setting</h2>
+
+          <form className="login-form" >
+
+            <div>
+              <label for="username">Username </label>
+              <input
+                type="text"
+                value={displayName}
+                name="displayName"
+                onChange={changeDisplayNameHandler}
+              />
+            </div>
+
+            <div>
+              <label for="displayName">Display Name </label>
+              <input
+                type="text"
+                value={displayName}
+                name="displayName"
+                onChange={changeDisplayNameHandler}
+                placeholder="Enter Display Name"
+                className="form-control"
+                
+              />
+            </div>
+
+            <div>
+              <label for="email">Email </label>
+              <input
+                type="text"
+                value={email}
+                name="email"
+                onChange={changeGmailHandler}
+                placeholder="Enter email"
+                className="form-control"
+                
+              />
+            </div>
+            <div>
+              <label for="dob">Day Of Birth </label>
+              <input
+                type="date"
+                value={dob}
+                name="dob"
+                onChange={changeDobHandler}
+                placeholder="Enter email"
+                className="form-control"
+                
+              />
+            </div>
+            <div>
+              <label for="avatarPath">Avatar </label>
+              <input
+                type="file"
+                name="avatarPath"
+                onChange={changeAvatarHandler}
+                className="form-control"
+                
+              ></input>
+            </div>
+            <button className="btn btn--form" type="submit" value="Log in" onClick={saveUser}>
+              Change Information
+            </button>
+            <button className="btn btn-danger" >
+          <Link to={"../../user/"+username}>Cancel</Link>
+        </button>
+
+          </form>
+        </div>
     </div>
   );
 };
