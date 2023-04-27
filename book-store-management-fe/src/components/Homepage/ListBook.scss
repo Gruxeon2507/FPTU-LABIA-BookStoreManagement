@@ -1,3 +1,6 @@
+#root{
+    width: 100vw;
+}
 .cover {
     background-position:center ;
     background-size: cover;
@@ -7,5 +10,29 @@
         max-width: 200px;
     }
 }
-
-
+.homepage{
+    margin-top: 20px;
+}
+.list-books.row{
+    margin-top: 40px;
+    text-align: center;
+}
+.single-book{
+    margin-bottom: 70px;
+}
+.cover{
+    margin-top: 10px;
+}
+body{
+    margin: 0;
+    font-family: Inter,sans-serif;
+    height: 100vh;
+    width: 100vw;
+    background-color: #282D35;
+}
+html{
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}

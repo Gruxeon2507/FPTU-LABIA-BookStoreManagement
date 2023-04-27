@@ -19,7 +19,7 @@ function ViewABook() {
   }, [bookId]);
 
 
-  // if (book.approved != undefined && book.approved) {
+  if (book.approved != undefined && book.approved) {
     return (
       <div className="container">
         <div className="meta-info">
@@ -64,9 +64,9 @@ function ViewABook() {
         </div>
       </div>
     );
-  // } else {
-  //   return <p>Book not found.</p>;
-  // }
+  } else {
+    return <p>Book not found.</p>;
+  }
 }
 
 export default ViewABook;

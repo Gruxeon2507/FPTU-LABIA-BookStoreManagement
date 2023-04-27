@@ -3,8 +3,33 @@
 }
 nav{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center ;
+    height: 70px;
+    background-color: white;
+    box-shadow: 10px 10px 8px #888888;
+    width: 100%;
+}
+.nav-left{
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+}
+.nav-homepage{
+    margin: 10px;
+}
+.nav-dropdown{
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-dropdown img{
+    height: 90%;
+}
+.nav-avatar{
+    height: 60px;
+    margin-right: 10px;
 }
 p{
     margin: 0;

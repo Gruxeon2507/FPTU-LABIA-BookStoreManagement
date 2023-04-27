@@ -369,7 +369,12 @@ public class BookController {
             @RequestParam Integer pageSize
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        if(searchText.length()<1){
+            return new ResponseEntity<>( bookRepository.findAll(pageable),HttpStatus.OK);
+        }else{
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
+            
+        }
     }
     
     @GetMapping("/sort/{type}")
