@@ -24,7 +24,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 //    @Query(value = "select * from book b join user u on  b.createdBy = u.username where u.username =?1 ", nativeQuery = true)
     @Query(value = "select b from Book b join b.createdBy u where u.username =:username")
     List<Book> getBookByUsername(String username);
-
+      
     @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
     List<Book> getBookByCategoryId(Integer categoryId);
 
@@ -88,6 +88,18 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             + "and (b.title LIKE %?1% OR b.price LIKE %?1% OR b.authorName LIKE %?1%)" , nativeQuery = true)
     Page<Book> findAllPublic(Pageable pageable, String searchText);
 
+    
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '1'")
+    List<Book> getPublicBookByUsername(String username);
+
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '0'")
+    List<Book> getUnPublicBookByUsername(String username);
+
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '1'")
+    Page<Book> getPublicBookByUsernamePage(Pageable pageable,String username);
+
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '0'")
+    Page<Book> getUnPublicBookByUsernamePage(Pageable pageable,String username);
 
 
 }

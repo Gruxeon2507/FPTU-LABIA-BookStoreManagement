@@ -21,6 +21,7 @@ import SessionManager from './components/Authentication/SessionManager/SessionMa
 
 import Dashboard from './components/Admin/Dashboard';
 import Footer from "./components/Footer/Footer";
+import MyBook from "./components/MyBook/MyBook";
 
 
 
@@ -57,6 +58,8 @@ function App() {
             <Route path="/book/add" Component={AddBook}></Route>
             <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
             <Route path="/admin/book" Component={AdminBooks}></Route>
+            <Route path="/mybook" Component={MyBook}></Route>
+
           </>
         ) : (<></>)
         }
@@ -73,6 +76,8 @@ function App() {
             <Route path="/book/add" Component={AddBook}></Route>
             <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
             <Route path="/admin/book" Component={AdminBooks}></Route>
+            <Route path="/mybook" Component={MyBook}></Route>
+
           </>
         ) : (<></>)
         }
@@ -86,6 +91,7 @@ function App() {
             <Route path="/book/view/:bookId" Component={ViewABook}></Route>
             <Route path="/book/add" Component={AddBook}></Route>
             <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+            <Route path="/mybook" Component={MyBook}></Route>
           </>
         ) : (<></>)
         }       
