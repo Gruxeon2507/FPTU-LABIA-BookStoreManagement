@@ -13,7 +13,7 @@ function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [condition, setCondition] = useState("");
-  
+
   const getAllPublicBooks = () => {
     return BookServices.getAllPublicBooks()
       .then((response) => {
@@ -58,9 +58,13 @@ function ListBook() {
 
   const findCondition = () => {
     setCondition(condition);
-    console.log(
-      "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
-    );
+    console.log(condition.length)
+    if(condition.length){
+      getAllPublicBooks()
+    }
+    // console.log(
+    //   "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
+    // );
     filterBook(
       0,
       sizePerPage,
@@ -151,28 +155,34 @@ function ListBook() {
     getPageBooksByCategories(categoryIds, 0, sizePerPage);
     getBooksByCategories(categoryIds);
   };
+  const [isVisible, setIsVisible] = useState(false);
 
+  const handleButtonClick = () => {
+    setIsVisible(!isVisible);
+  };
   return (
     <>
-      <div className="find d-flex justify-content-center">
+      <div className="find d-flex justify-content-center homepage">
         <div className="itemSearch">
           <Button
             size="sm"
             variant="outline-info"
             type="button"
-            onClick={handleReset}
+            // onClick={handleReset}
+            onClick={handleButtonClick}
           >
             <FontAwesomeIcon icon={faList} />
           </Button>
         </div>
         {/* <div className="itemSearch"> */}
-          <FormControl
-            placeholder="Search"
-            name="search"
-            className={"info-border bg-dark text-white w-50 "}
-            value={condition}
-            onChange={(e) => setCondition(e.target.value)}
-          />
+        <FormControl
+          placeholder="Search Books Here"
+          name="search"
+          className={"info-border  text-black w-50 "}
+          value={condition}
+          onChange={(e) => {setCondition(e.target.value)}}
+          onInput={(e) => {findCondition()}}
+        />
         {/* </div> */}
         <div className="itemSearch">
           <Button
@@ -180,6 +190,7 @@ function ListBook() {
             variant="outline-info"
             type="button"
             onClick={findCondition}
+            
           >
             <FontAwesomeIcon icon={faSearch} />
           </Button>
@@ -195,8 +206,7 @@ function ListBook() {
           </Button>
         </div>
       </div>
-
-      <div className="categories row">
+      {isVisible && <div className="categories row">
         {categories.map((category) => (
           <div className="select col-6 col-md-3 col-sm-4 d-flex ">
             <label key={category.categoryId}>
@@ -210,27 +220,29 @@ function ListBook() {
             </label>
           </div>
         ))}
+        <button onClick={handleSubmit} className="btn btn-success">
+          Submit
+        </button>
       </div>
-      <button onClick={handleSubmit} className="btn btn-success">
-        Submit
-      </button>
+      }
 
       <div className="list-books row">
         {pageBooks.map((book) => (
           <div
             key={book.bookId}
             className={
-              book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 book"
+              book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
-            <Card className="card" style={{ width: "18rem" }}>
+            <Card className="card" style={{ width: "23rem", height:"30rem"}}>
               <div className="cover">
                 <Card.Img
                   variant="top"
                   src={"http://localhost:6789/api/books/cover/" + book.bookId}
+                  style={{ height: "14rem" ,width: "auto"}}
                 />
               </div>
-              <Card.Body>
+              <Card.Body style={{height:"16rem"}}>
                 <Card.Title>{book.title}</Card.Title>
                 <Card.Text>{book.authorName}</Card.Text>
                 <Card.Text>{book.price}</Card.Text>

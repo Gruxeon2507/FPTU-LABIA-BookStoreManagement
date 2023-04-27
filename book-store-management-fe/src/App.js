@@ -20,6 +20,7 @@ import LoginForm from './components/Login/Login';
 import SessionManager from './components/Authentication/SessionManager/SessionManager';
 
 import Dashboard from './components/Admin/Dashboard';
+import Footer from "./components/Footer/Footer";
 
 
 
@@ -41,7 +42,7 @@ function App() {
 
 
         // <Route path="/login" Component={LoginForm}></Route>
-        // <Route path="/auth/register" Component={RegisterUser}></Route>
+        // <Route path="/register" Component={RegisterUser}></Route>
         {role==="Super Admin" ? 
         (
           <>
@@ -92,7 +93,7 @@ function App() {
 
 
       </Routes>
-      
+      <Footer />
     </div>
    );
 }
