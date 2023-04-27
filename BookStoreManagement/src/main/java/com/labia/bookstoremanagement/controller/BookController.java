@@ -387,6 +387,33 @@ public class BookController {
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, field), HttpStatus.OK);
     }
 
+    @GetMapping("/public/by-user/{username}")
+    List<Book> getPublicBookByUser(@PathVariable String username) {
+        return bookRepository.getPublicBookByUsername(username);
+    }
+    @GetMapping("/unpublic/by-user/{username}")
+    List<Book> getUnPublicBookByUser(@PathVariable String username) {
+        return bookRepository.getUnPublicBookByUsername(username);
+    }
+
+    @GetMapping("/public/page/{username}")
+    ResponseEntity<Page<Book>> findPageAllPublicByUser(
+            @PathVariable String username,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);              
+    }
+    @GetMapping("/unpublic/page/{username}")
+    ResponseEntity<Page<Book>> findPageAllUnPublicByUser(
+            @PathVariable String username,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.getUnPublicBookByUsernamePage(pageable, username), HttpStatus.OK);              
+    }
     
 
 }

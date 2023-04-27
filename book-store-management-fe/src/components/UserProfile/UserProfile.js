@@ -15,9 +15,6 @@ function UserProfile() {
     useEffect(() => {
         AuthenServices.getSessionUser(window.localStorage.getItem("sessionId")).then((res) => {
             setLoginUser(res.data)
-
-
-
         })
         console.log(loginUser);
     }, []);
@@ -32,7 +29,7 @@ function UserProfile() {
             UserServices.getUserByUserName(userId).then((res) => {
                 setUser(res.data);
             });
-            BookServices.getBookByUser(userId).then((res) => {
+            BookServices.getPublicBookByUser(userId).then((res) => {
                 setBooks(res.data);
             });
         } else {
@@ -57,7 +54,7 @@ function UserProfile() {
             <div className="userInfo">
                 <p>Gmail: {user.email}</p>
                 <p>Dob: {user.dob}</p>
-                <p>Day Joined: {user.createdDate}</p>
+                <p>Day Joined: {user.createDate}</p>
                 <p>Last Active: {user.lastActive}</p>
             </div>
             <div className="singleBook">
@@ -73,7 +70,7 @@ function UserProfile() {
                             </div>
                             <p>Tác giả: {book.authorName}</p>
                             <p>Lượt xem: {book.noView}</p>
-                            <div className="row">
+                            {/* <div className="row">
                                 {user.username===window.localStorage.getItem("user")?(
                                 <div>
 
@@ -94,7 +91,7 @@ function UserProfile() {
 
                                 }
                                 
-                            </div>
+                            </div> */}
 
                         </div>
                     </div>

@@ -21,7 +21,7 @@ function ViewABook() {
 
   if (book.approved != undefined && book.approved) {
     return (
-      <div className="container">
+      <div className="container-singlebook">
         <div className="meta-info">
           <div className="image left">
             <img

@@ -166,7 +166,16 @@ class BookService {
     return axios.post(BOOK_BASE_REST_API_URL + "/pdf/update/" +id, formData);
   }
 
+  getPublicBookByUser(username) {
+    return axios.get(BOOK_BASE_REST_API_URL + "/public/by-user/" + username);
+  }
 
+  getPublicBookByUsernamePage(username, pageNumber, pageSize) {
+    return axios.get(`${BOOK_BASE_REST_API_URL}/public/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+  getUnPublicBookByUsernamePage(username, pageNumber, pageSize) {
+    return axios.get(`${BOOK_BASE_REST_API_URL}/unpublic/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
 }
 
 export default new BookService();
