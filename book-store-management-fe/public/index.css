@@ -9,3 +9,21 @@ body{
     color: #1a1668;
     font-weight: bold;
 }
+.footer-class{
+    position: sticky;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+.ant-pagination-item-active:where(.css-dev-only-do-not-override-1fviqcj).ant-pagination .ant-pagination-item-active{
+    border-color: #eaa451;
+}
+.user-info-form{
+    display: flex;
+}
+*{
+    /* overflow-x:hidden; */
+}
+.admin-nav{
+    margin-bottom: 30px;
+}

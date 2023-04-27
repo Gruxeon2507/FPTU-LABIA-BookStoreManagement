@@ -189,7 +189,7 @@ function UpdateBook(props) {
             className="form-control"
           ></input>
           <br></br>
-          <button className="btn btn-success">Update Book</button>
+          <button className="btn btn--form">Update Book</button>
         </form>
       </div>
     </div>

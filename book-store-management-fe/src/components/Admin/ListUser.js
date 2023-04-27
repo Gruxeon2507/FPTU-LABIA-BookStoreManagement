@@ -72,11 +72,11 @@ const ListUser = () => {
 
   return (
     <>
-      <div>
+      <nav className="admin-nav">
         <Link to={"/admin"}>Dashboard </Link>
         <Link to={"/admin/user"}>User</Link>
         <Link to={"/admin/book"}>Book </Link>
-      </div>
+      </nav>
       {user === 'khoahoc'? <div className="listAdmin">
       <h1>List Admin</h1>
       <table className="table table-bordered table-striped">
