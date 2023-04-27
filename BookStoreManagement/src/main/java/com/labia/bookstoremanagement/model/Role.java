@@ -50,4 +50,10 @@ public class Role  implements Serializable{
             inverseJoinColumns = @JoinColumn(name = "featureId"))
     private List<Feature> features;
 
+    @Override
+    public String toString() {
+        return  roleName;
+    }
+
+    
 }
