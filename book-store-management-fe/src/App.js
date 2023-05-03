@@ -22,6 +22,7 @@ import SessionManager from './components/Authentication/SessionManager/SessionMa
 import Dashboard from './components/Admin/Dashboard';
 import Footer from "./components/Footer/Footer";
 import MyBook from "./components/MyBook/MyBook";
+import ForbiddenPage from "./components/Authentication/Forbidden";
 
 
 
@@ -30,11 +31,11 @@ function App() {
   const role = window.localStorage.getItem("role");
   return (
     <div className="App">
-      {role?
-        (<Navbar />):""
+      {role ?
+        (<Navbar />) : ""
       }
       <Routes>
-{/* 
+        {/* 
         <Route path="" Component={ListBook}></Route>
         <Route path="/user/:userId" Component={UserProfile}></Route>
         <Route path="/user/setting" Component={AccountSetting}></Route>
@@ -44,72 +45,78 @@ function App() {
         <Route path="/book/view/:bookId" Component={ViewABook}></Route> */}
 
 
-         <Route path="/login" Component={LoginForm}></Route>
-         <Route path="/register" Component={RegisterUser}></Route>
-        {role==="Super Admin" ? 
-        (
-          <>
-            <Route path="/admin" Component={Dashboard}></Route>
-            <Route path="/superadmin" Component={Dashboard}></Route>
-            <Route path="" Component={ListBook}></Route>
-            <Route path="/user/:userId" Component={UserProfile}></Route>
-            <Route path="/user" Component={UserProfile}></Route>
-            <Route path="/user/setting" Component={AccountSetting}></Route>
-            <Route path="/admin/user" Component={ListUser}></Route>
-            <Route path="/book/view/:bookId" Component={ViewABook}></Route>
-            <Route path="/book/add" Component={AddBook}></Route>
-            <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
-            <Route path="/admin/book" Component={AdminBooks}></Route>
-            <Route path="/mybook" Component={MyBook}></Route>
+        <Route path="/login" Component={LoginForm}></Route>
+        <Route path="/register" Component={RegisterUser}></Route>
+        {role === "Super Admin" ?
+          (
+            <>
+              <Route path="/admin" Component={Dashboard}></Route>
+              <Route path="/superadmin" Component={Dashboard}></Route>
+              <Route path="" Component={ListBook}></Route>
+              <Route path="/user/:userId" Component={UserProfile}></Route>
+              <Route path="/user" Component={UserProfile}></Route>
+              <Route path="/user/setting" Component={AccountSetting}></Route>
+              <Route path="/admin/user" Component={ListUser}></Route>
+              <Route path="/book/view/:bookId" Component={ViewABook}></Route>
+              <Route path="/book/add" Component={AddBook}></Route>
+              <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+              <Route path="/admin/book" Component={AdminBooks}></Route>
+              <Route path="/mybook" Component={MyBook}></Route>
 
-          </>
-        ) : (<></>)
+            </>
+          ) : (<>        <Route path='*' Component={AccessDenied}></Route></>)
         }
-        {role==="Admin" ? 
-        (
-          <>
-            <Route path="" Component={ListBook}></Route>
-            <Route path='/admin' Component={Dashboard}></Route>
-            <Route path="/user/:userId" Component={UserProfile}></Route>
-            <Route path="/user" Component={UserProfile}></Route>
-            <Route path="/user/setting" Component={AccountSetting}></Route>
-            <Route path="/admin/user" Component={ListUser}></Route>
-            <Route path="/book/view/:bookId" Component={ViewABook}></Route>
-            <Route path="/book/add" Component={AddBook}></Route>
-            <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
-            <Route path="/admin/book" Component={AdminBooks}></Route>
-            <Route path="/mybook" Component={MyBook}></Route>
+        {role === "Admin" ?
+          (
+            <>
+              <Route path="" Component={ListBook}></Route>
+              <Route path='/admin' Component={Dashboard}></Route>
+              <Route path="/user/:userId" Component={UserProfile}></Route>
+              <Route path="/user" Component={UserProfile}></Route>
+              <Route path="/user/setting" Component={AccountSetting}></Route>
+              <Route path="/admin/user" Component={ListUser}></Route>
+              <Route path="/book/view/:bookId" Component={ViewABook}></Route>
+              <Route path="/book/add" Component={AddBook}></Route>
+              <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+              <Route path="/admin/book" Component={AdminBooks}></Route>
+              <Route path="/mybook" Component={MyBook}></Route>
 
-          </>
-        ) : (<></>)
+            </>
+          ) : (<></>)
         }
-        {role==="User" ? 
-        (
-          <>
-            <Route path="" Component={ListBook}></Route>
-            <Route path="/user/:userId" Component={UserProfile}></Route>
-            <Route path="/user" Component={UserProfile}></Route>
-            <Route path="/user/setting" Component={AccountSetting}></Route>
-            <Route path="/book/view/:bookId" Component={ViewABook}></Route>
-            <Route path="/book/add" Component={AddBook}></Route>
-            <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
-            <Route path="/mybook" Component={MyBook}></Route>
-          </>
-        ) : (<></>)
-        }       
+        {role === "User" ?
+          (
+            <>
+              <Route path="" Component={ListBook}></Route>
+              <Route path="/user/:userId" Component={UserProfile}></Route>
+              <Route path="/user" Component={UserProfile}></Route>
+              <Route path="/user/setting" Component={AccountSetting}></Route>
+              <Route path="/book/view/:bookId" Component={ViewABook}></Route>
+              <Route path="/book/add" Component={AddBook}></Route>
+              <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+              <Route path="/mybook" Component={MyBook}></Route>
+            </>
+          ) : (<><Route path='*' Component={AccessDenied}></Route></>)
+        }
         <Route path='*' Component={AccessDenied}></Route>
 
 
       </Routes>
       <div className="footer-class">
 
-      
+
       </div>
       {/* <Footer /> */}
     </div>
-   );
+  );
 }
 function AccessDenied() {
-  return <div>Access denied. You are not authorized to access this page.</div>;
+  return (
+    <div className="forbiddenPage">
+      <div></div>
+      <h1><span className="forbiddenTitle">404</span> - Not Found</h1>
+      <p>This Page Is Not Found. <a href="javascript:history.go(-1)">Return To Previous Page</a></p>
+    </div>
+  );
 }
 export default App;

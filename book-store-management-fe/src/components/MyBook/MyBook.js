@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserServices from "../../services/UserServices";
 import BookServices from "../../services/BookServices";
 import { Link } from "react-router-dom";
-import { Pagination } from "antd";
+import { Button, Pagination } from "antd";
 
 const MyBook = () => {
   const pageSize = 2;
@@ -58,7 +58,7 @@ const MyBook = () => {
   return (
     <>
     <div>
-    <span className='sign-in btn--form'><Link to="/book/add">Add A New Book</Link></span>
+    <Button className='sign-in btn--form' style={{marginTop:"30px"}}><Link to="/book/add">Add A New Book</Link></Button>
     </div>
       <div className="pending-book">
         <h1>Pending Books</h1>
