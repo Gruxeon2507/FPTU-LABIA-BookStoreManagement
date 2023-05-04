@@ -165,8 +165,8 @@ const AccountSetting = () => {
               <label for="username">Username </label>
               <input
                 type="text"
-                value={displayName}
-                name="displayName"
+                value={username}
+                name="username"
                 onChange={changeDisplayNameHandler}
               />
             </div>

@@ -123,7 +123,6 @@ function ListBook() {
   };
   useEffect(() => {
     if(checked.length!==0){
-
       handleSubmit();}
   }, [checked]);
   

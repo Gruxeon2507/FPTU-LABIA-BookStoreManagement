@@ -201,7 +201,7 @@ VALUES ('Cuốn Theo Chiều Gió','Margaret Mitchell','Cuốn sách "Cuô
  Tác phẩm xoay quanh Scarlett O\'Hara và Rhett Butler, về chuyện tình ngọt ngào của họ trong thời kỳ chiến tranh 
  gian khổ, là động lực để họ vượt qua khó khăn. Cuốn theo chiều gió không chỉ khắc họa chuyện tình đôi lứa lãng mạn,
  đẹp đẽ, mà còn ca ngợi tình yêu quê hương đất nước, tấm lòng tương thân tương ái của mỗi người dân trong hoàn cảnh khó khăn.',
- 'pdf/8.pdf','cover/8.jpg',150000,'duckm',0,0,0);
+ 'pdf/8.pdf','cover/8.jpg',150000,'duckm',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Nếu Gặp Người Ấy Cho Tôi Gửi Lời Chào','Takuji Ichikawa','“Nếu Gặp Người Ấy Cho Tôi Gửi Lời Chào” là
  một trong những quyển sách hay về tình yêu kể về một đôi bạn thanh mai trúc mã. Đôi bạn chơi với nhau từ khi
@@ -210,7 +210,7 @@ VALUES ('Nếu Gặp Người Ấy Cho Tôi Gửi Lời Chào','Takuji Ichikawa'
  lại không hề nhận ra nhau. Sau một thời gian, Satoshi nhận ra Karin chính là người mà mình thầm thương trộm nhớ 
  suốt thời thơ ấu, nhờ chiếc vòng cổ quen thuộc cô thường mang. Tất cả ký ức dường như bỗng ùa về trong anh và dần
  dần 2 người cũng nảy sinh tình cảm với nhau.',
- 'pdf/9.pdf','cover/9.jpg',150000,'duckm',0,0,0);
+ 'pdf/9.pdf','cover/9.jpg',150000,'duckm',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Nơi Em Quay Về Có Tôi Đứng Đợi','Ichikawa Takuji','Nhắc đến những cuốn sách về tình yêu hay nhất,
  không thể không kể đến “Nơi Em Quay Về Có Tôi Đứng Đợi”. Tác phẩm kể về hai nhân vật chính là Satoshi và Yuko.
@@ -218,7 +218,7 @@ VALUES ('Nơi Em Quay Về Có Tôi Đứng Đợi','Ichikawa Takuji','Nhắc đ
  lại không đủ can đảm để thổ lộ với đối phương. Và họ lại gặp nhau vào tuổi 18, những cảm xúc ấy lại ùa về. Cả hai
  dành cho nhau hết tất cả những gì có thể để bù đắp lại khoảng thời gian 3 năm bỏ lỡ đầy nuối tiếc. Nhưng đây chưa
  phải là đích đến cuối cùng, tình yêu giữa họ là một chuỗi gặp gỡ rồi lại chia ly đầy cảm xúc.',
- 'pdf/10.pdf','cover/10.jpg',150000,'giangpt',0,0,0);
+ 'pdf/10.pdf','cover/10.jpg',150000,'giangpt',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Em sẽ đến cùng cơn mưa','Takuji Ichikawa','Em sẽ đến cùng cơn mưa là một trong những cuốn sách hay về
  tâm lý tình yêu, kể về một người đàn ông đánh mất hạnh phúc của mình vào tay thần chết. Tuy nhiên, cuối cùng họ
@@ -235,18 +235,18 @@ VALUES ('Mắt Biếc','Nguyễn Nhật Ánh','Mắt Biếc là một cuốn sá
  là Trà Long và gửi gắm cho bà ngoại nuôi nấng. Vì mối tình sâu đậm dành cho Hà Lan, nên Ngạn hết lòng thương yêu và 
  chăm sóc Trà Long. Tưởng chừng như Trà Long sẽ là điểm kết cho mối tình dang dở của Hà Lan và Ngạn. Nhưng cuối cùng, 
  Ngạn vẫn chọn rời quê, vì anh nhận ra rằng, đối với anh, Trà Long chỉ là cái bóng của Hà Lan trong anh mà thôi.',
- 'pdf/12.pdf','cover/12.jpg',150000,'giangpt',0,0,0);
+ 'pdf/12.pdf','cover/12.jpg',150000,'giangpt',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Tình yêu và tuổi trẻ','Valery Larbaud','“Tình yêu và tuổi trẻ” là câu chuyện của mỗi chúng ta về tình
  yêu và tuổi trẻ. Những xúc cảm đầy bí ẩn thời niên thiếu là những thứ mà bất kỳ ai cũng đều sẽ trải qua ít nhất
  1 lần. Cuốn sách hay về tình yêu này mang đến cho người đọc những trải nghiệm và cảm xúc chân thực nhất, thậm chí
  đôi khi họ thấy họ ở trong chính câu chuyện đó.',
- 'pdf/13.pdf','cover/13.jpg',150000,'duongpt',0,0,0);
+ 'pdf/13.pdf','cover/13.jpg',150000,'duongpt',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Xứ Cát ','Frank Herbert','"Một thời điểm rất xa trong tương lai…
 Từ đời này sang đời khác, người Fremen trên hành tinh sa mạc lưu truyền lời tiên tri về một đấng cứu tinh sẽ dẫn dắt họ giành lấy tự do đích thực…
 Từ thế hệ này sang thế hệ khác, những nữ phù thủy Bene Gesserit mỏi mòn chờ đợi sự xuất hiện của một B.G. nam giới duy nhất, người có thể vượt qua mọi giới hạn không gian – thời gian…"',
- 'pdf/14.pdf','cover/14.jpg',150000,'nhatvn',0,0,0);
+ 'pdf/14.pdf','cover/14.jpg',150000,'nhatvn',1,0,0);
  
  -- Book_Category
 INSERT INTO Book_Category(bookId,categoryId)
@@ -281,9 +281,6 @@ INSERT INTO Book_Category(bookId,categoryId)
 VALUES (14,2);
 
 
-select * from Book;
-INSERT INTO Book_Category(bookId,categoryId)
-VALUES (18,2);
 
 INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
  VALUES ('testUser','123','testUser','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
@@ -298,7 +295,6 @@ VALUES ('testAdmin',2);
 INSERT INTO User_Role(username,roleId)
 VALUES ('testAdmin',3);
 
-
 INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Sách chưa public','Haruki Murakami','Sách chưa public là một tác phẩm kinh điển, tạo nên tiếng vang lớn trong nền văn học Nhật Bản 
 nói riêng và trên toàn thế giới nói chung. Tác phẩm này được xuất bản lần đầu tiên vào năm 1987. Câu chuyện là dòng hồi tưởng về
@@ -308,3 +304,13 @@ nói riêng và trên toàn thế giới nói chung. Tác phẩm này được x
  Cuốn sách này như là một lời cảnh tỉnh dành cho những người trẻ, và cũng là sự nuối tiếc của những người đã đi qua thời thanh xuân.',
  'pdf/1.pdf','cover/1.jpg',150000,'maiphuonghoang',0,0,0);
  
+ 
+INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
+VALUES ('Sách chưa public2','Haruki Murakami','Sách chưa public là một tác phẩm kinh điển, tạo nên tiếng vang lớn trong nền văn học Nhật Bản 
+nói riêng và trên toàn thế giới nói chung. Tác phẩm này được xuất bản lần đầu tiên vào năm 1987. Câu chuyện là dòng hồi tưởng về
+ quá khứ của Watanabe Toru, một chàng thanh niên 37 tuổi, về những mối tình đầu của anh thời niên thiếu là Naoko và Midori. Bối 
+ cảnh câu chuyện là nước Nhật vào những năm 1960 đầy biến động. Những biến động, rối ren của xã hội đã phần nào gây tác động đến
+ tâm lý của những thanh thiếu niên thời bấy giờ, mỗi người đều phải trải qua những dày vò, những niềm đau về cả thể xác lẫn tâm hồn.
+ Cuốn sách này như là một lời cảnh tỉnh dành cho những người trẻ, và cũng là sự nuối tiếc của những người đã đi qua thời thanh xuân.',
+ 'pdf/1.pdf','cover/1.jpg',150000,'maiphuonghoang',0,0,0);
+
