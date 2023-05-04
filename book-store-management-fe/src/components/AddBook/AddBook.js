@@ -292,6 +292,7 @@ class AddBook extends Component {
     formData.append("bookId", this.state.bookId);
     BookServices.updateBookCover(formData);
     BookServices.updateBookpdf(formData);
+    window.location.href = "http://localhost:3000/user/" + createdBy;
   };
 
   render() {

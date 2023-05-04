@@ -183,6 +183,7 @@ class RegisterUser extends Component {
     formData.append("avatarPath", this.state.avatarPath);
     formData.append("username", this.state.username);
     UserServices.registerUserAvatar(formData);
+    window.location.href="http://localhost:3000/login";
   };
 
   render() {
