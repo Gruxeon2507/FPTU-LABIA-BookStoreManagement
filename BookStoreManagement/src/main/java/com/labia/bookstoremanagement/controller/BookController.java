@@ -8,6 +8,7 @@ import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.Category;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.repository.BookRepository;
+
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
 import java.io.File;
@@ -33,7 +34,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/books")
 public class BookController {
+
     int BookId;
     @Autowired
     BookRepository bookRepository;
@@ -60,20 +64,25 @@ public class BookController {
     private final String COVER_UPLOAD_DIR = "/cover/";
     private final String PDF_UPLOAD_DIR = "/pdf/";
 
+
     @GetMapping
     List<Book> getAll() {
         return bookRepository.findAll();
     }
 
+
+    @GetMapping("by-id/{bookId}")
+    Book getBookById(@PathVariable("bookId") Integer id) {
+        return bookRepository.findByBookId(id);
+   }
+//
 //   @GetMapping("by-id/{bookId}")
 //    Book getBookById(@PathVariable("bookId") Integer id){
 //        return bookRepository.findByBookId(id);
 //    }
+    
 
-    @GetMapping("/public")
-    List<Book> getAllPublic() {
-        return bookRepository.findByIsApproved(true);
-    }
+//
 
     @GetMapping("/unpublic")
     List<Book> getAllUnPublic() {
@@ -85,6 +94,7 @@ public class BookController {
         Pageable pageable = PageRequest.of(0, 12, Sort.by("bookId").descending());
         return bookRepository.findByIsApprovedFalseOrderByBookIdDesc(pageable);
     }
+
 
 
     @GetMapping("by-user/{username}")
@@ -171,12 +181,62 @@ public class BookController {
         return bookss;
     }
 
+    @GetMapping("/pending/page")
+    public List<Book> getPagePendingBook(
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize
+    ) {
+        Pageable isPageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findByIsApproved(false, isPageable);
+        for (Book book : pageBooks.getContent()) {
+            book.setCoverPath(userRepository.getUserByBooks(book).getUsername());
+            book.setPdfPath(userRepository.getUserByBooks(book).getDisplayName());
+        }
+        return pageBooks.getContent();
+    }
+
+    @GetMapping("/public/page")
+    public List<Book> getPagePublicBook(
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize
+    ) {
+        Pageable isPageable = PageRequest.of(pageNumber, pageSize);
+        Page<Book> pageBooks = bookRepository.findByIsApproved(true, isPageable);
+        for (Book book : pageBooks.getContent()) {
+            book.setCoverPath(userRepository.getUserByBooks(book).getUsername());
+            book.setPdfPath(userRepository.getUserByBooks(book).getDisplayName());
+        }
+        return pageBooks.getContent();
+    }
+
     @GetMapping("by-categories/{categoryIds}")
     public List<Book> getBooks(@PathVariable("categoryIds") Integer[] categoryIds) {
         List<Book> books = bookRepository.getBookByCategoryIds(categoryIds);
         return books;
     }
-    
+
+
+    @GetMapping("pending")
+    public List<Book> getPendingBooks() {
+        return bookRepository.findByIsApproved(false);
+    }
+
+    @GetMapping("public")
+    public List<Book> getPublicBooks() {
+        List<Book> books = bookRepository.findByIsApproved(true);
+        return books;
+    }
+
+    @DeleteMapping("delete/{bookId}")
+    public void deleteBook(@PathVariable("bookId") int bookId) {
+        bookRepository.deleteBookCategoryByBookId(bookId);
+        bookRepository.deleteById(bookId);
+    }
+
+    @PostMapping("approve/{bookId}")
+    public void approveBook(@PathVariable("bookId") int bookId) {
+        bookRepository.updateBookStatus(bookId);
+    }
 
    static  class  BookData {
         private Book book;
@@ -223,6 +283,7 @@ public class BookController {
        bookData.book.setCoverPath("cover/" +bookData.book.getBookId() + ".jpg");
         bookData.book.setPdfPath("pdf/" + bookData.book.getBookId() + ".pdf");
         bookRepository.save(bookData.book);
+       
 
 //        categoryRepository.saveBook_Category(41,1);
         for (Category c : bookData.book.getCategories()) {
@@ -230,13 +291,12 @@ public class BookController {
         }
         return bookData.book;
     }
-    
 
     @PostMapping("/cover/upload")
     public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(BookId+ ".jpg");
+            String fileName = StringUtils.cleanPath(BookId + ".jpg");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + COVER_UPLOAD_DIR;
@@ -252,7 +312,7 @@ public class BookController {
     public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(BookId+ ".pdf");
+            String fileName = StringUtils.cleanPath(BookId + ".pdf");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
@@ -273,13 +333,35 @@ public class BookController {
         return extension;
     }
 
-    @DeleteMapping("/delete/{bookId}")
-    public void deleteBook(@PathVariable("bookId") Integer bookId) {
-        categoryRepository.deleteBook_Category(bookId);
-        bookRepository.deleteById(bookId);
+//    @DeleteMapping("/delete/{bookId}")
+//    public void deleteBook(@PathVariable("bookId") Integer bookId) {
+//        categoryRepository.deleteBook_Category(bookId);
+//        bookRepository.deleteById(bookId);
+//    }
+
+//    @GetMapping("/{bookId}")
+//    public Book getBookById(@PathVariable("bookId") Integer bookId) {
+//        return bookRepository.findById(bookId).get();
+//    }
+
+    @PostMapping("/update/{bookId}")
+    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
+        Optional<Book> book = bookRepository.findById(bookId);
+        book.get().setTitle(updateBook.getTitle());
+        book.get().setDescription(updateBook.getDescription());
+        book.get().setAuthorName(updateBook.getAuthorName());
+        if (updateBook.getCategories().isEmpty()) {
+            categoryRepository.deleteBook_Category(bookId);
+        } else {
+            if (!book.get().getCategories().equals(updateBook.getCategories())) {
+                categoryRepository.deleteBook_Category(bookId);
+                for (Category c : updateBook.getCategories()) {
+                    categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+                }
+            }
+        }
+        return bookRepository.save(book.get());
     }
-    
-    
 
     @GetMapping("/{bookId}")
     public Book getBookById(@PathVariable("bookId") Integer bookId) {
@@ -338,6 +420,21 @@ public class BookController {
     }
 
 
+    @PostMapping("/pdf/update/{bookId}")
+    public void updatePdfFile(@RequestParam("pdfPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+            String fileName = StringUtils.cleanPath(bookId + ".pdf");
+            try {
+                // Save the file to the uploads directory
+                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+                file.transferTo(new File(uploadDir + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Book>> findAllPublic(
@@ -346,7 +443,51 @@ public class BookController {
             @RequestParam Integer pageSize
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        if(searchText.length()<1){
+            return new ResponseEntity<>( bookRepository.findAll(pageable),HttpStatus.OK);
+        }else{
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
+            
+        }
     }
+    
+    @GetMapping("/sort/{type}")
+    ResponseEntity<Page<Book>> sortAllPublic(
+            @PathVariable String field,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.findAllPublic(pageable, field), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/by-user/{username}")
+    List<Book> getPublicBookByUser(@PathVariable String username) {
+        return bookRepository.getPublicBookByUsername(username);
+    }
+    @GetMapping("/unpublic/by-user/{username}")
+    List<Book> getUnPublicBookByUser(@PathVariable String username) {
+        return bookRepository.getUnPublicBookByUsername(username);
+    }
+
+    @GetMapping("/public/page/{username}")
+    ResponseEntity<Page<Book>> findPageAllPublicByUser(
+            @PathVariable String username,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);              
+    }
+    @GetMapping("/unpublic/page/{username}")
+    ResponseEntity<Page<Book>> findPageAllUnPublicByUser(
+            @PathVariable String username,
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.getUnPublicBookByUsernamePage(pageable, username), HttpStatus.OK);              
+    }
+    
 
 }

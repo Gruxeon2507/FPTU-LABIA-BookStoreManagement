@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import axios from "axios";
-import Alert from "react-bootstrap/Alert";
 
+import React, { useState } from 'react';
+import axios from 'axios';
+import "./Login.scss";
+import { Link } from 'react-router-dom';
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [checkUsername, setCheckUsername] = useState(false);
@@ -42,51 +43,45 @@ function LoginForm() {
     }
   };
 
+
   return (
-    <form onSubmit={handleSubmit} className="login-form">
-      <label>
-        Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(event) => {
-            const inputUsername = event.target.value;
-            const regex = /^[a-zA-Z0-9\s]*$/;
-            if (!regex.test(inputUsername)) {
-              setCheckUsername(true);
-              return;
-            }
-            setCheckUsername(false);
-            setUsername(inputUsername);
-          }}
-        />
-      </label>
-      {checkUsername ? (
-        <>
-          <div style={{ height: "10px" }}></div>
-          <Alert key={"danger"} variant={"danger"}>
-            {messageUsername}
-          </Alert>
-        </>
-      ) : null}
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-      {loginFailed ? (
-        <>
-          <div style={{ height: "10px" }}></div>
-          <Alert key={"danger"} variant={"danger"}>
-            {messageLoginFailed}
-          </Alert>
-        </>
-      ) : null}
-      <button type="submit">Log in</button>
-    </form>
+    <div class="login">
+      {/* <form onSubmit={handleSubmit} className='login-form'>
+        <label>
+          Username:
+          <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
+        </label>
+        <label>
+          Password:
+          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+        </label>
+        <button type="submit">Log in</button>
+      </form> */}
+
+
+      <div className="container">
+        <h2 className="login-title">Log in</h2>
+
+        <form className="login-form" onSubmit={handleSubmit} >
+      
+          <div>
+            <label for="email">Email </label>
+            <input type="text" value={username} placeholder='username' required onChange={(event) => setUsername(event.target.value)} />
+          </div>
+
+          <div>
+            <label for="password">Password </label>
+            <input type="password" value={password} placeholder='password' required onChange={(event) => setPassword(event.target.value)} />
+          </div>
+
+          <button className="btn btn--form" type="submit" value="Log in">
+            Log in
+          </button>
+          <p>Don't have an account ? <span className='sign-in'><Link to="/register">Sign Up</Link></span></p>
+        </form>
+      </div>
+    </div>
+
   );
 }
-export default LoginForm;
+export default LoginForm

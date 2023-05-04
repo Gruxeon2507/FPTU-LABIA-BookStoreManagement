@@ -1,11 +1,51 @@
-.avatar img{
+.avatar-card img{
     width: 200px;
     height: 200px;
     border-radius: 100px;
+    margin: 20px;
+}
+.avatar-card{
+    background-color: #eaa4511a;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .displayName{
-    padding-top: 10px;
-    font-size: 37px;
+    font-weight: bold;
+    font-size: 27px;
+    color: #1a1668;
+}
+.displayRole{
+    color: #eaa451;
+}
+.profile-container{
+    margin-top: 60px;
+}
+.user-info{
+    display: flex;
+}
+.userInfo{
+    width: 70%;
+}
+// .displayName{
+//     padding-top: 10px;
+//     font-size: 37px;
+// }
+.user-info-form{
+    // display: flex;
+    width: 100%;
+    margin: 20px;
+}
+.user-info-form-item{
+    width: 80%;
+}
+.login-form{
+    width: 100%;
+}
+.user-info-form-item-1{
+    width: 50%;
 }
 .userInfo{
     display: flex;
@@ -30,16 +70,28 @@
     align-items: flex-start;
     padding-left: 10px;
 }
-p{
-    font-weight: bold;
-}
+// p{
+//     font-weight: bold;
+// }
 .bookTitle{
     margin-bottom: 2vh;
 }
 .singleBook{
     display: flex;
-    width: 50vh;
+    flex-direction: column;
+    width: 25%;
     box-shadow: 1px 1px 1px 1px;
     margin: 10px;
     padding: 15px;
+}
+.bookCover{
+    height: 200px;
+    width: 100%;
+}
+.bookCover img{
+    height: 70%;
+    width: auto;
+}
+.avatar-card{
+    margin-left: 30px;
 }

@@ -42,12 +42,34 @@ class UserServices{
     promoteAdmin(username){
         return axios.post(USER_BASE_REST_API_URL + '/promote/' + username);
     }
+
+
+    getUserByBookId(bookId){
+        // console.log("calling")
+        // console.log(axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`) + "hello");
+        return axios.get(`${USER_BASE_REST_API_URL}/by-book/${bookId}`)
+    }
     countUser(){
         return axios.get(USER_BASE_REST_API_URL+'/onlyuser/count');
     }
     countAdmin(){
         return axios.get(USER_BASE_REST_API_URL+'/onlyadmin/count');
 
+
+    }
+    exportUserToExcel(){
+        return axios({
+            url: USER_BASE_REST_API_URL + '/export',
+            method: 'GET',
+            responseType: 'blob'
+          }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'users.xlsx');
+            document.body.appendChild(link);
+            link.click();
+          });
     }
 }
 

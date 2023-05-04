@@ -280,10 +280,16 @@ VALUES (13,1);
 INSERT INTO Book_Category(bookId,categoryId)
 VALUES (14,2);
 
+
+select * from Book;
+INSERT INTO Book_Category(bookId,categoryId)
+VALUES (18,2);
+
 INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
  VALUES ('testUser','123','testUser','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
 INSERT INTO User_Role(username,roleId)
 VALUES ('testUser',3);
+
 
 INSERT INTO `User`(username,`password`,displayName,dob,email,createDate,lastActive,avatarPath)
 VALUES ('testAdmin','123','testAdmin','2003-08-06','huyenntk@gmail.com','2023-04-24','2023-04-24 15:00:00','avatar/huyenntk.jpg');
@@ -293,3 +299,12 @@ INSERT INTO User_Role(username,roleId)
 VALUES ('testAdmin',3);
 
 
+INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
+VALUES ('Sách chưa public','Haruki Murakami','Sách chưa public là một tác phẩm kinh điển, tạo nên tiếng vang lớn trong nền văn học Nhật Bản 
+nói riêng và trên toàn thế giới nói chung. Tác phẩm này được xuất bản lần đầu tiên vào năm 1987. Câu chuyện là dòng hồi tưởng về
+ quá khứ của Watanabe Toru, một chàng thanh niên 37 tuổi, về những mối tình đầu của anh thời niên thiếu là Naoko và Midori. Bối 
+ cảnh câu chuyện là nước Nhật vào những năm 1960 đầy biến động. Những biến động, rối ren của xã hội đã phần nào gây tác động đến
+ tâm lý của những thanh thiếu niên thời bấy giờ, mỗi người đều phải trải qua những dày vò, những niềm đau về cả thể xác lẫn tâm hồn.
+ Cuốn sách này như là một lời cảnh tỉnh dành cho những người trẻ, và cũng là sự nuối tiếc của những người đã đi qua thời thanh xuân.',
+ 'pdf/1.pdf','cover/1.jpg',150000,'maiphuonghoang',0,0,0);
+ 

@@ -108,6 +108,7 @@ function UpdateBook(props) {
   const changeCoverHandler = (event) => {
     const cover = event.target.files[0];
 
+
     if (!cover) {
       alert("Please choose a file");
       setBook({
@@ -260,6 +261,7 @@ function UpdateBook(props) {
         // handle error
         console.error(err);
       });
+
     const formData = new FormData();
     formData.append("pdfPath", book.pdfPath);
     formData.append("coverPath", book.coverPath);
@@ -372,7 +374,7 @@ function UpdateBook(props) {
             </>
           ) : null}
           <br></br>
-          <button className="btn btn-success">Update Book</button>
+          <button className="btn btn--form">Update Book</button>
         </form>
       </div>
     </div>

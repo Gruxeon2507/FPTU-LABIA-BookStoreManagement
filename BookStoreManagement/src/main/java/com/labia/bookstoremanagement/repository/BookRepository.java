@@ -7,9 +7,11 @@ package com.labia.bookstoremanagement.repository;
 import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.User;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,13 +24,14 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 //    @Query(value = "select * from book b join user u on  b.createdBy = u.username where u.username =?1 ", nativeQuery = true)
     @Query(value = "select b from Book b join b.createdBy u where u.username =:username")
     List<Book> getBookByUsername(String username);
-
+      
     @Query("select b from Book b join b.categories c where c.categoryId = :categoryId")
     List<Book> getBookByCategoryId(Integer categoryId);
 
 
-    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
-    List<Book> getBookByCategoryIds(Integer[] categoryIds);
+
+//    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds")
+//    List<Book> getBookByCategoryIds(Integer[] categoryIds);
 
     @Query(value = "SELECT * FROM Book order by bookId desc LIMIT 1", nativeQuery = true)
     Book findLastBook();
@@ -48,21 +51,55 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("select b.createdBy from Book b where b.bookId = :bookId ")
     User getBookCreated(Integer bookId);
 
+//
+//    public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
 
     public List<Book> findByCreatedBy(User user);
 
 
     public Book findByBookId(Integer id);
 
-    public Page<Book> findByIsApproved(boolean b, Pageable pageable);
+    public Page<Book> findByIsApproved(boolean isApproved, Pageable pageable);
 
-    public List<Book> findByIsApproved(boolean b);
+    public List<Book> findByIsApproved(boolean isApproved);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update Book b set b.isApproved=1 where b.bookId=?1", nativeQuery = true)
+    public void updateBookStatus(@Param("bookId") Integer bookId);
+
+    public void deleteByBookId(int bookId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from Book_Category where bookId = ?1", nativeQuery = true)
+    public void deleteBookCategoryByBookId(@Param("bookId") int bookId);
+
+//
+//    public Book findByBookId(Integer id);
+//
+//    public Page<Book> findByIsApproved(boolean b, Pageable pageable);
+//
+//    public List<Book> findByIsApproved(boolean b);
 
     List<Book> findByIsApprovedFalseOrderByBookIdDesc(Pageable pageable);
 
     @Query(value = "select * from Book b where (b.isApproved = '1') "
             + "and (b.title LIKE %?1% OR b.price LIKE %?1% OR b.authorName LIKE %?1%)" , nativeQuery = true)
     Page<Book> findAllPublic(Pageable pageable, String searchText);
+
+    
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '1'")
+    List<Book> getPublicBookByUsername(String username);
+
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '0'")
+    List<Book> getUnPublicBookByUsername(String username);
+
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '1'")
+    Page<Book> getPublicBookByUsernamePage(Pageable pageable,String username);
+
+    @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '0'")
+    Page<Book> getUnPublicBookByUsernamePage(Pageable pageable,String username);
 
 
 }

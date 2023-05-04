@@ -7,7 +7,7 @@ import { Pagination } from "antd";
 import { Card } from "react-bootstrap";
 import { Button, FormControl } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faTimes, faList } from "@fortawesome/free-solid-svg-icons";
 
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
@@ -55,34 +55,49 @@ function ListBook() {
         console.log(error);
       });
   };
+
   const findCondition = () => {
     setCondition(condition);
-    console.log("da click" +  encodeURIComponent(condition).replace(/%20/g, "%20"));
-    filterBook(0, sizePerPage, encodeURIComponent(condition).replace(/%20/g, "%20"));
+    console.log(condition.length)
+    if(condition.length){
+      getAllPublicBooks()
+    }
+    // console.log(
+    //   "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
+    // );
+    filterBook(
+      0,
+      sizePerPage,
+      encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
   };
-  const handleReset = ()=>{
-    setCondition('')
+  const handleReset = () => {
+    setCondition("");
     getPageBooks(0, sizePerPage);
     getAllPublicBooks().then((count) => setTotalItems(count));
-  }
+  };
   const filterBook = (pageNumber, pageSize, searchText) =>
     BookServices.filterBook(pageNumber, pageSize, searchText).then(
       (response) => {
         setPageBooks(response.data.content);
-        setTotalItems(response.data.totalElements)
-        // console.log("filter" + response.data);
+        setTotalItems(response.data.totalElements);
       }
     );
   useEffect(() => {
-    filterBook(0, sizePerPage, encodeURIComponent(condition).replace(/%20/g, "%20"));
+    filterBook(
+      0,
+      sizePerPage,
+      encodeURIComponent(condition).replace(/%20/g, "%20")
+    );
   }, []);
+
   useEffect(() => {
     getAllCategories();
   }, []);
   useEffect(() => {
     getPageBooks(0, sizePerPage);
   }, []);
-  // console.log("search" + searchBooks);
+
   const handlePageChange = (current) => {
     if (checked.length > 0) {
       setCurrentPage(current);
@@ -95,7 +110,6 @@ function ListBook() {
   };
 
   const [checked, setChecked] = useState([]);
-  console.log(checked);
   const handleCheck = (categoryId) => {
     setChecked((prev) => {
       const isChecked = checked.includes(categoryId);
@@ -107,7 +121,12 @@ function ListBook() {
       }
     });
   };
+  useEffect(() => {
+    if(checked.length!==0){
 
+      handleSubmit();}
+  }, [checked]);
+  
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
@@ -132,46 +151,71 @@ function ListBook() {
   };
   console.log("total page: " + totalItems);
 
-  const handleSubmit = () => {
-    setCurrentPage(1);
-    console.log({ ids: checked });
-    const categoryIds = checked.join(",");
-    console.log(categoryIds);
-    getPageBooksByCategories(categoryIds, 0, sizePerPage);
-    getBooksByCategories(categoryIds);
+  const handleSubmit = (categoryId) => {
+      handleCheck(categoryId)
+      console.log("check on submit:" + checked);
+      setCurrentPage(1);
+      console.log({ ids: checked });
+      const categoryIds = checked.join(",");
+      console.log(categoryIds);
+      getPageBooksByCategories(categoryIds, 0, sizePerPage);
+      getBooksByCategories(categoryIds);
   };
+  const [isVisible, setIsVisible] = useState(false);
 
-  console.log("condition" + condition);
+  const handleButtonClick = () => {
+    setIsVisible(!isVisible);
+  };
   return (
     <>
-      <div className="find d-flex justify-content-center">
+      <div className="find d-flex justify-content-center homepage">
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-info"
+            type="button"
+            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            // onClick={handleReset}
+            onClick={handleButtonClick}
+          >
+            <FontAwesomeIcon icon={faList} />
+          </Button>
+        </div>
+        {/* <div className="itemSearch"> */}
         <FormControl
-          placeholder="Search"
+          placeholder="Search Books Here"
           name="search"
-          className={"info-border bg-dark text-white w-50 "}
+          className={"info-border  text-black w-50 "}
           value={condition}
-          onChange={(e) => setCondition(e.target.value)}
+          onChange={(e) => {setCondition(e.target.value)}}
+          onInput={(e) => {findCondition()}}
         />
-        <Button
-          size="sm"
-          variant="outline-info"
-          type="button"
-          onClick={findCondition}
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </Button>
-        <Button
-          size="sm"
-          variant="outline-danger"
-          type="button"
-          onClick={() => handleReset()}
-          className="m-10"
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </Button>
+        {/* </div> */}
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-info"
+            type="button"
+            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            onClick={findCondition}
+            
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </Button>
+        </div>
+        <div className="itemSearch">
+          <Button
+            size="sm"
+            variant="outline-danger"
+            type="button"
+            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            onClick={() => handleReset()}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </Button>
+        </div>
       </div>
-
-      <div className="categories row">
+      {isVisible && <div className="categories row">
         {categories.map((category) => (
           <div className="select col-6 col-md-3 col-sm-4 d-flex ">
             <label key={category.categoryId}>
@@ -186,28 +230,35 @@ function ListBook() {
           </div>
         ))}
       </div>
-      <button onClick={handleSubmit}>Submit</button>
+      }
 
       <div className="list-books row">
         {pageBooks.map((book) => (
           <div
             key={book.bookId}
             className={
-              book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 book"
+              book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
-            <Card className="card" style={{ width: "18rem" }}>
+            <Card className="card" style={{ width: "19rem", height:"26rem"}}>
               <div className="cover">
                 <Card.Img
                   variant="top"
                   src={"http://localhost:6789/api/books/cover/" + book.bookId}
+                  style={{ height: "14rem" ,width: "auto"}}
                 />
               </div>
-              <Card.Body>
-                <Card.Title>{book.title}</Card.Title>
-                <Card.Text>{book.authorName}</Card.Text>
-                <Link to={"/book/view/" + book.bookId} className="btn btn-info">
-                  View{" "}
+              <Card.Body style={{height:"16rem"}}>
+                <Card.Title
+                  style={{ height: "3rem" ,width: "auto",display:"flex",alignItems:"center",justifyContent:"center",color:"#1a1668",fontWeight:"800"}}
+                >{book.title}</Card.Title>
+                <Card.Text
+                style={{ height: "2rem" ,width: "auto",color:"#eaa451",fontWeight:"bold"}}
+                >{book.authorName}</Card.Text>
+                {/* <Card.Text
+                style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text> */}
+                <Link to={"/book/view/" + book.bookId} className="btn btn-info" style={{backgroundColor:"#1a1668",color:"white"}}>
+                  Đọc Ngay{" "}
                 </Link>
               </Card.Body>
             </Card>
@@ -216,6 +267,7 @@ function ListBook() {
       </div>
 
       <Pagination
+      style={{borderColor:"#eaa451",color:"black",boxShadow:"none",margin:"5px"}}
         total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>

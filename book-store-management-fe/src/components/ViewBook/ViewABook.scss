@@ -1,8 +1,9 @@
 * {
 }
 
-.container {
-  margin-top: 100px;
+
+.containerSinglebook{
+  margin-top: 500px;
   font-family: "Helvetica", "Courier New", Courier, monospace;
 }
 
@@ -15,7 +16,15 @@
 .meta-info .left {
   margin-right: 50px;
 }
-
+.content{
+  width: 90%;
+}
+.content .header{
+  width: 100%;
+}
+.content .body{
+  width: 100%;
+}
 .left img {
   min-width: 500px;
   max-width: 100%;
@@ -45,6 +54,10 @@
 
 .desc {
   text-align: justify;
+}
+
+.body button {
+  margin-left: 5px;
 }
 
 iframe {

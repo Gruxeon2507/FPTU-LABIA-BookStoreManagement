@@ -11,6 +11,7 @@ import com.labia.bookstoremanagement.model.Category;
 
 import com.labia.bookstoremanagement.model.Role;
 import com.labia.bookstoremanagement.model.User;
+import com.labia.bookstoremanagement.model.UserExcelExporter;
 import com.labia.bookstoremanagement.repository.BookRepository;
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
@@ -21,10 +22,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -234,6 +241,13 @@ public class UserController {
         );
     }
 
+
+    @GetMapping("by-book/{bookId}")
+    User getUserByBookId(@PathVariable("bookId") int bookId) {
+        Book book = bookRepository.findByBookId(bookId);
+        return userRepository.getUserByBooks(book);
+    }
+
     @GetMapping("/onlyuser")
     public List<User> getSomeUsersByCondition(
             @RequestParam Integer pageNumber,
@@ -273,6 +287,20 @@ public class UserController {
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<User>> findAll(Pageable pageable,@PathVariable String searchText){
         return new ResponseEntity<>(userRepository.findAll(pageable, searchText), HttpStatus.OK);
+    }
+    
+    @GetMapping("/export")
+    public void exportUserToExcel(HttpServletResponse response) throws IOException{
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String fileName = "users_" + currentDateTime + ".xlsx";        
+        String headerValue = "attachement; filename=" +fileName;
+        response.setHeader(headerKey, headerValue);
+        List<User> listUsers = userRepository.findAll();
+        UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
+        excelExporter.export(response);     
     }
 
 

@@ -22,6 +22,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     List<Category> getCategoryByBookId(Integer bookId);
 
 
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO Book_Category(bookId, categoryId) VALUES ( :bookId, :categoryId);", nativeQuery = true)
