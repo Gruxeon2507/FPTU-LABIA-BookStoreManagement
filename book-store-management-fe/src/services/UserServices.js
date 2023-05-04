@@ -18,6 +18,10 @@ class UserServices{
     getUserByUserName(id){
         return axios.get(USER_BASE_REST_API_URL+"/"+id);
     }
+
+    checkUserName(id){
+        return axios.get(USER_BASE_REST_API_URL +"/check/"+id);
+    }
     updateUserInformation(User){
         return axios.post(USER_BASE_REST_API_URL+"/update",User);
     }   

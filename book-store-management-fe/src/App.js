@@ -27,7 +27,7 @@ import ForbiddenPage from "./components/Authentication/Forbidden";
 
 
 
-function App() {
+function App(){
   const role = window.localStorage.getItem("role");
   return (
     <div className="App">

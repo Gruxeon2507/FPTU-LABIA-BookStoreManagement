@@ -238,25 +238,58 @@ public class BookController {
         bookRepository.updateBookStatus(bookId);
     }
 
+   static  class  BookData {
+        private Book book;
+        private String createdBy;
+
+        public Book getBook() {
+            return book;
+        }
+
+        public void setBook(Book book) {
+            this.book = book;
+        }
+
+        public String getCreatedBy() {
+            return createdBy;
+        }
+
+        public void setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+        }
+
+        public BookData(Book book, String createdBy) {
+            this.book = book;
+            this.createdBy = createdBy;
+        }
+
+        public BookData() {
+        }
+        
+    }
+    
+    /**
+     *
+     * @param bookData
+     * @return
+     */
     @PostMapping("add")
-    public Book addBook(@RequestBody Book book) {
-        User u = userRepository.findByUsername("giangpt");
-        book.setCreatedBy(u);
-        book.setNoSale(0);
-        book.setNoView(0);
-        book.setApproved(false);
-        bookRepository.save(book);
+    public Book addBook(@RequestBody BookData bookData) {
+        User user = userRepository.findByUsername(bookData.createdBy);
+        bookData.book.setCreatedBy(user);
+        bookRepository.save(bookData.book);
 //        Book temp = bookRepository.findByTitle(book.getTitle());
-        BookId = book.getBookId();
-        book.setCoverPath("cover/" + book.getBookId() + ".jpg");
-        book.setPdfPath("pdf/" + book.getBookId() + ".pdf");
-        bookRepository.save(book);
+        BookId = bookData.book.getBookId();
+       bookData.book.setCoverPath("cover/" +bookData.book.getBookId() + ".jpg");
+        bookData.book.setPdfPath("pdf/" + bookData.book.getBookId() + ".pdf");
+        bookRepository.save(bookData.book);
+       
 
 //        categoryRepository.saveBook_Category(41,1);
-        for (Category c : book.getCategories()) {
-            categoryRepository.saveBook_Category(book.getBookId(), c.getCategoryId());
+        for (Category c : bookData.book.getCategories()) {
+            categoryRepository.saveBook_Category(bookData.book.getBookId(), c.getCategoryId());
         }
-        return book;
+        return bookData.book;
     }
 
     @PostMapping("/cover/upload")
@@ -330,6 +363,30 @@ public class BookController {
         return bookRepository.save(book.get());
     }
 
+//    @GetMapping("/{bookId}")
+//    public Book getBookById(@PathVariable("bookId") Integer bookId) {
+//        return bookRepository.findById(bookId).get();
+//    }
+
+//    @PostMapping("/update/{bookId}")
+//    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
+//        Optional<Book> book = bookRepository.findById(bookId);
+//        book.get().setTitle(updateBook.getTitle());
+//        book.get().setDescription(updateBook.getDescription());
+//        book.get().setAuthorName(updateBook.getAuthorName());
+//        if (updateBook.getCategories().isEmpty()) {
+//            categoryRepository.deleteBook_Category(bookId);
+//        } else {
+//            if (!book.get().getCategories().equals(updateBook.getCategories())) {
+//                categoryRepository.deleteBook_Category(bookId);
+//                for (Category c : updateBook.getCategories()) {
+//                    categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+//                }
+//            }
+//        }
+//        return bookRepository.save(book.get());
+//    }
+
     @PostMapping("/cover/update/{bookId}")
     public void updateCoverFile(@RequestParam("coverPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
@@ -361,6 +418,23 @@ public class BookController {
         }
 
     }
+
+
+//    @PostMapping("/pdf/update/{bookId}")
+//    public void updatePdfFile(@RequestParam("pdfPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
+//        String fileExtension = getFileExtension(file.getOriginalFilename());
+//        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+//            String fileName = StringUtils.cleanPath(bookId + ".pdf");
+//            try {
+//                // Save the file to the uploads directory
+//                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+//                file.transferTo(new File(uploadDir + fileName));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
 
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Book>> findAllPublic(

@@ -4,7 +4,8 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import React, { Component } from "react";
 import BookServices from "../../services/BookServices";
-import Alert from 'react-bootstrap/Alert';
+import Alert from "react-bootstrap/Alert";
+import UserServices from "../../services/UserServices";
 
 class AddBook extends Component {
   constructor(props) {
@@ -21,8 +22,19 @@ class AddBook extends Component {
       noView: null,
       authorName: "",
       selectedCategories: [],
-      error: "",
-      showError : false
+      errorTitle: "",
+      showErrorTitle: false,
+      errorAuthorName: "",
+      showErrorAuthorName: false,
+      errorDescription: "",
+      showErrorDescription: false,
+      errorCategory: "",
+      showErrorCategory: false,
+      errorCover: "",
+      showErrorCover: false,
+      errorPdf: "", 
+      showErrorPdf: false,
+      username : ""
     };
 
     this.changeTitleHandler = this.changeTitleHandler.bind(this);
@@ -54,73 +66,144 @@ class AddBook extends Component {
   };
 
   changeTitleHandler = (event) => {
+    const inputTitle = event.target.value;
+    const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    
+    if (!regex.test(inputTitle)) {
+      this.setState({
+        showErrorTitle: true,
+        errorTitle: "Please just input characters and numbers",
+      });
+      return;
+    }
     this.setState({
+      showErrorTitle: false,
+      errorTitle: "",
       title: event.target.value,
     });
   };
 
   changeAuthorNameHandler = (event) => {
+    const inputAuthorName = event.target.value;
+    const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    if (!regex.test(inputAuthorName)) {
+      this.setState({
+        showErrorAuthorName: true,
+        errorAuthorName: "Please just input characters and numbers",
+      });
+      return;
+    }
     this.setState({
-      authorName: event.target.value,
+      showErrorAuthorName: false,
+      errorAuthorName: "",
+      authorName: inputAuthorName,
     });
   };
 
   changeDescriptionHandler = (event) => {
+    const inputDescription = event.target.value;
+    const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    if (!regex.test(inputDescription)) {
+      this.setState({
+        showErrorDescription: true,
+        errorDescription: "Please just input characters and numbers",
+      });
+      return;
+    }
     this.setState({
-      description: event.target.value,
+      showErrorDescription: false,
+      errorDescription: "",
+      description: inputDescription,
     });
   };
 
   changePdfPathHandler = (event) => {
+    const pdf = event.target.files[0];
+    if (!pdf) {
+      // alert("Please choose a file");
+      this.setState({
+        showErrorPdf: true,
+        errorPdf: "Wrong file type (Please input PDF File) and less than 5MB",
+        pdfPath: null,
+      });
+      return;
+    }
+
+    if (pdf.size > 1024 * 1024 * 5) {
+      // alert("Please choose a file less than 5MB");
+      this.setState({
+        showErrorPdf: true,
+        errorPdf: "Wrong file type (Please input PDF File) and less than 5MB",
+        pdfPath: null,
+      });
+      return;
+    }
+
+    if (!pdf.type.includes("pdf")) {
+      // alert("Please pdf file.");
+      this.setState({
+        showErrorPdf: true,
+        errorPdf: "Wrong file type (Please input PDF File) and less than 5MB",
+        pdfPath: null,
+      });
+      return;
+    }
+
+    if (!pdf.type === "application/pdf") {
+      this.setState({
+        showErrorPdf: true,
+        errorPdf: "Wrong file type (Please input PDF File) and less than 5MB",
+        pdfPath: null,
+      });
+      // alert("Please select a PDF file.");
+      return;
+    }
+
     this.setState({
+      showErrorPdf: false,
+      errorPdf: "",
       pdfPath: event.target.files[0],
     });
   };
 
   changeCoverPathHandler = (event) => {
     const cover = event.target.files[0];
-
     if (!cover) {
-      alert("Please choose a file");
+      // alert("Please choose a file");
       this.setState({
-        showError : true,
-        error: "Wrong input",
+        showErrorCover: true,
+        errorCover:
+          "Wrong file type (Please input JPEG File) and less than 5MB",
         coverPath: null,
       });
       return;
     }
 
     if (cover.size > 1024 * 1024 * 5) {
-      alert("Please choose a file less than 5MB");
+      // alert("Please choose a file less than 5MB");
       this.setState({
-        showError : true,
-        error: "Wrong input",
+        showErrorCover: true,
+        errorCover:
+          "Wrong file type (Please input JPEG File) and less than 5MB",
         coverPath: null,
       });
       return;
     }
 
-    if (!cover.type.includes("image/")) {
-      alert("Please select an image file.");
+    if (!cover.type.includes("image/jpeg")) {
+      // alert("Please select an image file.");
       this.setState({
-        showError : true,
-        error: "Wrong input",
+        showErrorCover: true,
+        errorCover:
+          "Wrong file type (Please input JPEG File) and less than 5MB",
         coverPath: null,
       });
       return;
     }
-    if (!cover.endswith(".jpg")) {
-      alert("Please choose a file .jpg");
-      this.setState({
-        showError : true,
-        error: "Wrong input",
-        coverPath: null,
-      });
-      return;
-    }
+
     this.setState({
-      showError : true,
-      error: "Wrong input",
+      showErrorCover: false,
+      errorCover: "",
       coverPath: cover,
     });
   };
@@ -138,7 +221,13 @@ class AddBook extends Component {
       description,
       categories,
       selectedCategories,
+      showErrorCover,
+      showErrorPdf,
+      showErrorTitle,
+      showErrorAuthorName,
+      showErrorDescription,
     } = this.state;
+
 
     const book = {
       title: title,
@@ -155,6 +244,31 @@ class AddBook extends Component {
       //   selectedCategories: selectedCategories,
     };
 
+    const createdBy = window.localStorage.getItem("user");
+
+    const bookData = {
+      book : book,
+      createdBy : createdBy,
+    }
+
+    console.log(book.categories.length === 0);
+
+    if(book.categories.length === 0){
+      alert('Please choose category!!');
+      return;
+    }
+    
+    if (
+      showErrorCover ||
+      showErrorPdf ||
+      showErrorTitle ||
+      showErrorAuthorName ||
+      showErrorDescription
+    ) {
+      alert("Wrong input can not load data!!!");
+      return;
+    }
+
     const bookId = null;
 
     fetch("http://localhost:6789/api/books/add", {
@@ -162,7 +276,7 @@ class AddBook extends Component {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(book),
+      body: JSON.stringify(bookData),
     })
       .then((response) => {
         response.json();
@@ -178,6 +292,7 @@ class AddBook extends Component {
     formData.append("bookId", this.state.bookId);
     BookServices.updateBookCover(formData);
     BookServices.updateBookpdf(formData);
+    window.location.href = "http://localhost:3000/user/" + createdBy;
   };
 
   render() {
@@ -193,7 +308,11 @@ class AddBook extends Component {
       description,
       categories,
       selectedCategories,
-      showError
+      showErrorCover,
+      showErrorPdf,
+      showErrorTitle,
+      showErrorAuthorName,
+      showErrorDescription,
     } = this.state;
     return (
       <div>
@@ -209,6 +328,14 @@ class AddBook extends Component {
               className="form-control"
               required
             />
+            {showErrorTitle ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorTitle}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
             <label>Author name of Book:</label>
             <input
@@ -220,6 +347,14 @@ class AddBook extends Component {
               className="form-control"
               required
             />
+            {showErrorAuthorName ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorAuthorName}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
 
             <label>Description of Book:</label>
@@ -231,7 +366,16 @@ class AddBook extends Component {
               className="form-control"
               required
             />
+            {showErrorDescription ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorDescription}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
+            <label>Category: </label>
             <Select
               isMulti
               options={categories.map((category) => ({
@@ -254,7 +398,14 @@ class AddBook extends Component {
               className="form-control"
               required
             ></input>
-            <div className="error">{this.state.error}</div>
+            {showErrorPdf ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorPdf}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
             <label>Cover of book</label>
             <input
@@ -264,10 +415,15 @@ class AddBook extends Component {
               className="form-control"
               required
             ></input>
-            <div style={{height : "50px"}}></div>
-            {showError ? <Alert key={'danger'} variant={'danger'}>
-              This is a {this.state.error} alert—check it out!
-            </Alert> : null}
+            <div style={{ height: "10px" }}></div>
+            {showErrorCover ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {this.state.errorCover}
+                </Alert>
+              </>
+            ) : null}
             <br></br>
             <button className="btn btn-success" onClick={this.handleSubmit}>
               Add book
