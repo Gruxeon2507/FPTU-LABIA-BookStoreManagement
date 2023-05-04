@@ -18,10 +18,10 @@ public class AuthorizationUtils {
 
         // Hash the password with the generated salt
         String hashedPassword = BCrypt.hashpw(password, salt);
-        String truncatedPassword = hashedPassword.substring(0, Math.min(hashedPassword.length(), 50));
+//        String truncatedPassword = hashedPassword.substring(0, Math.min(hashedPassword.length(), 50));
 
         // Return the hashed password
-        return  truncatedPassword;
+        return  hashedPassword;
     }
 
     public static boolean checkPassword(String password, String hashedPassword) {

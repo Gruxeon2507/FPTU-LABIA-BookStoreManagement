@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import React, { Component } from "react";
 import BookServices from "../../services/BookServices";
 import Alert from "react-bootstrap/Alert";
+import UserServices from "../../services/UserServices";
 
 class AddBook extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class AddBook extends Component {
       showErrorCover: false,
       errorPdf: "", 
       showErrorPdf: false,
+      username : ""
     };
 
     this.changeTitleHandler = this.changeTitleHandler.bind(this);
@@ -242,6 +244,13 @@ class AddBook extends Component {
       //   selectedCategories: selectedCategories,
     };
 
+    const createdBy = window.localStorage.getItem("user");
+
+    const bookData = {
+      book : book,
+      createdBy : createdBy,
+    }
+
     console.log(book.categories.length === 0);
 
     if(book.categories.length === 0){
@@ -267,7 +276,7 @@ class AddBook extends Component {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(book),
+      body: JSON.stringify(bookData),
     })
       .then((response) => {
         response.json();

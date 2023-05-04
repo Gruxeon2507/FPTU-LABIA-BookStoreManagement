@@ -79,6 +79,16 @@ public class UserController {
     User getUser(@PathVariable String username) {
         return userRepository.findByUsername(username);
     }
+    
+      @GetMapping("/check/{username}")
+    public ResponseEntity<String> checkUsernameExists(@PathVariable("username") String username) {
+        User usernameExists = userRepository.findByUsername(username);
+        if (usernameExists != null) {
+            return ResponseEntity.ok("Username already taken");
+        } else {
+            return ResponseEntity.ok("Username available");
+        }
+    }
 
     @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {

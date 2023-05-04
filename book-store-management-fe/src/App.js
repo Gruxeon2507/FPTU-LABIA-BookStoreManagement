@@ -27,7 +27,7 @@ function App() {
         {role==="Super Admin" ? 
         (
           <>
-            <Route path="/superadmin" Component={SuperAdmin}></Route>
+            <Route path="/superadmin" Component={Dashboard}></Route>
             <Route path="" Component={ListBook}></Route>
             <Route path="/user/:userId" Component={UserProfile}></Route>
             <Route path="/user" Component={UserProfile}></Route>

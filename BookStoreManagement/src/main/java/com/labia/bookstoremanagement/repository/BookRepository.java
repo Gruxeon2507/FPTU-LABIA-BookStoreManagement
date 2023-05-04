@@ -33,7 +33,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "SELECT * FROM Book order by bookId desc LIMIT 1", nativeQuery = true)
     Book findLastBook();
 
-    @Query(value = "SELECT AUTO_INCREMENT\n"ssssssssssssssssssssssssssssssssss
+    @Query(value = "SELECT AUTO_INCREMENT\n"
             + "FROM information_schema.TABLES\n"
             + "WHERE TABLE_SCHEMA = 'fu_labia_bookstoremanagement'\n"
             + "AND TABLE_NAME = 'Book'", nativeQuery = true)
@@ -43,13 +43,11 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     public Book findByTitle(String title);
 
-    @Query("select distinct b from Book b join b.categories c where c.categoryId in :categoryIds and b.isApproved = '1'")
-    List<Book> getBookByCategoryIds(Integer[] categoryIds);
+
 
     @Query("select b.createdBy from Book b where b.bookId = :bookId ")
     User getBookCreated(Integer bookId);
 
-    public Page<Book> findByBookIdIn(List<Integer> bookIds, Pageable pageable);
 
     public List<Book> findByCreatedBy(User user);
 

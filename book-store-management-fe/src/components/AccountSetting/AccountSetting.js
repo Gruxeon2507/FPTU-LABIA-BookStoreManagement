@@ -23,15 +23,6 @@ const AccountSetting = () => {
   //   const history = useHistory();
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    UserServices.getUserByUserName(userId).then((res) => {
-      setUser(res.data);
-      setDisplayName(res.data.displayName);
-      setEmail(res.data.email);
-      setDob(res.data.dob);
-      setUsername(res.data.username);
-    });
-=======
     UserServices.getUserByUserName(window.localStorage.getItem("user")).then(
       (res) => {
         setUser(res.data);
@@ -41,7 +32,6 @@ const AccountSetting = () => {
         setUsername(res.data.username);
       }
     );
->>>>>>> Stashed changes
   }, []);
 
   const saveUser = (e) => {

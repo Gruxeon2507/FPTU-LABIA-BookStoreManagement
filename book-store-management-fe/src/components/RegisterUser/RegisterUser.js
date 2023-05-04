@@ -18,6 +18,7 @@ class RegisterUser extends Component {
       showErrorDisplayName: false,
       errorAvatar: "",
       showErrorAvatar: false,
+      usernameError : ""
     };
 
     this.changeUsernameHandler = this.changeUsernameHandler.bind(this);
@@ -119,6 +120,7 @@ class RegisterUser extends Component {
   };
 
   handleSubmit = (event) => {
+    event.preventDefault();
     const {
       username,
       password,
@@ -148,6 +150,24 @@ class RegisterUser extends Component {
         alert('can not load data to register!!!');
         return;
       }
+
+      if (this.state.username.trim() !== '') {
+        fetch(`http://localhost:6789/api/users/check/${this.state.username}`)
+          .then(response => response.text())
+          .then(data => {
+            if (data === 'Username already taken') {
+              this.setState({ usernameError: 'Username already taken' });
+              return;
+            } else {
+              this.setState({ usernameError: '' });
+            }
+          });
+      }
+
+      if(this.state.usernameError === 'Username already taken'){
+        return;
+      }
+
     fetch("http://localhost:6789/api/users/register", {
       method: "POST",
       headers: {
@@ -179,6 +199,7 @@ class RegisterUser extends Component {
       showErrorDisplayName,
       errorAvatar,
       showErrorAvatar,
+      usernameError
     } = this.state;
     return (
       <div>
@@ -202,6 +223,11 @@ class RegisterUser extends Component {
                 </Alert>
               </>
             ) : null}
+            {usernameError === '' ? null : (<>
+              <Alert key={"danger"} variant={"danger"}>
+                  {this.state.usernameError}
+                </Alert>
+            </>)}
             <br></br>
             <label>Password:</label>
             <input

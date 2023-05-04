@@ -53,8 +53,6 @@ public class BookController {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -180,25 +178,57 @@ public class BookController {
     }
     
 
+   static  class  BookData {
+        private Book book;
+        private String createdBy;
+
+        public Book getBook() {
+            return book;
+        }
+
+        public void setBook(Book book) {
+            this.book = book;
+        }
+
+        public String getCreatedBy() {
+            return createdBy;
+        }
+
+        public void setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+        }
+
+        public BookData(Book book, String createdBy) {
+            this.book = book;
+            this.createdBy = createdBy;
+        }
+
+        public BookData() {
+        }
+        
+    }
+    
+    /**
+     *
+     * @param bookData
+     * @return
+     */
     @PostMapping("add")
-    public Book addBook(@RequestBody Book book) {
-        User u = userRepository.findByUsername("giangpt");
-        book.setCreatedBy(u);
-        book.setNoSale(0);
-        book.setNoView(0);
-        book.setApproved(false);
-        bookRepository.save(book);
+    public Book addBook(@RequestBody BookData bookData) {
+        User user = userRepository.findByUsername(bookData.createdBy);
+        bookData.book.setCreatedBy(user);
+        bookRepository.save(bookData.book);
 //        Book temp = bookRepository.findByTitle(book.getTitle());
-        BookId = book.getBookId();
-        book.setCoverPath("cover/" +book.getBookId() + ".jpg");
-        book.setPdfPath("pdf/" + book.getBookId() + ".pdf");
-        bookRepository.save(book);
+        BookId = bookData.book.getBookId();
+       bookData.book.setCoverPath("cover/" +bookData.book.getBookId() + ".jpg");
+        bookData.book.setPdfPath("pdf/" + bookData.book.getBookId() + ".pdf");
+        bookRepository.save(bookData.book);
 
 //        categoryRepository.saveBook_Category(41,1);
-        for (Category c : book.getCategories()) {
-            categoryRepository.saveBook_Category(book.getBookId(), c.getCategoryId());
+        for (Category c : bookData.book.getCategories()) {
+            categoryRepository.saveBook_Category(bookData.book.getBookId(), c.getCategoryId());
         }
-        return book;
+        return bookData.book;
     }
     
 
@@ -248,10 +278,8 @@ public class BookController {
         categoryRepository.deleteBook_Category(bookId);
         bookRepository.deleteById(bookId);
     }
-<<<<<<< Updated upstream
     
     
-=======
 
     @GetMapping("/{bookId}")
     public Book getBookById(@PathVariable("bookId") Integer bookId) {
@@ -308,7 +336,6 @@ public class BookController {
         }
 
     }
->>>>>>> Stashed changes
 
 
 
