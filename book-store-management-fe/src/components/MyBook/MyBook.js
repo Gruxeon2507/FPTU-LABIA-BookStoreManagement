@@ -85,8 +85,7 @@ const MyBook = () => {
                   <br />
                   <button className="btn btn-warning">
                     <Link
-                      to={"http://localhost:6789/api/books/pdf/" + book.bookId}
-                      target="_blank"
+                      to={"../api/books/pdf/" + book.bookId}
                     >
                       View PDF
                     </Link>
@@ -97,8 +96,7 @@ const MyBook = () => {
                   <button className="btn btn-success"                   
                   >
                     <Link
-                      to={"http://localhost:3000/book/update/" + book.bookId}
-                      target="_blank"
+                      to={"../book/update/" + book.bookId}
                     >
                       Update
                     </Link>
@@ -130,7 +128,7 @@ const MyBook = () => {
         }}
       />
 
-      <div className="public-book">
+      <div className="public-book mt-5">
         <h1>Public Books</h1>
         <table className="table table-bordered table-striped">
           <thead>

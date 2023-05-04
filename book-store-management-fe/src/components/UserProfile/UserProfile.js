@@ -77,7 +77,7 @@ function UserProfile() {
                         <div className="user-info-form-1">
                             <div className="user-info-form-item">
                                 <label for="email">Day Joined: </label>
-                                <input type="text" value={user.createdDate} disabled />
+                                <input type="text" value={user.createDate} disabled />
                             </div>
                             <div className="user-info-form-item">
                                 <label for="dob">Last Active:</label>

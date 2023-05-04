@@ -191,7 +191,7 @@ class RegisterUser extends Component {
           "Registed successfully want to change page to login ?"
         );
         if (confirm) {
-          window.location.href = "http://localhost:3000/register";
+          window.location.href = "http://localhost:3000/login";
         }
       }
     }
