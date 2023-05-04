@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import Alert from "react-bootstrap/Alert";
 import "./Login.scss";
 import { Link } from 'react-router-dom';
 function LoginForm() {
@@ -73,6 +74,14 @@ function LoginForm() {
             <label for="password">Password </label>
             <input type="password" value={password} placeholder='password' required onChange={(event) => setPassword(event.target.value)} />
           </div>
+          {loginFailed ? (
+        <>
+          <div style={{ height: "10px" }}></div>
+          <Alert key={"danger"} variant={"danger"}>
+            {messageLoginFailed}
+          </Alert>
+        </>
+      ) : null}
 
           <button className="btn btn--form" type="submit" value="Log in">
             Log in

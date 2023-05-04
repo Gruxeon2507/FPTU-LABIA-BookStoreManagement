@@ -363,29 +363,29 @@ public class BookController {
         return bookRepository.save(book.get());
     }
 
-    @GetMapping("/{bookId}")
-    public Book getBookById(@PathVariable("bookId") Integer bookId) {
-        return bookRepository.findById(bookId).get();
-    }
+//    @GetMapping("/{bookId}")
+//    public Book getBookById(@PathVariable("bookId") Integer bookId) {
+//        return bookRepository.findById(bookId).get();
+//    }
 
-    @PostMapping("/update/{bookId}")
-    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        book.get().setTitle(updateBook.getTitle());
-        book.get().setDescription(updateBook.getDescription());
-        book.get().setAuthorName(updateBook.getAuthorName());
-        if (updateBook.getCategories().isEmpty()) {
-            categoryRepository.deleteBook_Category(bookId);
-        } else {
-            if (!book.get().getCategories().equals(updateBook.getCategories())) {
-                categoryRepository.deleteBook_Category(bookId);
-                for (Category c : updateBook.getCategories()) {
-                    categoryRepository.saveBook_Category(bookId, c.getCategoryId());
-                }
-            }
-        }
-        return bookRepository.save(book.get());
-    }
+//    @PostMapping("/update/{bookId}")
+//    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
+//        Optional<Book> book = bookRepository.findById(bookId);
+//        book.get().setTitle(updateBook.getTitle());
+//        book.get().setDescription(updateBook.getDescription());
+//        book.get().setAuthorName(updateBook.getAuthorName());
+//        if (updateBook.getCategories().isEmpty()) {
+//            categoryRepository.deleteBook_Category(bookId);
+//        } else {
+//            if (!book.get().getCategories().equals(updateBook.getCategories())) {
+//                categoryRepository.deleteBook_Category(bookId);
+//                for (Category c : updateBook.getCategories()) {
+//                    categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+//                }
+//            }
+//        }
+//        return bookRepository.save(book.get());
+//    }
 
     @PostMapping("/cover/update/{bookId}")
     public void updateCoverFile(@RequestParam("coverPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
@@ -420,21 +420,21 @@ public class BookController {
     }
 
 
-    @PostMapping("/pdf/update/{bookId}")
-    public void updatePdfFile(@RequestParam("pdfPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
-        String fileExtension = getFileExtension(file.getOriginalFilename());
-        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(bookId + ".pdf");
-            try {
-                // Save the file to the uploads directory
-                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
-                file.transferTo(new File(uploadDir + fileName));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
+//    @PostMapping("/pdf/update/{bookId}")
+//    public void updatePdfFile(@RequestParam("pdfPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
+//        String fileExtension = getFileExtension(file.getOriginalFilename());
+//        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
+//            String fileName = StringUtils.cleanPath(bookId + ".pdf");
+//            try {
+//                // Save the file to the uploads directory
+//                String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
+//                file.transferTo(new File(uploadDir + fileName));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
 
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Book>> findAllPublic(

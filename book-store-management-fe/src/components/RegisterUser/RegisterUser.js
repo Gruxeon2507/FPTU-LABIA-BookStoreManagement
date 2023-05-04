@@ -18,7 +18,8 @@ class RegisterUser extends Component {
       showErrorDisplayName: false,
       errorAvatar: "",
       showErrorAvatar: false,
-      usernameError : ""
+      usernameError: "",
+      checkUsername: true,
     };
 
     this.changeUsernameHandler = this.changeUsernameHandler.bind(this);
@@ -30,6 +31,22 @@ class RegisterUser extends Component {
 
   changeUsernameHandler = (event) => {
     const inputUsername = event.target.value;
+
+    if (this.state.username.trim() !== "") {
+      fetch(`http://localhost:6789/api/users/check/${inputUsername}`)
+        .then((response) => response.text())
+        .then((data) => {
+          if (data === "Username already taken") {
+            this.setState({
+              usernameError: "Username already taken",
+              checkUsername: false,
+            });
+            return;
+          } else {
+            this.setState({ usernameError: "", checkUsername: true });
+          }
+        });
+    }
     const regex = /^[a-zA-Z0-9\s]*$/;
     if (!regex.test(inputUsername)) {
       this.setState({
@@ -57,7 +74,8 @@ class RegisterUser extends Component {
     if (!regex.test(inputDisplayName)) {
       this.setState({
         showErrorDisplayName: true,
-        errorDisplayName: "Please just input characters and numbers and not empty",
+        errorDisplayName:
+          "Please just input characters and numbers and not empty",
       });
       return;
     }
@@ -144,46 +162,39 @@ class RegisterUser extends Component {
       dob: dob,
     };
 
-    if(showErrorAvatar || 
-      showErrorDisplayName ||
-      showErrorUsername ){
-        alert('can not load data to register!!!');
-        return;
-      }
+    if (showErrorAvatar || showErrorDisplayName || showErrorUsername) {
+      alert("can not load data to register!!!");
+      return;
+    }
 
-      if (this.state.username.trim() !== '') {
-        fetch(`http://localhost:6789/api/users/check/${this.state.username}`)
-          .then(response => response.text())
-          .then(data => {
-            if (data === 'Username already taken') {
-              this.setState({ usernameError: 'Username already taken' });
-              return;
-            } else {
-              this.setState({ usernameError: '' });
-            }
-          });
-      }
 
-      if(this.state.usernameError === 'Username already taken'){
-        return;
+    if (this.state.usernameError === "Username already taken") {
+      return;
+    } else {
+      fetch("http://localhost:6789/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle API response
+        });
+      const formData = new FormData();
+      formData.append("avatarPath", this.state.avatarPath);
+      formData.append("username", this.state.username);
+      UserServices.registerUserAvatar(formData);
+      if (this.state.checkUsername) {
+        const confirm = window.confirm(
+          "Registed successfully want to change page to login ?"
+        );
+        if (confirm) {
+          window.location.href = "http://localhost:3000/register";
+        }
       }
-
-    fetch("http://localhost:6789/api/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle API response
-      });
-    const formData = new FormData();
-    formData.append("avatarPath", this.state.avatarPath);
-    formData.append("username", this.state.username);
-    UserServices.registerUserAvatar(formData);
-    window.location.href="http://localhost:3000/login";
+    }
   };
 
   render() {
@@ -200,7 +211,7 @@ class RegisterUser extends Component {
       showErrorDisplayName,
       errorAvatar,
       showErrorAvatar,
-      usernameError
+      usernameError,
     } = this.state;
     return (
       <div>
@@ -311,8 +322,7 @@ class RegisterUser extends Component {
         <div className="container">
           <h2 className="login-title">Sign Up</h2>
 
-          <form className="login-form" >
-
+          <form className="login-form">
             <div>
               <label for="email">Email </label>
               <input
@@ -324,6 +334,21 @@ class RegisterUser extends Component {
                 className="form-control"
                 required
               />
+              {usernameError === "" ? null : (
+                <>
+                  <Alert key={"danger"} variant={"danger"}>
+                    {this.state.usernameError}
+                  </Alert>
+                </>
+              )}
+              {showErrorUsername ? (
+                <>
+                  <div style={{ height: "10px" }}></div>
+                  <Alert key={"danger"} variant={"danger"}>
+                    {this.state.errorUsername}
+                  </Alert>
+                </>
+              ) : null}
             </div>
 
             <div>
@@ -350,6 +375,14 @@ class RegisterUser extends Component {
                 className="form-control"
                 required
               />
+              {showErrorDisplayName ? (
+                <>
+                  <div style={{ height: "10px" }}></div>
+                  <Alert key={"danger"} variant={"danger"}>
+                    {this.state.errorDisplayName}
+                  </Alert>
+                </>
+              ) : null}
             </div>
 
             <div>
@@ -385,11 +418,23 @@ class RegisterUser extends Component {
                 className="form-control"
                 required
               ></input>
+              {showErrorAvatar ? (
+                <>
+                  <div style={{ height: "10px" }}></div>
+                  <Alert key={"danger"} variant={"danger"}>
+                    {this.state.errorAvatar}
+                  </Alert>
+                </>
+              ) : null}
             </div>
-            <button className="btn btn--form" type="submit" value="Log in" onClick={this.handleSubmit}>
+            <button
+              className="btn btn--form"
+              type="submit"
+              value="Log in"
+              onClick={this.handleSubmit}
+            >
               Register
             </button>
-
           </form>
         </div>
       </div>

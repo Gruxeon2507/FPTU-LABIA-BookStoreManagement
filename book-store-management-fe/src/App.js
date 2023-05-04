@@ -27,7 +27,7 @@ import ForbiddenPage from "./components/Authentication/Forbidden";
 
 
 
-function App() {
+function App(){
   const role = window.localStorage.getItem("role");
   return (
     <div className="App">
@@ -46,18 +46,6 @@ function App() {
 
 
         <Route path="/login" Component={LoginForm}></Route>
-        {role==="Super Admin" ? 
-        (
-          <>
-            <Route path="/superadmin" Component={Dashboard}></Route>
-            <Route path="" Component={ListBook}></Route>
-            <Route path="/user/:userId" Component={UserProfile}></Route>
-            <Route path="/user" Component={UserProfile}></Route>
-            <Route path="/user/setting/:userId" Component={AccountSetting}></Route>
-            <Route path="/admin/user" Component={ListUser}></Route>
-            <Route path="/book/view/:bookId" Component={ViewABook}></Route>
-          </>
-        ) : (<></>)
         <Route path="/register" Component={RegisterUser}></Route>
         {role === "Super Admin" ?
           (
