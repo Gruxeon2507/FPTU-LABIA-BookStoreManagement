@@ -121,10 +121,10 @@ function ListBook() {
       }
     });
   };
-  useEffect(() => {
-    if(checked.length!==0){
-      handleSubmit();}
-  }, [checked]);
+  // useEffect(() => {
+  //   if(checked.length!==0){
+  //     handleSubmit();}
+  // }, [checked]);
   
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
@@ -151,7 +151,7 @@ function ListBook() {
   console.log("total page: " + totalItems);
 
   const handleSubmit = (categoryId) => {
-      handleCheck(categoryId)
+      // handleCheck(categoryId)
       console.log("check on submit:" + checked);
       setCurrentPage(1);
       console.log({ ids: checked });
@@ -164,6 +164,7 @@ function ListBook() {
 
   const handleButtonClick = () => {
     setIsVisible(!isVisible);
+    handleReset()
   };
   return (
     <>
@@ -228,9 +229,10 @@ function ListBook() {
             </label>
           </div>
         ))}
+
+      <div className="btn btn-success" onClick={handleSubmit}>Find</div>
       </div>
       }
-
       <div className="list-books row">
         {pageBooks.map((book) => (
           <div
