@@ -58,9 +58,9 @@ function ListBook() {
 
   const findCondition = () => {
     setCondition(condition);
-    console.log(condition.length)
-    if(condition.length){
-      getAllPublicBooks()
+    console.log(condition.length);
+    if (condition.length) {
+      getAllPublicBooks();
     }
     // console.log(
     //   "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
@@ -122,10 +122,11 @@ function ListBook() {
     });
   };
   useEffect(() => {
-    if(checked.length!==0){
-      handleSubmit();}
+    if (checked.length !== 0) {
+      handleSubmit();
+    }
   }, [checked]);
-  
+
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
@@ -151,14 +152,14 @@ function ListBook() {
   console.log("total page: " + totalItems);
 
   const handleSubmit = (categoryId) => {
-      handleCheck(categoryId)
-      console.log("check on submit:" + checked);
-      setCurrentPage(1);
-      console.log({ ids: checked });
-      const categoryIds = checked.join(",");
-      console.log(categoryIds);
-      getPageBooksByCategories(categoryIds, 0, sizePerPage);
-      getBooksByCategories(categoryIds);
+    handleCheck(categoryId);
+    console.log("check on submit:" + checked);
+    setCurrentPage(1);
+    console.log({ ids: checked });
+    const categoryIds = checked.join(",");
+    console.log(categoryIds);
+    getPageBooksByCategories(categoryIds, 0, sizePerPage);
+    getBooksByCategories(categoryIds);
   };
   const [isVisible, setIsVisible] = useState(false);
 
@@ -173,7 +174,13 @@ function ListBook() {
             size="sm"
             variant="outline-info"
             type="button"
-            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            style={{
+              borderColor: "#eaa451",
+              color: "white",
+              backgroundColor: "#eaa451",
+              boxShadow: "none",
+              margin: "5px",
+            }}
             // onClick={handleReset}
             onClick={handleButtonClick}
           >
@@ -186,8 +193,12 @@ function ListBook() {
           name="search"
           className={"info-border  text-black w-50 "}
           value={condition}
-          onChange={(e) => {setCondition(e.target.value)}}
-          onInput={(e) => {findCondition()}}
+          onChange={(e) => {
+            setCondition(e.target.value);
+          }}
+          onInput={(e) => {
+            findCondition();
+          }}
         />
         {/* </div> */}
         <div className="itemSearch">
@@ -195,9 +206,14 @@ function ListBook() {
             size="sm"
             variant="outline-info"
             type="button"
-            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            style={{
+              borderColor: "#eaa451",
+              color: "white",
+              backgroundColor: "#eaa451",
+              boxShadow: "none",
+              margin: "5px",
+            }}
             onClick={findCondition}
-            
           >
             <FontAwesomeIcon icon={faSearch} />
           </Button>
@@ -207,29 +223,36 @@ function ListBook() {
             size="sm"
             variant="outline-danger"
             type="button"
-            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            style={{
+              borderColor: "#eaa451",
+              color: "white",
+              backgroundColor: "#eaa451",
+              boxShadow: "none",
+              margin: "5px",
+            }}
             onClick={() => handleReset()}
           >
             <FontAwesomeIcon icon={faTimes} />
           </Button>
         </div>
       </div>
-      {isVisible && <div className="categories row">
-        {categories.map((category) => (
-          <div className="select col-6 col-md-3 col-sm-4 d-flex ">
-            <label key={category.categoryId}>
-              <input
-                type="checkbox"
-                className="form-check-input w-20 h-20 ms-1 me-1"
-                checked={checked.includes(category.categoryId)}
-                onChange={() => handleCheck(category.categoryId)}
-              />
-              {category.categoryName}
-            </label>
-          </div>
-        ))}
-      </div>
-      }
+      {isVisible && (
+        <div className="categories row">
+          {categories.map((category) => (
+            <div className="select col-6 col-md-3 col-sm-4 d-flex ">
+              <label key={category.categoryId}>
+                <input
+                  type="checkbox"
+                  className="form-check-input w-20 h-20 ms-1 me-1"
+                  checked={checked.includes(category.categoryId)}
+                  onChange={() => handleCheck(category.categoryId)}
+                />
+                {category.categoryName}
+              </label>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="list-books row">
         {pageBooks.map((book) => (
@@ -239,24 +262,45 @@ function ListBook() {
               book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
-            <Card className="card" style={{ width: "19rem", height:"26rem"}}>
+            <Card className="card" style={{ width: "19rem", height: "26rem" }}>
               <div className="cover">
                 <Card.Img
                   variant="top"
                   src={"http://localhost:6789/api/books/cover/" + book.bookId}
-                  style={{ height: "14rem" ,width: "auto"}}
+                  style={{ height: "14rem", width: "auto" }}
                 />
               </div>
-              <Card.Body style={{height:"16rem"}}>
+              <Card.Body style={{ height: "16rem" }}>
                 <Card.Title
-                  style={{ height: "3rem" ,width: "auto",display:"flex",alignItems:"center",justifyContent:"center",color:"#1a1668",fontWeight:"800"}}
-                >{book.title}</Card.Title>
+                  style={{
+                    height: "3rem",
+                    width: "auto",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#1a1668",
+                    fontWeight: "800",
+                  }}
+                >
+                  {book.title}
+                </Card.Title>
                 <Card.Text
-                style={{ height: "2rem" ,width: "auto",color:"#eaa451",fontWeight:"bold"}}
-                >{book.authorName}</Card.Text>
+                  style={{
+                    height: "2rem",
+                    width: "auto",
+                    color: "#eaa451",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {book.authorName}
+                </Card.Text>
                 {/* <Card.Text
                 style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text> */}
-                <Link to={"/book/view/" + book.bookId} className="btn btn-info" style={{backgroundColor:"#1a1668",color:"white"}}>
+                <Link
+                  to={"/book/view/" + book.bookId}
+                  className="btn btn-info"
+                  style={{ backgroundColor: "#1a1668", color: "white" }}
+                >
                   Đọc Ngay{" "}
                 </Link>
               </Card.Body>
@@ -266,7 +310,12 @@ function ListBook() {
       </div>
 
       <Pagination
-      style={{borderColor:"#eaa451",color:"black",boxShadow:"none",margin:"5px"}}
+        style={{
+          borderColor: "#eaa451",
+          color: "black",
+          boxShadow: "none",
+          margin: "5px",
+        }}
         total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>
