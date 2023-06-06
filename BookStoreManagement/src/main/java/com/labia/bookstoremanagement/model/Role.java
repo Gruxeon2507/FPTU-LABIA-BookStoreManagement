@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
@@ -30,7 +31,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "Role")
-public class Role  implements Serializable{
+public class Role  implements GrantedAuthority{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +55,9 @@ public class Role  implements Serializable{
     public String toString() {
         return  roleName;
     }
-
+    @Override
+    public String getAuthority() {
+        return "test";
+    }
     
 }

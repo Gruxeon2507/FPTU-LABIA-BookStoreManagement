@@ -27,13 +27,12 @@ import ForbiddenPage from "./components/Authentication/Forbidden";
 
 
 
-function App(){
+function App() {
   const role = window.localStorage.getItem("role");
   return (
     <div className="App">
-      {role ?
-        (<Navbar />) : ""
-      }
+      <Navbar />
+
       <Routes>
         {/* 
         <Route path="" Component={ListBook}></Route>
@@ -47,7 +46,19 @@ function App(){
 
         <Route path="/login" Component={LoginForm}></Route>
         <Route path="/register" Component={RegisterUser}></Route>
-        {role === "Super Admin" ?
+        <Route path="/admin" Component={Dashboard}></Route>
+        <Route path="/superadmin" Component={Dashboard}></Route>
+        <Route path="" Component={ListBook}></Route>
+        <Route path="/user/:userId" Component={UserProfile}></Route>
+        <Route path="/user" Component={UserProfile}></Route>
+        <Route path="/user/setting" Component={AccountSetting}></Route>
+        <Route path="/admin/user" Component={ListUser}></Route>
+        <Route path="/book/view/:bookId" Component={ViewABook}></Route>
+        <Route path="/book/add" Component={AddBook}></Route>
+        <Route path="/book/update/:bookId" Component={UpdateBook}></Route>
+        <Route path="/admin/book" Component={AdminBooks}></Route>
+        <Route path="/mybook" Component={MyBook}></Route>
+        {/* {role === "Super Admin" ?
           (
             <>
               <Route path="/admin" Component={Dashboard}></Route>
@@ -98,7 +109,7 @@ function App(){
             </>
           ) : (<><Route path='*' Component={AccessDenied}></Route></>)
         }
-        <Route path='*' Component={AccessDenied}></Route>
+        <Route path='*' Component={AccessDenied}></Route> */}
 
 
       </Routes>

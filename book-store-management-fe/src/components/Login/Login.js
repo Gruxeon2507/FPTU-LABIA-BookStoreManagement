@@ -27,15 +27,9 @@ function LoginForm() {
         "http://localhost:6789/api/auth/login",
         { username, password }
       );
-      window.sessionStorage.setItem("user", response.data);
-      window.localStorage.removeItem("user");
-      window.localStorage.removeItem("role");
-      window.localStorage.setItem("user", response.data.username);
-      window.localStorage.setItem("role", response.data.roles[0].roleName);
       console.log(response.data);
-      console.log(window.localStorage.getItem("user"));
-      console.log(window.localStorage.getItem("role"));
-      // Set a timeout to remove the "user" item after 30 minutes (1,800,000 milliseconds)
+      const token = response.data;
+      localStorage.setItem("token",token);
       window.location.href = "/";
     } catch (error) {
       setLoginFailed(true);

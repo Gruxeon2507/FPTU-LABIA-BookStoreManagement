@@ -84,11 +84,18 @@ const MyBook = () => {
                   ></img>
                   <br />
                   <button className="btn btn-warning">
-                    <Link
-                      to={"../api/books/pdf/" + book.bookId}
+                    {/* <a
+                      href={"http://localhost:6789/api/books/pdf/" + book.bookId}
                     >
                       View PDF
-                    </Link>
+                    </a> */}
+                    <Link
+                  to={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                  target="_blank"
+                  x
+                >
+                  View PDF
+                </Link>
                   </button>
                 </td>
                 <td className="align-middle text-start">{book.description}</td>               

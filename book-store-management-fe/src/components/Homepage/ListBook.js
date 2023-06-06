@@ -121,12 +121,11 @@ function ListBook() {
       }
     });
   };
-  useEffect(() => {
-    if (checked.length !== 0) {
-      handleSubmit();
-    }
-  }, [checked]);
-
+  // useEffect(() => {
+  //   if(checked.length!==0){
+  //     handleSubmit();}
+  // }, [checked]);
+  
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
@@ -152,19 +151,20 @@ function ListBook() {
   console.log("total page: " + totalItems);
 
   const handleSubmit = (categoryId) => {
-    handleCheck(categoryId);
-    console.log("check on submit:" + checked);
-    setCurrentPage(1);
-    console.log({ ids: checked });
-    const categoryIds = checked.join(",");
-    console.log(categoryIds);
-    getPageBooksByCategories(categoryIds, 0, sizePerPage);
-    getBooksByCategories(categoryIds);
+      // handleCheck(categoryId)
+      console.log("check on submit:" + checked);
+      setCurrentPage(1);
+      console.log({ ids: checked });
+      const categoryIds = checked.join(",");
+      console.log(categoryIds);
+      getPageBooksByCategories(categoryIds, 0, sizePerPage);
+      getBooksByCategories(categoryIds);
   };
   const [isVisible, setIsVisible] = useState(false);
 
   const handleButtonClick = () => {
     setIsVisible(!isVisible);
+    handleReset()
   };
   return (
     <>
@@ -236,24 +236,24 @@ function ListBook() {
           </Button>
         </div>
       </div>
-      {isVisible && (
-        <div className="categories row">
-          {categories.map((category) => (
-            <div className="select col-6 col-md-3 col-sm-4 d-flex ">
-              <label key={category.categoryId}>
-                <input
-                  type="checkbox"
-                  className="form-check-input w-20 h-20 ms-1 me-1"
-                  checked={checked.includes(category.categoryId)}
-                  onChange={() => handleCheck(category.categoryId)}
-                />
-                {category.categoryName}
-              </label>
-            </div>
-          ))}
-        </div>
-      )}
+      {isVisible && <div className="categories row">
+        {categories.map((category) => (
+          <div className="select col-6 col-md-3 col-sm-4 d-flex ">
+            <label key={category.categoryId}>
+              <input
+                type="checkbox"
+                className="form-check-input w-20 h-20 ms-1 me-1"
+                checked={checked.includes(category.categoryId)}
+                onChange={() => handleCheck(category.categoryId)}
+              />
+              {category.categoryName}
+            </label>
+          </div>
+        ))}
 
+      <div className="btn btn-success" onClick={handleSubmit}>Find</div>
+      </div>
+      }
       <div className="list-books row">
         {pageBooks.map((book) => (
           <div
