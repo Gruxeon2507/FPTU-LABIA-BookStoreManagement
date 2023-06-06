@@ -4,9 +4,11 @@
  */
 package com.labia.bookstoremanagement.controller;
 
+import com.labia.bookstoremanagement.configuration.JwtTokenFilter;
 import com.labia.bookstoremanagement.model.Session;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.utils.AuthorizationUtils;
+import com.labia.bookstoremanagement.utils.JwtTokenUtil;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,18 +36,27 @@ public class AuthenticationController {
     @Autowired
     private com.labia.bookstoremanagement.repository.UserRepository userRepository;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    
+    @Autowired 
+    private JwtTokenFilter jwtTokenFilter;
+    
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User credentials, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = userRepository.findByUsername(credentials.getUsername());
+        
         if (user != null && (user.getPassword().equals(credentials.getPassword())||AuthorizationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
             HttpSession session = request.getSession();
             user.setPassword("");
             String sessionId = UUID.randomUUID().toString();
-           
+
             session.setAttribute("sessionId", session.getId());
             session.setAttribute("user", user);
 
-            return ResponseEntity.ok(user);
+            String token = jwtTokenUtil.generateToken(credentials);
+            request.setAttribute("token", token);
+            return ResponseEntity.ok(token);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
