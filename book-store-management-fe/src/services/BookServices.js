@@ -1,6 +1,6 @@
 import axios from "axios";
 import { json } from "react-router";
-
+import api from "./BaseAuthenticationServices";
 const BOOK_BASE_REST_API_URL = "http://localhost:6789/api/books";
 
 
@@ -12,7 +12,7 @@ class BookService {
     return axios.get(BOOK_BASE_REST_API_URL + "/api/image/" + id);
   }
   getBookByUser(username) {
-    return axios.get(BOOK_BASE_REST_API_URL + "/by-user/" + username);
+    return api.get("api/books/by-user");
   }
   getPageBooks(pageNumber, pageSize) {
     console.log(
