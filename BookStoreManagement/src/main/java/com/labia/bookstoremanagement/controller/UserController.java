@@ -17,6 +17,7 @@ import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
 import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import com.labia.bookstoremanagement.utils.DateTimeUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,6 +33,7 @@ import java.util.Date;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -55,7 +57,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
  * @author emiukhoahoc
  */
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -86,8 +87,8 @@ public class UserController {
     User getUser(@PathVariable String username) {
         return userRepository.findByUsername(username);
     }
-    
-      @GetMapping("/check/{username}")
+
+    @GetMapping("/check/{username}")
     public ResponseEntity<String> checkUsernameExists(@PathVariable("username") String username) {
         User usernameExists = userRepository.findByUsername(username);
         if (usernameExists != null) {
@@ -149,15 +150,15 @@ public class UserController {
 
     @PostMapping("/register")
     public User registerUser(@RequestBody User user) {
-        user.setAvatarPath("avatar/"+user.getUsername()+".jpg");
+        user.setAvatarPath("avatar/" + user.getUsername() + ".jpg");
         user.setPassword(AuthorizationUtils.hashPassword(user.getPassword()));
         user.setCreateDate(DateTimeUtils.getSqlDateNow());
         user.setLastActive(DateTimeUtils.getSqlTimeStampNow());
         userRepository.save(user);
         userRepository.saveUser_Role(user.getUsername(), 3);
-         return userRepository.save(user);
+        return userRepository.save(user);
     }
-    
+
     @PostMapping("/register/avatar/upload")
     public void registerFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
@@ -173,7 +174,7 @@ public class UserController {
             }
         }
     }
-   
+
 
     @DeleteMapping("/{username}")
     ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
@@ -263,7 +264,7 @@ public class UserController {
         return userRepository.countOnlyRoleUser();
     }
 
-//    @GetMapping("/onlyadmin")
+    //    @GetMapping("/onlyadmin")
 //    List<User> getRoleAdmin() {
 //        String username = "khoahoc";
 //        return userRepository.getOnlyRoleAdmin(username);
@@ -283,24 +284,24 @@ public class UserController {
         String username = "khoahoc";
         return userRepository.countOnlyRoleAdmin(username);
     }
-    
+
     @GetMapping("/search/{searchText}")
-    ResponseEntity<Page<User>> findAll(Pageable pageable,@PathVariable String searchText){
+    ResponseEntity<Page<User>> findAll(Pageable pageable, @PathVariable String searchText) {
         return new ResponseEntity<>(userRepository.findAll(pageable, searchText), HttpStatus.OK);
     }
-    
+
     @GetMapping("/export")
-    public void exportUserToExcel(HttpServletResponse response) throws IOException{
+    public void exportUserToExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-        String fileName = "users_" + currentDateTime + ".xlsx";        
-        String headerValue = "attachement; filename=" +fileName;
+        String fileName = "users_" + currentDateTime + ".xlsx";
+        String headerValue = "attachement; filename=" + fileName;
         response.setHeader(headerKey, headerValue);
         List<User> listUsers = userRepository.findAll();
         UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
-        excelExporter.export(response);     
+        excelExporter.export(response);
     }
 
 

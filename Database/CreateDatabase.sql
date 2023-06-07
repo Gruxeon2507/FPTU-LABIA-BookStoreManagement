@@ -85,7 +85,7 @@ ALTER TABLE Book_Category ADD CONSTRAINT FK_BookCategory_Book FOREIGN KEY(bookId
 REFERENCES Book (bookId);
 ALTER TABLE Book_Category ADD CONSTRAINT FK_BookCategory_Category FOREIGN KEY(categoryId)
 REFERENCES Category (categoryId);
-select * from book b join user u on  b.createdBy = u.userName where b.createdBy  = 'maiphuonghoang'
+-- select * from book b join user u on  b.createdBy = u.userName where b.createdBy  = 'maiphuonghoang'
 /*
 SELECT * FROM `User`;
 SELECT * FROM `Role`;
