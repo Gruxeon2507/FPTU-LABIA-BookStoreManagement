@@ -36,7 +36,7 @@ function UserProfile() {
                 setBooks(res.data);
             });
         } else {
-            UserServices.getUserByUserName(loginUser).then((res) => {
+            UserServices.getUserByUserName(loginUser).then((res) => { 
                 setUser(res.data);
             });
             BookServices.getBookByUser(loginUser).then((res) => {

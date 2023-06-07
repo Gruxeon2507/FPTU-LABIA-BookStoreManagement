@@ -3,6 +3,7 @@ import UserServices from "../../services/UserServices";
 import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
+import api from "../../services/BaseAuthenticationServices";
 
 const AccountSetting = () => {
   const [user, setUser] = useState({});
@@ -22,7 +23,10 @@ const AccountSetting = () => {
   //   const history = useHistory();
 
   useEffect(() => {
-    UserServices.getUserByUserName(window.localStorage.getItem("user")).then(
+    api.get("/api/users/loginuser").then((res) =>
+      setUsername(res.data))
+
+    api.get("/api/users/info").then(
       (res) => {
         setUser(res.data);
         setDisplayName(res.data.displayName);
@@ -157,76 +161,76 @@ const AccountSetting = () => {
       </form> */}
 
       <div className="container">
-          <h2 className="login-title">Account Setting</h2>
+        <h2 className="login-title">Account Setting</h2>
 
-          <form className="login-form" >
+        <form className="login-form" >
 
-            <div>
-              <label for="username">Username </label>
-              <input
-                type="text"
-                value={username}
-                name="username"
-                onChange={changeDisplayNameHandler}
-              />
-            </div>
+          <div>
+            <label for="username">Username </label>
+            <input
+              type="text"
+              value={username}
+              name="username"
+              onChange={changeDisplayNameHandler}
+            />
+          </div>
 
-            <div>
-              <label for="displayName">Display Name </label>
-              <input
-                type="text"
-                value={displayName}
-                name="displayName"
-                onChange={changeDisplayNameHandler}
-                placeholder="Enter Display Name"
-                className="form-control"
-                
-              />
-            </div>
+          <div>
+            <label for="displayName">Display Name </label>
+            <input
+              type="text"
+              value={displayName}
+              name="displayName"
+              onChange={changeDisplayNameHandler}
+              placeholder="Enter Display Name"
+              className="form-control"
 
-            <div>
-              <label for="email">Email </label>
-              <input
-                type="text"
-                value={email}
-                name="email"
-                onChange={changeGmailHandler}
-                placeholder="Enter email"
-                className="form-control"
-                
-              />
-            </div>
-            <div>
-              <label for="dob">Day Of Birth </label>
-              <input
-                type="date"
-                value={dob}
-                name="dob"
-                onChange={changeDobHandler}
-                placeholder="Enter email"
-                className="form-control"
-                
-              />
-            </div>
-            <div>
-              <label for="avatarPath">Avatar </label>
-              <input
-                type="file"
-                name="avatarPath"
-                onChange={changeAvatarHandler}
-                className="form-control"
-                
-              ></input>
-            </div>
-            <button className="btn btn--form" type="submit" value="Log in" onClick={saveUser}>
-              Change Information
-            </button>
-            <button className="btn btn-danger" >
-          <Link to={"../../user/"+username}>Cancel</Link>
-        </button>
+            />
+          </div>
 
-          </form>
-        </div>
+          <div>
+            <label for="email">Email </label>
+            <input
+              type="text"
+              value={email}
+              name="email"
+              onChange={changeGmailHandler}
+              placeholder="Enter email"
+              className="form-control"
+
+            />
+          </div>
+          <div>
+            <label for="dob">Day Of Birth </label>
+            <input
+              type="date"
+              value={dob}
+              name="dob"
+              onChange={changeDobHandler}
+              placeholder="Enter email"
+              className="form-control"
+
+            />
+          </div>
+          <div>
+            <label for="avatarPath">Avatar </label>
+            <input
+              type="file"
+              name="avatarPath"
+              onChange={changeAvatarHandler}
+              className="form-control"
+
+            ></input>
+          </div>
+          <button className="btn btn--form" type="submit" value="Log in" onClick={saveUser}>
+            Change Information
+          </button>
+          <button className="btn btn-danger" >
+            <Link to={"../../user/" + username}>Cancel</Link>
+          </button>
+
+        </form>
+      </div>
     </div>
   );
 };

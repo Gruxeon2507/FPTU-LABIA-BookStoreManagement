@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 import "./NavBar.scss"
 import { NavDropdown } from "react-bootstrap";
+import api from "../../services/BaseAuthenticationServices";
 function Navbar() {
+    const [username,setUsername] = useState("");
     const logout = () => {
-        window.localStorage.removeItem("user");
-        window.localStorage.removeItem("role");
+        window.localStorage.removeItem("token");
         window.location.href="/login"
     }
+    useEffect(() => {
+        api.get("/api/users/loginuser").then((res)=>
+            setUsername(res.data)
+        )
+    },[])
     return (
         <div>
             <nav>
@@ -24,14 +30,14 @@ function Navbar() {
                     </div>
                     <div className="nav-dropdown">
                         <div className="nav-avatar">
-                            <img src={"http://localhost:6789/api/users/avatar/" + window.localStorage.getItem("user")} ></img>
+                            <img src={"http://localhost:6789/api/users/avatar/" + username} ></img>
                         </div>
                         <NavDropdown
                             id="nav-dropdown-dark-example"
-                            title={window.localStorage.getItem("user")}
+                            title={username}
                         // menuVariant="dark"
                         >
-                            <NavDropdown.Item href={"../../user/"+window.localStorage.getItem("user")}>Profile</NavDropdown.Item>
+                            <NavDropdown.Item href={"../../user/"+username}>Profile</NavDropdown.Item>
                             <NavDropdown.Item href="../../user/setting">
                                Account Setting
                             </NavDropdown.Item>

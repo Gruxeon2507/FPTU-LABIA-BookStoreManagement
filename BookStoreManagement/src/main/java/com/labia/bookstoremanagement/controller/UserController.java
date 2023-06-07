@@ -5,6 +5,7 @@
 package com.labia.bookstoremanagement.controller;
 
 
+import com.labia.bookstoremanagement.configuration.JwtTokenFilter;
 import com.labia.bookstoremanagement.model.ResponseObject;
 import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.Category;
@@ -15,6 +16,7 @@ import com.labia.bookstoremanagement.model.UserExcelExporter;
 import com.labia.bookstoremanagement.repository.BookRepository;
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
+import com.labia.bookstoremanagement.services.UserServices;
 import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import com.labia.bookstoremanagement.utils.DateTimeUtils;
 
@@ -32,7 +34,10 @@ import java.util.Date;
 
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.labia.bookstoremanagement.utils.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -59,7 +64,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author emiukhoahoc
  */
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -70,6 +75,12 @@ public class UserController {
     BookRepository bookRepository;
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private JwtTokenFilter jwtTokenFilter;
 
     private final String AVT_UPLOAD_DIR = "/avatar/";
 
@@ -304,5 +315,40 @@ public class UserController {
         excelExporter.export(response);
     }
 
+    @GetMapping("/loginuser")
+    public ResponseEntity<?> getLoginUsername(HttpServletRequest request){
+        try{
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            User user = userRepository.findByUsername(username);
+            if(user!=null){
+                return  ResponseEntity.ok(user.getUsername());
+            }else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        }
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<?> getLoginUserInfo(HttpServletRequest request){
+        try{
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            User user = userRepository.findByUsername(username);
+            if(user!=null){
+                return  ResponseEntity.ok(user);
+            }else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        }
+    }
 
 }

@@ -5,6 +5,7 @@
 package com.labia.bookstoremanagement.controller;
 
 import com.labia.bookstoremanagement.configuration.JwtTokenFilter;
+import com.labia.bookstoremanagement.configuration.JwtTokenFilter;
 import com.labia.bookstoremanagement.model.Book;
 import com.labia.bookstoremanagement.model.Category;
 import com.labia.bookstoremanagement.model.User;
@@ -12,7 +13,7 @@ import com.labia.bookstoremanagement.repository.BookRepository;
 
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
-
+import com.labia.bookstoremanagement.utils.JwtTokenUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,8 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.labia.bookstoremanagement.utils.JwtTokenUtil;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author emiukhoahoc
  */
-@CrossOrigin("*")
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("api/books")
 public class BookController {
@@ -63,10 +63,10 @@ public class BookController {
     UserRepository userRepository;
 
     @Autowired
-    JwtTokenFilter jwtTokenFilter;
+    private JwtTokenFilter jwtTokenFilter;
 
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -74,15 +74,13 @@ public class BookController {
     private final String COVER_UPLOAD_DIR = "/cover/";
     private final String PDF_UPLOAD_DIR = "/pdf/";
 
-
     @GetMapping
     List<Book> getAll() {
         return bookRepository.findAll();
     }
 
-
-    @GetMapping("by-id/{bookId}")
-    Book getBookById(@PathVariable("bookId") Integer id) {
+    @GetMapping("by-id")
+    Book getBookById(@PathVariable("bookId") Integer id, HttpServletRequest request) {
         return bookRepository.findByBookId(id);
     }
 //
@@ -91,9 +89,7 @@ public class BookController {
 //        return bookRepository.findByBookId(id);
 //    }
 
-
 //
-
     @GetMapping("/unpublic")
     List<Book> getAllUnPublic() {
         return bookRepository.findByIsApproved(false);
@@ -105,10 +101,16 @@ public class BookController {
         return bookRepository.findByIsApprovedFalseOrderByBookIdDesc(pageable);
     }
 
-
-    @GetMapping("by-user/{username}")
-    List<Book> getBookByUser(@PathVariable String username) {
-        return bookRepository.getBookByUsername(username);
+    @GetMapping("by-user")
+    ResponseEntity<?> getBookByUser(HttpServletRequest request) {
+        try {
+            String token = jwtTokenFilter.getJwtFromRequest(request);
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            return ResponseEntity.ok(bookRepository.getBookByUsername(username));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
     }
 
     @GetMapping("find-by-user/{bookId}")
@@ -224,7 +226,6 @@ public class BookController {
         return books;
     }
 
-
     @GetMapping("pending")
     public List<Book> getPendingBooks() {
         return bookRepository.findByIsApproved(false);
@@ -303,7 +304,6 @@ public class BookController {
         bookData.book.setPdfPath("pdf/" + bookData.book.getBookId() + ".pdf");
         bookRepository.save(bookData.book);
 
-
 //        categoryRepository.saveBook_Category(41,1);
         for (Category c : bookData.book.getCategories()) {
             categoryRepository.saveBook_Category(bookData.book.getBookId(), c.getCategoryId());
@@ -357,12 +357,10 @@ public class BookController {
 //        categoryRepository.deleteBook_Category(bookId);
 //        bookRepository.deleteById(bookId);
 //    }
-
 //    @GetMapping("/{bookId}")
 //    public Book getBookById(@PathVariable("bookId") Integer bookId) {
 //        return bookRepository.findById(bookId).get();
 //    }
-
     @PostMapping("/update/{bookId}")
     Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
         Optional<Book> book = bookRepository.findById(bookId);
@@ -386,7 +384,6 @@ public class BookController {
 //    public Book getBookById(@PathVariable("bookId") Integer bookId) {
 //        return bookRepository.findById(bookId).get();
 //    }
-
 //    @PostMapping("/update/{bookId}")
 //    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
 //        Optional<Book> book = bookRepository.findById(bookId);
@@ -405,7 +402,6 @@ public class BookController {
 //        }
 //        return bookRepository.save(book.get());
 //    }
-
     @PostMapping("/cover/update/{bookId}")
     public void updateCoverFile(@RequestParam("coverPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
@@ -438,7 +434,6 @@ public class BookController {
 
     }
 
-
 //    @PostMapping("/pdf/update/{bookId}")
 //    public void updatePdfFile(@RequestParam("pdfPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
 //        String fileExtension = getFileExtension(file.getOriginalFilename());
@@ -454,7 +449,6 @@ public class BookController {
 //        }
 //
 //    }
-
     @GetMapping("/search/{searchText}")
     ResponseEntity<Page<Book>> findAllPublic(
             @PathVariable String searchText,
@@ -467,8 +461,13 @@ public class BookController {
         } else {
             return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
 
-        }
+        if (searchText.length() < 1) {
+            return new ResponseEntity<>(bookRepository.findAll(pageable), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
+        }}
     }
+
 
     @GetMapping("/sort/{type}")
     ResponseEntity<Page<Book>> sortAllPublic(
@@ -485,6 +484,7 @@ public class BookController {
         return bookRepository.getPublicBookByUsername(username);
     }
 
+
     @GetMapping("/unpublic/by-user/{username}")
     List<Book> getUnPublicBookByUser(@PathVariable String username) {
         return bookRepository.getUnPublicBookByUsername(username);
@@ -498,7 +498,9 @@ public class BookController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
+        return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
     }
+
 
     @GetMapping("/unpublic/page/{username}")
     ResponseEntity<Page<Book>> findPageAllUnPublicByUser(
@@ -508,7 +510,9 @@ public class BookController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.getUnPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
+        return new ResponseEntity<>(bookRepository.getUnPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
     }
+
 
 
 }
