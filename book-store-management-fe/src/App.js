@@ -23,6 +23,7 @@ import Dashboard from './components/Admin/Dashboard';
 import Footer from "./components/Footer/Footer";
 import MyBook from "./components/MyBook/MyBook";
 import ForbiddenPage from "./components/Authentication/Forbidden";
+import ListAdminUser from "./components/Superadmin/ListAdminUser";
 
 
 
@@ -48,6 +49,7 @@ function App() {
         <Route path="/register" Component={RegisterUser}></Route>
         <Route path="/admin" Component={Dashboard}></Route>
         <Route path="/superadmin" Component={Dashboard}></Route>
+        <Route path="/superadmin/user" Component={ListAdminUser}></Route>
         <Route path="" Component={ListBook}></Route>
         <Route path="/user/:userId" Component={UserProfile}></Route>
         <Route path="/user" Component={UserProfile}></Route>
