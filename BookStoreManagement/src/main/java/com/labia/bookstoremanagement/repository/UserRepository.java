@@ -23,7 +23,8 @@ import org.springframework.data.repository.query.Param;
  *
  * @author emiukhoahoc
  */
-public interface UserRepository extends JpaRepository<User, String> {
+
+public interface UserRepository extends JpaRepository<User, String>,UserRepositoryCustom {
 
     User findByUsername(String username);
 
