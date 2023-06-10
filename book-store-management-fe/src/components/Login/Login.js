@@ -30,7 +30,7 @@ function LoginForm() {
       console.log(response.data);
       const token = response.data;
       localStorage.setItem("token",token);
-      window.location.href = "/";
+      // window.location.href = "/";
     } catch (error) {
       setLoginFailed(true);
       console.error(error);
