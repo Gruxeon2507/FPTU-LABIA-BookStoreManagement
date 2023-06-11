@@ -105,10 +105,10 @@ public class BookController {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
             return ResponseEntity.ok(bookRepository.getBookByUsername(username));
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        
+
     }
 
     @GetMapping("find-by-user/{bookId}")
@@ -463,32 +463,40 @@ public class BookController {
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, field), HttpStatus.OK);
     }
 
-    @GetMapping("/public/by-user/{username}")
-    List<Book> getPublicBookByUser(@PathVariable String username) {
+    @GetMapping("/public/by-user")
+    List<Book> getPublicBookByUser(HttpServletRequest request) {
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
         return bookRepository.getPublicBookByUsername(username);
     }
 
-    @GetMapping("/unpublic/by-user/{username}")
-    List<Book> getUnPublicBookByUser(@PathVariable String username) {
+    @GetMapping("/unpublic/by-user")
+    List<Book> getUnPublicBookByUser(HttpServletRequest request) {
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
         return bookRepository.getUnPublicBookByUsername(username);
     }
-
-    @GetMapping("/public/page/{username}")
+    //đã sửa phuong 
+    @GetMapping("/mypublic/page")
     ResponseEntity<Page<Book>> findPageAllPublicByUser(
-            @PathVariable String username,
+            HttpServletRequest request,
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
     }
-
-    @GetMapping("/unpublic/page/{username}")
+    //đã sửa phuong
+    @GetMapping("/myunpublic/page")
     ResponseEntity<Page<Book>> findPageAllUnPublicByUser(
-            @PathVariable String username,
+            HttpServletRequest request,
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
+        String token = jwtTokenFilter.getJwtFromRequest(request);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.getUnPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
     }

@@ -22,7 +22,7 @@ import Footer from "./components/Footer/Footer";
 import MyBook from "./components/MyBook/MyBook";
 import ForbiddenPage from "./components/Authentication/Forbidden";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
-import { Switch } from "antd";
+
 
 function App() {
   const role = window.localStorage.getItem("role");
@@ -42,7 +42,6 @@ function App() {
 
         <Route path="/login" Component={LoginForm}></Route>
         <Route path="/register" Component={RegisterUser}></Route>
-
         <Route path="/admin/user" Component={ListUser}></Route>
         <Route path="/admin/book" Component={AdminBooks}></Route>
 
