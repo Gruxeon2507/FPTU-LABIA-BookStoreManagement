@@ -122,7 +122,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/pdf/{fileId}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> getFile(@PathVariable String fileId) throws IOException {
+    public ResponseEntity<InputStreamResource> getFile(@PathVariable String fileId,HttpServletRequest request) throws IOException {
         String filePath = "pdf/" + fileId + ".pdf";
         File file = new File(filePath);
         InputStream inputStream = new FileInputStream(file);

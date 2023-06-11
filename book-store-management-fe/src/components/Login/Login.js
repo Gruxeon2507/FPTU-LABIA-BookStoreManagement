@@ -28,9 +28,11 @@ function LoginForm() {
         { username, password }
       );
       console.log(response.data);
-      const token = response.data;
+      const token = response.data.token;
+      const role =response.data.role;
       localStorage.setItem("token",token);
-      // window.location.href = "/";
+      localStorage.setItem("role",role);
+      window.location.href = "/";
     } catch (error) {
       setLoginFailed(true);
       console.error(error);

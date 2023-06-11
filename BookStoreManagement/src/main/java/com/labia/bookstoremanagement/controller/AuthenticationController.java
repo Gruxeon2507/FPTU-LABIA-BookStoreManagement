@@ -9,6 +9,9 @@ import com.labia.bookstoremanagement.model.Session;
 import com.labia.bookstoremanagement.model.User;
 import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import com.labia.bookstoremanagement.utils.JwtTokenUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -55,8 +58,12 @@ public class AuthenticationController {
             session.setAttribute("user", user);
 
             String token = jwtTokenUtil.generateToken(credentials);
-            request.setAttribute("token", token);
-            return ResponseEntity.ok(token);
+            String role = user.getRoles().get(0).getRoleName();
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("role", role);
+
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
