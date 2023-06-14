@@ -43,7 +43,7 @@ class BookService {
   }
 
   deleteBook(bookId) {
-    return api.delete("api/books/delete/" + bookId);
+    return axios.delete(BOOK_BASE_REST_API_URL + "/delete/" + bookId);
   }
 
     getAllBooks(){
@@ -110,7 +110,7 @@ class BookService {
         "Content-Type": "application/json",
       },
     };
-    return axios.post(
+    return api.post(
       BOOK_BASE_REST_API_URL + "/update/" + id,
       JSON.stringify(book),
       config

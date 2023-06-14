@@ -77,7 +77,7 @@ public class BookController {
         return bookRepository.findAll();
     }
 
-    @GetMapping("by-id")
+    @GetMapping("by-id/{bookId}")
     Book getBookById(@PathVariable("bookId") Integer id, HttpServletRequest request) {
         return bookRepository.findByBookId(id);
     }
@@ -358,22 +358,29 @@ public class BookController {
 //        return bookRepository.findById(bookId).get();
 //    }
     @PostMapping("/update/{bookId}")
-    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        book.get().setTitle(updateBook.getTitle());
-        book.get().setDescription(updateBook.getDescription());
-        book.get().setAuthorName(updateBook.getAuthorName());
-        if (updateBook.getCategories().isEmpty()) {
-            categoryRepository.deleteBook_Category(bookId);
-        } else {
-            if (!book.get().getCategories().equals(updateBook.getCategories())) {
-                categoryRepository.deleteBook_Category(bookId);
-                for (Category c : updateBook.getCategories()) {
-                    categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook,HttpServletRequest request) {
+        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
+        for (Book b:
+             user.getBooks()) {
+            if(b.getBookId() == bookId){
+                Optional<Book> book = bookRepository.findById(bookId);
+                book.get().setTitle(updateBook.getTitle());
+                book.get().setDescription(updateBook.getDescription());
+                book.get().setAuthorName(updateBook.getAuthorName());
+                if (updateBook.getCategories().isEmpty()) {
+                    categoryRepository.deleteBook_Category(bookId);
+                } else {
+                    if (!book.get().getCategories().equals(updateBook.getCategories())) {
+                        categoryRepository.deleteBook_Category(bookId);
+                        for (Category c : updateBook.getCategories()) {
+                            categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+                        }
+                    }
                 }
+                return bookRepository.save(book.get());
             }
         }
-        return bookRepository.save(book.get());
+       return null;
     }
 
 //    @GetMapping("/{bookId}")

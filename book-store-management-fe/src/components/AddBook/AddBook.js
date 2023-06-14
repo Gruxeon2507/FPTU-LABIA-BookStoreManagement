@@ -264,7 +264,9 @@ class AddBook extends Component {
       showErrorPdf ||
       showErrorTitle ||
       showErrorAuthorName ||
-      showErrorDescription
+      showErrorDescription ||
+      showErrorPdf ||
+      showErrorCover
     ) {
       alert("Wrong input can not load data!!!");
       return;
