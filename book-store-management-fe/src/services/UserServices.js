@@ -27,7 +27,8 @@ class UserServices {
     return axios.get(USER_BASE_REST_API_URL + "/check/" + id);
   }
   updateUserInformation(User) {
-    return axios.post(USER_BASE_REST_API_URL + "/update", User);
+    // return axios.post(USER_BASE_REST_API_URL + "/update", User);
+    api.post("update-profile", User);
   }
   updateUserAvatar(formData) {
     return axios.post(USER_BASE_REST_API_URL + "/avatar/upload", formData);
