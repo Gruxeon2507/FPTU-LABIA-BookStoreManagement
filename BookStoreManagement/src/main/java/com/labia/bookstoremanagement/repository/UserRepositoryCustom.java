@@ -7,4 +7,5 @@ import java.util.List;
 public interface UserRepositoryCustom {
     List<User> customSearchUsers (String query);
 
+    void customUpdateUser(String query);
 }

@@ -37,4 +37,14 @@ public class TestController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> testUpadate(@RequestBody User user){
+        String query = "UPDATE `User` SET displayName = '"+user.getDisplayName()+"' WHERE username = "+"'"+user.getUsername()+"'";
+        System.out.println(query);
+            userServices.updateUser(query);
+            return ResponseEntity.status(HttpStatus.OK).build();
+
+
+    }
 }
