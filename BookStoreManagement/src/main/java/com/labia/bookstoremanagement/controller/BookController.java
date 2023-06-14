@@ -14,6 +14,7 @@ import com.labia.bookstoremanagement.repository.BookRepository;
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
 import com.labia.bookstoremanagement.utils.JwtTokenUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -79,7 +81,7 @@ public class BookController {
         return bookRepository.findAll();
     }
 
-    @GetMapping("by-id")
+    @GetMapping("by-id/{bookId}")
     Book getBookById(@PathVariable("bookId") Integer id, HttpServletRequest request) {
         return bookRepository.findByBookId(id);
     }
@@ -89,7 +91,7 @@ public class BookController {
 //        return bookRepository.findByBookId(id);
 //    }
 
-//
+    //
     @GetMapping("/unpublic")
     List<Book> getAllUnPublic() {
         return bookRepository.findByIsApproved(false);
@@ -107,10 +109,10 @@ public class BookController {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
             return ResponseEntity.ok(bookRepository.getBookByUsername(username));
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        
+
     }
 
     @GetMapping("find-by-user/{bookId}")
@@ -238,24 +240,38 @@ public class BookController {
     }
 
     @DeleteMapping("delete/{bookId}")
-    public void deleteBook(@PathVariable("bookId") int bookId) {
-        bookRepository.deleteBookCategoryByBookId(bookId);
-        bookRepository.deleteById(bookId);
-    }
-
-    @PostMapping("approve/{bookId}")
-    public void approveBook(@PathVariable("bookId") int bookId, HttpServletRequest request) {
+    public void deleteBook(@PathVariable("bookId") int bookId, HttpServletRequest request) {
+        System.out.println("DELETE BOOK ID CALLED.");
         try {
             String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
             User u = userRepository.userHasRole(username, 1);
             if (u != null) {
                 System.out.println("DELETED.");
-                bookRepository.updateBookStatus(bookId);
+                bookRepository.deleteBookCategoryByBookId(bookId);
+                bookRepository.deleteById(bookId);
             } else {
                 System.out.println("UNAUTHORIZED.");
             }
         } catch (Exception e) {
             System.out.println("EXCEPTION");
+        }
+    }
+
+    @PostMapping("approve/{bookId}")
+    public void approveBook(@PathVariable("bookId") int bookId, HttpServletRequest request) {
+        System.out.println("CALLING APPROVEBOOK API");
+        try {
+            String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+            User u = userRepository.userHasRole(username, 2);
+            if (u != null) {
+                bookRepository.updateBookStatus(bookId);
+                System.out.println("UPDATED.");
+
+            } else {
+                System.out.println("UNAUTHORIZED.");
+            }
+        } catch (Exception e) {
+            System.out.println("EXCEPTION: " + e.getMessage());
         }
     }
 
@@ -352,7 +368,7 @@ public class BookController {
         return extension;
     }
 
-//    @DeleteMapping("/delete/{bookId}")
+    //    @DeleteMapping("/delete/{bookId}")
 //    public void deleteBook(@PathVariable("bookId") Integer bookId) {
 //        categoryRepository.deleteBook_Category(bookId);
 //        bookRepository.deleteById(bookId);
@@ -380,7 +396,7 @@ public class BookController {
         return bookRepository.save(book.get());
     }
 
-//    @GetMapping("/{bookId}")
+    //    @GetMapping("/{bookId}")
 //    public Book getBookById(@PathVariable("bookId") Integer bookId) {
 //        return bookRepository.findById(bookId).get();
 //    }
@@ -434,7 +450,7 @@ public class BookController {
 
     }
 
-//    @PostMapping("/pdf/update/{bookId}")
+    //    @PostMapping("/pdf/update/{bookId}")
 //    public void updatePdfFile(@RequestParam("pdfPath") MultipartFile file, @PathVariable("bookId") Integer bookId) {
 //        String fileExtension = getFileExtension(file.getOriginalFilename());
 //        if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
@@ -460,12 +476,7 @@ public class BookController {
             return new ResponseEntity<>(bookRepository.findAll(pageable), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
-
-        if (searchText.length() < 1) {
-            return new ResponseEntity<>(bookRepository.findAll(pageable), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(bookRepository.findAllPublic(pageable, searchText), HttpStatus.OK);
-        }}
+        }
     }
 
 
@@ -498,7 +509,6 @@ public class BookController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
-        return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
     }
 
 
@@ -510,9 +520,7 @@ public class BookController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.getUnPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
-        return new ResponseEntity<>(bookRepository.getUnPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
     }
-
 
 
 }

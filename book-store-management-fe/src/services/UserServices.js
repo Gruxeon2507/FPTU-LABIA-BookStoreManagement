@@ -71,6 +71,10 @@ class UserServices{
             link.click();
           });
     }
+
+    getRoleFromToken(token){
+        // return api.get()
+    }
 }
 
 export default new UserServices();

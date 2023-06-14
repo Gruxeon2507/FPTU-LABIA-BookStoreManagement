@@ -313,4 +313,13 @@ nói riêng và trên toàn thế giới nói chung. Tác phẩm này được x
  tâm lý của những thanh thiếu niên thời bấy giờ, mỗi người đều phải trải qua những dày vò, những niềm đau về cả thể xác lẫn tâm hồn.
  Cuốn sách này như là một lời cảnh tỉnh dành cho những người trẻ, và cũng là sự nuối tiếc của những người đã đi qua thời thanh xuân.',
  'pdf/1.pdf','cover/1.jpg',150000,'maiphuonghoang',0,0,0);
+ 
+
+
+
+select * from Role;
+	SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE u.username = 'huyenntk' and ur.roleId = 2;
+select * from Book where isApproved = 1;
+
+
 

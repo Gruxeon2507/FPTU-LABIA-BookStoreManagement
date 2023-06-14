@@ -18,9 +18,8 @@ function ViewABook() {
     });
   }, [bookId]);
 
-
-  if (book.approved != undefined && book.approved) {
-    return (
+  console.log(book)
+    return book.approved ? (
       <div className="container-singlebook">
         <div className="meta-info">
           <div className="image left">
@@ -30,7 +29,7 @@ function ViewABook() {
               alt={book.title}
             ></img>
           </div>
-          <div className="content right" style={{marginRight:"30px"}}>
+          <div className="content right" style={{ marginRight: "30px" }}>
             <div className="header">
               <h3>{book.title}</h3>
               <h6>{book.authorName}</h6>
@@ -63,10 +62,11 @@ function ViewABook() {
           ></iframe>
         </div>
       </div>
+    ) : (
+      <>
+        <p>Book not available.</p>
+      </>
     );
-  } else {
-    return <p>Book not found.</p>;
-  }
 }
 
 export default ViewABook;
