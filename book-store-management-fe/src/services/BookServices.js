@@ -43,7 +43,7 @@ class BookService {
   }
 
   deleteBook(bookId) {
-    return axios.delete(BOOK_BASE_REST_API_URL + "/delete/" + bookId);
+    return api.delete("api/books/delete/" + bookId);
   }
 
     getAllBooks(){

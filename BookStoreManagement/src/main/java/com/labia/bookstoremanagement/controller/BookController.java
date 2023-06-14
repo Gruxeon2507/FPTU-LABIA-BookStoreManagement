@@ -236,9 +236,16 @@ public class BookController {
     }
 
     @DeleteMapping("delete/{bookId}")
-    public void deleteBook(@PathVariable("bookId") int bookId) {
-        bookRepository.deleteBookCategoryByBookId(bookId);
-        bookRepository.deleteById(bookId);
+    public void deleteBook(@PathVariable("bookId") int bookId,HttpServletRequest request) {
+        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
+        for (Book b:
+             user.getBooks()) {
+            if(b.getBookId() == bookId){
+                bookRepository.deleteBookCategoryByBookId(bookId);
+                bookRepository.deleteById(bookId);
+            }
+        }
+
     }
 
     @PostMapping("approve/{bookId}")
@@ -283,8 +290,8 @@ public class BookController {
      * @return
      */
     @PostMapping("add")
-    public Book addBook(@RequestBody BookData bookData) {
-        User user = userRepository.findByUsername(bookData.createdBy);
+    public Book addBook(@RequestBody BookData bookData,HttpServletRequest request) {
+        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
         bookData.book.setCreatedBy(user);
         bookRepository.save(bookData.book);
 //        Book temp = bookRepository.findByTitle(book.getTitle());
@@ -301,10 +308,10 @@ public class BookController {
     }
 
     @PostMapping("/cover/upload")
-    public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file) {
+    public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file,@RequestParam("bookId") String bookId) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(BookId + ".jpg");
+            String fileName = StringUtils.cleanPath(bookId + ".jpg");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + COVER_UPLOAD_DIR;
@@ -317,10 +324,10 @@ public class BookController {
     }
 
     @PostMapping("/pdf/upload")
-    public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file) {
+    public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file,@RequestParam("bookId") String bookId) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(BookId + ".pdf");
+            String fileName = StringUtils.cleanPath(bookId + ".pdf");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
