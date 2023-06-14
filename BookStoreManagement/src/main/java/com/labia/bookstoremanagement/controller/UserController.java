@@ -4,7 +4,6 @@
  */
 package com.labia.bookstoremanagement.controller;
 
-
 import com.labia.bookstoremanagement.configuration.JwtTokenFilter;
 import com.labia.bookstoremanagement.model.ResponseObject;
 import com.labia.bookstoremanagement.model.Book;
@@ -16,7 +15,6 @@ import com.labia.bookstoremanagement.model.UserExcelExporter;
 import com.labia.bookstoremanagement.repository.BookRepository;
 import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
-import com.labia.bookstoremanagement.services.UserServices;
 import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import com.labia.bookstoremanagement.utils.DateTimeUtils;
 
@@ -25,20 +23,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-
-import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.labia.bookstoremanagement.utils.JwtTokenUtil;
-
+import com.labia.bookstoremanagement.utils.RoleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -51,7 +45,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,6 +68,9 @@ public class UserController {
     BookRepository bookRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    
+    @Autowired
+    private RoleUtils roleUtils;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -186,45 +182,53 @@ public class UserController {
         }
     }
 
-
-    @DeleteMapping("/{username}")
-    ResponseEntity<ResponseObject> deleteUser(@PathVariable String username) {
-        boolean exists = userRepository.existsByUsername(username);
-        User user = userRepository.findByUsername(username);
-        if (exists) {
-            // Remove user from all roles
-            for (Role role : user.getRoles()) {
-                role.getUsers().remove(user);
-            }
-
-            user.getRoles().clear();
-
-            // clear all the books associated with this user
-//            user.getBooks().clear();
-            for (Book book : user.getBooks()) {
-                // Remove categories from all books
-                for (Category category : book.getCategories()) {
-                    category.getBooks().remove(book);
+    //admin hoặc superadmin được xóa user 
+    @PostMapping("")
+    ResponseEntity<ResponseObject> deleteUser(HttpServletRequest request, @RequestParam String username) {
+        if (roleUtils.hasRoleFromToken(request, 1) || roleUtils.hasRoleFromToken(request, 2)) {
+            boolean exists = userRepository.existsByUsername(username);
+            User user = userRepository.findByUsername(username);
+            if (exists) {
+                // Remove user from all roles
+                for (Role role : user.getRoles()) {
+                    role.getUsers().remove(user);
                 }
-                book.getCategories().clear();
 
-                bookRepository.delete(book);
+                user.getRoles().clear();
+
+                // clear all the books associated with this user
+//            user.getBooks().clear();
+                for (Book book : user.getBooks()) {
+                    // Remove categories from all books
+                    for (Category category : book.getCategories()) {
+                        category.getBooks().remove(book);
+                    }
+                    book.getCategories().clear();
+
+                    bookRepository.delete(book);
+                }
+
+                // Delete the user
+                userRepository.delete(user);
+
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("ok", "delete user successfully", "")
+                );
             }
-
-            // Delete the user
-            userRepository.delete(user);
-
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "delete user successfully", "")
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find user to delete", "")
             );
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("failed", "Cannot find user to delete", "")
-        );
+        return null;
+
     }
 
-    @DeleteMapping("/demote/{username}")
-    ResponseEntity<ResponseObject> demoteUser(@PathVariable String username) {
+    //chỉ super admin được demote admin xuống user 
+    @PostMapping("/demote")
+    ResponseEntity<ResponseObject> demoteUser(HttpServletRequest request, @RequestParam String username) {
+        if (!roleUtils.hasRoleFromToken(request, 1)) {
+            return null;
+        }
         boolean exists = userRepository.existsByUsername(username);
         User user = userRepository.findByUsername(username);
         if (exists) {
@@ -238,8 +242,14 @@ public class UserController {
         );
     }
 
-    @PostMapping("/promote/{username}")
-    ResponseEntity<ResponseObject> promoteAdmin(@PathVariable String username) {
+    //chỉ super admin được promote user lên admin  
+    @PostMapping("/promote")
+    ResponseEntity<ResponseObject> promoteAdmin(
+            HttpServletRequest request,
+            @RequestParam String username) {
+        if (!roleUtils.hasRoleFromToken(request, 1)) {
+            return null;
+        }
         boolean exists = userRepository.existsByUsername(username);
         User user = userRepository.findByUsername(username);
         if (exists) {
@@ -253,21 +263,24 @@ public class UserController {
         );
     }
 
-
     @GetMapping("by-book/{bookId}")
     User getUserByBookId(@PathVariable("bookId") int bookId) {
         Book book = bookRepository.findByBookId(bookId);
         return userRepository.getUserByBooks(book);
     }
 
+    //superadmin/admin được xem list user 
     @GetMapping("/onlyuser")
     public List<User> getSomeUsersByCondition(
+            HttpServletRequest request,
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
-        //        return userRepository.findAll(pageable).getContent();       
-        return userRepository.getOnlyRoleUser(pageable);
+        if ( roleUtils.hasRoleFromToken(request, 2)||roleUtils.hasRoleFromToken(request, 1)) {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
+            return userRepository.getOnlyRoleUser(pageable);
+        }
+        return null;
     }
 
     @GetMapping("/onlyuser/count")
@@ -275,19 +288,17 @@ public class UserController {
         return userRepository.countOnlyRoleUser();
     }
 
-    //    @GetMapping("/onlyadmin")
-//    List<User> getRoleAdmin() {
-//        String username = "khoahoc";
-//        return userRepository.getOnlyRoleAdmin(username);
-//    }
+    //superadmin được xem list admin  
     @GetMapping("/onlyadmin")
     public List<User> getSomeAdminsByCondition(
+            HttpServletRequest request,
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
-        String username = "khoahoc";
+        if (!roleUtils.hasRoleFromToken(request, 1))
+            return null;
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
-        return userRepository.getOnlyRoleAdmin(username, pageable);
+        return userRepository.getOnlyRoleAdmin(pageable);
     }
 
     @GetMapping("/onlyadmin/count")
@@ -316,36 +327,36 @@ public class UserController {
     }
 
     @GetMapping("/loginuser")
-    public ResponseEntity<?> getLoginUsername(HttpServletRequest request){
-        try{
+    public ResponseEntity<?> getLoginUsername(HttpServletRequest request) {
+        try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
             User user = userRepository.findByUsername(username);
-            if(user!=null){
-                return  ResponseEntity.ok(user.getUsername());
-            }else{
+            if (user != null) {
+                return ResponseEntity.ok(user.getUsername());
+            } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         }
     }
 
     @GetMapping("/info")
-    public ResponseEntity<?> getLoginUserInfo(HttpServletRequest request){
-        try{
+    public ResponseEntity<?> getLoginUserInfo(HttpServletRequest request) {
+        try {
             String token = jwtTokenFilter.getJwtFromRequest(request);
             String username = jwtTokenUtil.getUsernameFromToken(token);
             User user = userRepository.findByUsername(username);
-            if(user!=null){
-                return  ResponseEntity.ok(user);
-            }else{
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         }

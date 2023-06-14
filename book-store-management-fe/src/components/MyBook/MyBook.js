@@ -13,12 +13,11 @@ const MyBook = () => {
   const [noPagePublicBooks, setNoPagePublicBooks] = useState([]);
   const [noPagePendingBooks, setNoPagePendingBooks] = useState([]);
 
-  const username = window.localStorage.getItem('user');
 
   // pending books of current page
   const getPagePendingBooks = (pageNumber, pageSize) => {
     
-    BookServices.getUnPublicBookByUsernamePage(username, pageNumber, pageSize).then((res) => {
+    BookServices.getUnPublicBookByUsernamePage( pageNumber, pageSize).then((res) => {
       setPagePendingBooks(res.data.content);
       setNoPagePendingBooks(res.data.totalElements)
     });
@@ -26,7 +25,7 @@ const MyBook = () => {
 
   // public books of current page
   const getPagePublicBooks = (pageNumber, pageSize) => {
-    BookServices.getPublicBookByUsernamePage(username,pageNumber, pageSize).then((res) => {
+    BookServices.getPublicBookByUsernamePage(pageNumber, pageSize).then((res) => {
       setPagePublicBooks(res.data.content);
       setNoPagePublicBooks(res.data.totalElements)
     });

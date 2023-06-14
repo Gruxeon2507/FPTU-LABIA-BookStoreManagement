@@ -28,8 +28,10 @@ function LoginForm() {
         { username, password }
       );
       console.log(response.data);
-      const token = response.data;
+      const token = response.data.token;
+      const role =response.data.role;
       localStorage.setItem("token",token);
+      localStorage.setItem("role",role);
       window.location.href = "/";
     } catch (error) {
       setLoginFailed(true);

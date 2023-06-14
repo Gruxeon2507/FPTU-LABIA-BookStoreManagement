@@ -100,25 +100,16 @@ class BookService {
   }
 
   getPagePublicBooks(pageNumber, pageSize) {
-    // console.log(
-    //   `${BOOK_BASE_REST_API_URL}/public/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
-    // );
     return axios.get(
       `${BOOK_BASE_REST_API_URL}/public/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
 
   getPublicBooks() {
-    // console.log(
-    //   `${BOOK_BASE_REST_API_URL}/public`
-    // );
     return axios.get(`${BOOK_BASE_REST_API_URL}/public`);
   }
 
   getPendingBooks() {
-    // console.log(
-    //   `${BOOK_BASE_REST_API_URL}/pending`
-    // );
     return axios.get(`${BOOK_BASE_REST_API_URL}/pending`);
   }
 
@@ -135,15 +126,16 @@ class BookService {
     return axios.get(BOOK_BASE_REST_API_URL + "/public/by-user/" + username);
   }
 
-  getPublicBookByUsernamePage(username, pageNumber, pageSize) {
-    return axios.get(
-      `${BOOK_BASE_REST_API_URL}/public/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`
-    );
+  //phuong
+  getPublicBookByUsernamePage( pageNumber, pageSize) {
+    return api.get(`api/books/mypublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+
+    // return axios.get(`${BOOK_BASE_REST_API_URL}/public/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
-  getUnPublicBookByUsernamePage(username, pageNumber, pageSize) {
-    return axios.get(
-      `${BOOK_BASE_REST_API_URL}/unpublic/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`
-    );
+  //phuong
+  getUnPublicBookByUsernamePage( pageNumber, pageSize) {
+    return api.get(`api/books/myunpublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    // return axios.get(`${BOOK_BASE_REST_API_URL}/unpublic/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 }
 

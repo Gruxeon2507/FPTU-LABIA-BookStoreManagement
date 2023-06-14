@@ -23,7 +23,8 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author emiukhoahoc
  */
-public interface UserRepository extends JpaRepository<User, String> {
+
+public interface UserRepository extends JpaRepository<User, String>,UserRepositoryCustom {
 
     User findByUsername(String username);
 
@@ -38,8 +39,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "select * from `User` u join User_Role ru  on u.username = ru.username  where ru.roleId = 2 and u.username not in (select us.username from `User` us \n"
             + "join User_Role ur on us.username = ur.username \n"
-            + "where ur.roleId = 2 and us.username = :username or ur.roleId = 1) ORDER BY u.createDate DESC", nativeQuery = true)
-    List<User> getOnlyRoleAdmin(String username, Pageable pageable);
+            + "where ur.roleId = 2 and us.username = 'khoahoc' or ur.roleId = 1) ORDER BY u.createDate DESC", nativeQuery = true)
+    List<User> getOnlyRoleAdmin( Pageable pageable);
 
     @Query(value = "select * from `User` us WHERE us.username in (\n"
             + "select u.username from `User` u join User_Role ur  on u.username = ur.username GROUP BY u.username\n"
@@ -80,9 +81,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("FROM User u WHERE u.displayName LIKE %:searchText% OR u.email LIKE %:searchText%")
     Page<User> findAll(Pageable pageable, @Param("searchText") String searchText);
 
-
     @Query(value = "SELECT * FROM `User` u JOIN User_Role ur on u.username = ur.username WHERE u.username = :username and ur.roleId = :roleId", nativeQuery = true)
     public User userHasRole(String username, int roleId);
-
-
 }
