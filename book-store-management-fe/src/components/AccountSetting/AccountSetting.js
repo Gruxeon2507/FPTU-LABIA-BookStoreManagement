@@ -32,7 +32,7 @@ const AccountSetting = () => {
         setDisplayName(res.data.displayName);
         setEmail(res.data.email);
         setDob(res.data.dob);
-        setUsername(res.data.username);
+        setUsername(username);
       }
     );
   }, []);
@@ -60,7 +60,7 @@ const AccountSetting = () => {
       formData.append("username", username);
       UserServices.updateUserAvatar(formData);
     }
-    window.location.href = "/user/" + username;
+    // window.location.href = "/user/" + username;
   };
 
   const changeGmailHandler = (event) => {
@@ -165,7 +165,7 @@ const AccountSetting = () => {
 
         <form className="login-form" >
 
-          <div>
+          {/* <div>
             <label for="username">Username </label>
             <input
               type="text"
@@ -173,7 +173,7 @@ const AccountSetting = () => {
               name="username"
               onChange={changeDisplayNameHandler}
             />
-          </div>
+          </div> */}
 
           <div>
             <label for="displayName">Display Name </label>
@@ -212,7 +212,7 @@ const AccountSetting = () => {
 
             />
           </div>
-          <div>
+          {/* <div>
             <label for="avatarPath">Avatar </label>
             <input
               type="file"
@@ -221,7 +221,7 @@ const AccountSetting = () => {
               className="form-control"
 
             ></input>
-          </div>
+          </div> */}
           <button className="btn btn--form" type="submit" value="Log in" onClick={saveUser}>
             Change Information
           </button>
