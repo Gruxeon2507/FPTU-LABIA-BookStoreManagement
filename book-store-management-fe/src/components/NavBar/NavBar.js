@@ -38,7 +38,7 @@ function Navbar() {
               <div className="nav-dropdown">
                 <div className="nav-avatar">
                   <img
-                    src={"http://localhost:6789/api/users/avatar/" + username}
+                    src={"http://localhost:6789/api/users/avatar/" + username +".jpg"}
                   ></img>
                 </div>
                 <NavDropdown

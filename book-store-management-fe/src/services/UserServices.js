@@ -31,7 +31,7 @@ class UserServices {
     api.post("update-profile", User);
   }
   updateUserAvatar(formData) {
-    return axios.post(USER_BASE_REST_API_URL + "/avatar/upload", formData);
+    return api.post(USER_BASE_REST_API_URL + "/avatar/upload", formData);
   }
 
   registerUserAvatar(formData) {

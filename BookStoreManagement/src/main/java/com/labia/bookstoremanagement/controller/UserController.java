@@ -22,11 +22,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,23 +38,14 @@ import com.labia.bookstoremanagement.utils.JwtTokenUtil;
 import com.labia.bookstoremanagement.utils.RoleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -105,19 +100,43 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
-        String filePath = "avatar/" + fileId + ".jpg";
+//    @GetMapping(value = "/avatar/{fileId}", produces = MediaType.IMAGE_JPEG_VALUE)
+//    public ResponseEntity<InputStreamResource> getUserAvatar(@PathVariable String fileId) throws IOException {
+//        String filePath = "avatar/" + fileId + ".jpg";
+//        File file = new File(filePath);
+//        InputStream inputStream = new FileInputStream(file);
+//        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .contentType(MediaType.IMAGE_JPEG)
+//                .body(inputStreamResource);
+//    }
+
+    @GetMapping(value = "/avatar/{fileName:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> getUserAvatarError(@PathVariable String fileName) throws IOException {
+        String filePath = "avatar/" +fileName;
         File file = new File(filePath);
+        System.out.println(filePath);
         InputStream inputStream = new FileInputStream(file);
         InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+
+        String contentType = getContentTypeFromFileName(fileName);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + file.getName());
         return ResponseEntity.ok()
                 .headers(headers)
-                .contentType(MediaType.IMAGE_JPEG)
+                .contentType(MediaType.parseMediaType(contentType))
                 .body(inputStreamResource);
     }
+    @Autowired
+    private ServletContext servletContext;
+    private String getContentTypeFromFileName(String fileName) {
+        String mimeType = servletContext.getMimeType(fileName);
+        return mimeType != null ? mimeType : MediaType.APPLICATION_OCTET_STREAM_VALUE;
+    }
+
 
     @PostMapping(value = "/update")
     public void updateUserInformation(@RequestBody User user) {
@@ -128,11 +147,31 @@ public class UserController {
         userRepository.save(temp);
     }
 
+//    @PostMapping("/avatar/upload")
+//    public void ploadFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+//        String fileExtension = getFileExtension(file.getOriginalFilename());
+//        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
+//            String fileName = StringUtils.cleanPath(username + ".jpg");
+//            try {
+//                // Save the file to the uploads directory
+//
+//                String uploadDir = System.getProperty("user.dir") + AVT_UPLOAD_DIR;
+//                file.transferTo(new File(uploadDir + fileName));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
+
+
     @PostMapping("/avatar/upload")
-    public void ploadFile(@RequestParam("avatarPath") MultipartFile file, @RequestParam("username") String username) {
+    public void ploadFileError(@RequestParam("avatarPath") MultipartFile file, HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
         String fileExtension = getFileExtension(file.getOriginalFilename());
-        if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(username + ".jpg");
+        if (file.getSize() < 5000000) {
+//            String fileName = StringUtils.cleanPath(username + ".jpg");
+            String fileName = username +"."+fileExtension;
             try {
                 // Save the file to the uploads directory
 
@@ -144,6 +183,7 @@ public class UserController {
         }
 
     }
+
 
     private static String getFileExtension(String fileName) {
         String extension = "";
