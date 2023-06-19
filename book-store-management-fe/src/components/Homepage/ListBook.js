@@ -7,12 +7,14 @@ import { Pagination } from "antd";
 import { Card } from "react-bootstrap";
 import { Button, FormControl } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faTimes, faList } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faTimes, faList, faSort } from "@fortawesome/free-solid-svg-icons";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [condition, setCondition] = useState("");
+  const [sortField, setSortField] = useState('');
 
   const getAllPublicBooks = () => {
     return BookServices.getAllPublicBooks()
@@ -214,6 +216,13 @@ function ListBook() {
             <FontAwesomeIcon icon={faTimes} />
           </Button>
         </div>
+        <select name="" id=""
+        >
+          <option value="" >--Sort by--</option>
+          <option value="title">Title</option>
+          <option value="price">Price</option>
+
+        </select>
       </div>
       {isVisible && <div className="categories row">
         {categories.map((category) => (
@@ -241,7 +250,7 @@ function ListBook() {
               book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
-            <Card className="card" style={{ width: "19rem", height:"26rem"}}>
+            <Card className="card" style={{ width: "19rem", height:"28rem"}}>
               <div className="cover">
                 <Card.Img
                   variant="top"
@@ -256,8 +265,8 @@ function ListBook() {
                 <Card.Text
                 style={{ height: "2rem" ,width: "auto",color:"#eaa451",fontWeight:"bold"}}
                 >{book.authorName}</Card.Text>
-                {/* <Card.Text
-                style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text> */}
+                <Card.Text
+                style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text>
                 <Link to={"/book/view/" + book.bookId} className="btn btn-info" style={{backgroundColor:"#1a1668",color:"white"}}>
                   Đọc Ngay{" "}
                 </Link>

@@ -26,7 +26,7 @@ public class RoleUtils {
     
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
-    
+
     public boolean hasRoleFromToken(HttpServletRequest request, int roleId) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
