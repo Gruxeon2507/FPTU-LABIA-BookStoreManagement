@@ -476,6 +476,15 @@ public class BookController {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, field), HttpStatus.OK);
     }
+    @GetMapping("/order")
+    ResponseEntity<Page<Book>> orderbyAllPublic(
+            @RequestParam(defaultValue = "bookId") String field,
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "20") Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.orderAllPublic(pageable, field), HttpStatus.OK);
+    }
 
     @GetMapping("/public/by-user")
     List<Book> getPublicBookByUser(HttpServletRequest request) {

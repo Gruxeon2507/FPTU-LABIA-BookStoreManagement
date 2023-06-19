@@ -27,12 +27,10 @@ public class RoleUtils {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
-    // Date: 06/06/2023
-    // Function: Check has role admin or mentor  from JWT
-    // author: maiphuonghoang
     public boolean hasRoleFromToken(HttpServletRequest request, int roleId) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
         String username = jwtTokenUtil.getUsernameFromToken(token);
+        System.out.println("username "+username);
         User hasRole = userRepository.userHasRole(username, roleId);
         return hasRole != null;
     }

@@ -87,7 +87,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "select * from Book b where (b.isApproved = '1') "
             + "and (b.title LIKE %?1% OR b.price LIKE %?1% OR b.authorName LIKE %?1%)" , nativeQuery = true)
     Page<Book> findAllPublic(Pageable pageable, String searchText);
-
+    @Query(value = "select * from Book b where (b.isApproved = '1') "
+            + "order by :field" , nativeQuery = true)
+    Page<Book> orderAllPublic(Pageable pageable, String field);
     
     @Query(value = "select b from Book b join b.createdBy u where u.username =:username and b.isApproved = '1'")
     List<Book> getPublicBookByUsername(String username);

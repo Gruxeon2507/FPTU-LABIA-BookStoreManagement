@@ -80,10 +80,10 @@ public class UserController {
 
     private final String AVT_UPLOAD_DIR = "/avatar/";
 
-    @GetMapping
-    List<User> getAllUser() {
-        return userRepository.findAll();
-    }
+//    @GetMapping
+//    List<User> getAllUser() {
+//        return userRepository.findAll();
+//    }
 
     @GetMapping("superadmin")
     List<User> getUserForSuperAdmin() {
@@ -313,17 +313,20 @@ public class UserController {
     }
 
     @GetMapping("/export")
-    public void exportUserToExcel(HttpServletResponse response) throws IOException {
-        response.setContentType("application/octet-stream");
-        String headerKey = "Content-Disposition";
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-        String fileName = "users_" + currentDateTime + ".xlsx";
-        String headerValue = "attachement; filename=" + fileName;
-        response.setHeader(headerKey, headerValue);
-        List<User> listUsers = userRepository.findAll();
-        UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
-        excelExporter.export(response);
+    public void exportUserToExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if ( roleUtils.hasRoleFromToken(request, 2)||roleUtils.hasRoleFromToken(request, 1)) {
+            System.out.println("admin ne");
+            response.setContentType("application/octet-stream");
+            String headerKey = "Content-Disposition";
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+            String fileName = "users_" + currentDateTime + ".xlsx";
+            String headerValue = "attachement; filename=" + fileName;
+            response.setHeader(headerKey, headerValue);
+            List<User> listUsers = userRepository.findAll();
+            UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
+            excelExporter.export(response);
+        }
     }
 
     @GetMapping("/loginuser")
