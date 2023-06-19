@@ -61,7 +61,7 @@ public class UserSQLi {
         String countQuery = "SELECT COUNT(*) FROM Book b WHERE b.isApproved = '1'";
         Query countNativeQuery = entityManager.createNativeQuery(countQuery);
         int total = ((Number) countNativeQuery.getSingleResult()).intValue();
-
+        System.out.println("field" + field);
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         String query = "SELECT * FROM Book b WHERE b.isApproved = '1' ORDER BY " + field;
         Query nativeQuery = entityManager.createNativeQuery(query, Book.class);

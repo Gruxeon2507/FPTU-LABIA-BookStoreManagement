@@ -3,7 +3,6 @@ import { json } from "react-router";
 import api from "./BaseAuthenticationServices";
 const BOOK_BASE_REST_API_URL = "http://localhost:6789/api/books";
 
-
 class BookService {
   getAllBooks() {
     return axios.get(BOOK_BASE_REST_API_URL);
@@ -46,63 +45,72 @@ class BookService {
     return axios.delete(BOOK_BASE_REST_API_URL + "/delete/" + bookId);
   }
 
-    getAllBooks(){
-        return axios.get(BOOK_BASE_REST_API_URL);
-    }
-    getAllPublicBooks(){
-        return axios.get(BOOK_BASE_REST_API_URL + "/public");
-    }
-    getSomeUnpublicBooks(){
-        return axios.get(BOOK_BASE_REST_API_URL + "/someunpublic");
-    }
-    getBookById(id){
-        return axios.get(BOOK_BASE_REST_API_URL+"/api/image/"+id);
-    }
-    getBookByUser(username){
-        return axios.get(BOOK_BASE_REST_API_URL+"/by-user/"+username);
-    }
-    getPageBooks(pageNumber, pageSize){
-        console.log(`${BOOK_BASE_REST_API_URL}/publicpage?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-        return axios.get(`${BOOK_BASE_REST_API_URL}/publicpage?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-    }
-    getPageBooksByCategories(categoryIds,pageNumber, pageSize){
-        console.log(`${BOOK_BASE_REST_API_URL}/by-categories/publicpage/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-        return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/publicpage/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-    }
-    getBooksByCategories(categoryIds){
-        return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/${categoryIds}`);
-    }
+  getAllBooks() {
+    return axios.get(BOOK_BASE_REST_API_URL);
+  }
+  getAllPublicBooks() {
+    return axios.get(BOOK_BASE_REST_API_URL + "/public");
+  }
+  getSomeUnpublicBooks() {
+    return axios.get(BOOK_BASE_REST_API_URL + "/someunpublic");
+  }
+  getBookById(id) {
+    return axios.get(BOOK_BASE_REST_API_URL + "/api/image/" + id);
+  }
+  getBookByUser(username) {
+    return axios.get(BOOK_BASE_REST_API_URL + "/by-user/" + username);
+  }
+  getPageBooks(pageNumber, pageSize) {
+    console.log(
+      `${BOOK_BASE_REST_API_URL}/publicpage?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return axios.get(
+      `${BOOK_BASE_REST_API_URL}/publicpage?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+  }
+  getPageBooksByCategories(categoryIds, pageNumber, pageSize) {
+    console.log(
+      `${BOOK_BASE_REST_API_URL}/by-categories/publicpage/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return axios.get(
+      `${BOOK_BASE_REST_API_URL}/by-categories/publicpage/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+  }
+  getBooksByCategories(categoryIds) {
+    return axios.get(`${BOOK_BASE_REST_API_URL}/by-categories/${categoryIds}`);
+  }
 
+  updateBookCover(formData) {
+    return axios.post(BOOK_BASE_REST_API_URL + "/cover/upload", formData);
+  }
 
-    updateBookCover(formData){
-        return axios.post(BOOK_BASE_REST_API_URL+"/cover/upload",formData)
-    }
+  updateBookpdf(formData) {
+    return axios.post(BOOK_BASE_REST_API_URL + "/pdf/upload", formData);
+  }
 
-    updateBookpdf(formData){
-        return axios.post(BOOK_BASE_REST_API_URL+"/pdf/upload",formData)
-    }
+  deleteBook(bookId) {
+    return axios.delete(BOOK_BASE_REST_API_URL + "/delete/" + bookId);
+  }
 
-    deleteBook(bookId){
-        return axios.delete(BOOK_BASE_REST_API_URL+"/delete/"+bookId)
-    }
-
-    getUserOfBook(bookId){
-        console.log(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
-        return axios.get(BOOK_BASE_REST_API_URL+"/find-by-user/" + bookId);
-    }
-    filterBook(pageNumber, pageSize, searchText){
-        console.log(`${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-        return axios.get(`${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
-    }
-      getBookByBookId(bookId) {
+  getUserOfBook(bookId) {
+    console.log(BOOK_BASE_REST_API_URL + "/find-by-user/" + bookId);
+    return axios.get(BOOK_BASE_REST_API_URL + "/find-by-user/" + bookId);
+  }
+  filterBook(pageNumber, pageSize, searchText) {
+    console.log(
+      `${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+    return axios.get(
+      `${BOOK_BASE_REST_API_URL}/search/${searchText}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+  }
+  getBookByBookId(bookId) {
     return axios.get(`${BOOK_BASE_REST_API_URL}/by-id/${bookId}`);
-
   }
 
   getABookById(id) {
     return axios.get(BOOK_BASE_REST_API_URL + "/by-id/" + id);
   }
-
 
   updateBook(id, book) {
     const config = {
@@ -118,7 +126,7 @@ class BookService {
   }
 
   updateNewBookCover(formData, id) {
-    return axios.post(BOOK_BASE_REST_API_URL + "/cover/update/"+id, formData);
+    return axios.post(BOOK_BASE_REST_API_URL + "/cover/update/" + id, formData);
   }
 
   getPagePendingBooks(pageNumber, pageSize) {
@@ -154,7 +162,7 @@ class BookService {
   }
 
   updateNewBookPdf(formData, id) {
-    return axios.post(BOOK_BASE_REST_API_URL + "/pdf/update/" +id, formData);
+    return axios.post(BOOK_BASE_REST_API_URL + "/pdf/update/" + id, formData);
   }
 
   getPublicBookByUser(username) {
@@ -162,15 +170,34 @@ class BookService {
   }
 
   //phuong
-  getPublicBookByUsernamePage( pageNumber, pageSize) {
-    return api.get(`api/books/mypublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getPublicBookByUsernamePage(pageNumber, pageSize) {
+    return api.get(
+      `api/books/mypublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
 
     // return axios.get(`${BOOK_BASE_REST_API_URL}/public/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
   //phuong
-  getUnPublicBookByUsernamePage( pageNumber, pageSize) {
-    return api.get(`api/books/myunpublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getUnPublicBookByUsernamePage(pageNumber, pageSize) {
+    return api.get(
+      `api/books/myunpublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
     // return axios.get(`${BOOK_BASE_REST_API_URL}/unpublic/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+
+  //phuong
+  // getPublicBookOrderBy(field, pageNumber, pageSize) {
+  //   const formData = new FormData();
+  //   formData.append("field", field);
+  //   formData.append("pageNumber", pageNumber);
+  //   formData.append("pageSize", pageSize);
+  //   return api.post("/orderby", formData);
+
+  // }
+  getPublicBookOrderBy(field, pageNumber, pageSize) {
+    return api.post(
+      `orderby?field=${field}&pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
   }
 }
 

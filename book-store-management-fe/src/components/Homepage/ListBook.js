@@ -85,6 +85,14 @@ function ListBook() {
         setTotalItems(response.data.totalElements);
       }
     );
+
+    const orderBook = (pageNumber, pageSize, field) =>
+    BookServices.getPublicBookOrderBy(pageNumber, pageSize, field).then(
+      (response) => {
+        setPageBooks(response.data.content);
+        setTotalItems(response.data.totalElements);
+      }
+    );
   useEffect(() => {
     filterBook(
       0,
@@ -167,7 +175,12 @@ function ListBook() {
   const handleButtonClick = () => {
     setIsVisible(!isVisible);
     handleReset()
+    
   };
+  const handleOrder = (e) => {
+    console.log(e.target.value);
+    orderBook(e.target.value, 0, sizePerPage);
+  }
   return (
     <>
       <div className="find d-flex justify-content-center homepage">
@@ -217,6 +230,7 @@ function ListBook() {
           </Button>
         </div>
         <select name="" id=""
+          onChange={handleOrder}
         >
           <option value="" >--Sort by--</option>
           <option value="title">Title</option>
