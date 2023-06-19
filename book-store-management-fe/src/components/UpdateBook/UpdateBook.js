@@ -36,6 +36,7 @@ function UpdateBook(props) {
   useEffect(() => {
     BookServices.getABookById(bookId).then((res) => {
       setBook(res.data);
+      setSelectedCategories(res.data.categories);
     });
     CategoryServices.getAllCategories().then((res) => {
       setAllCategories(res.data);
@@ -228,7 +229,9 @@ function UpdateBook(props) {
     const categoryIds = selectedCategories.map((category) => {
       return { categoryId: category.value, categoryName: category.label };
     });
-    book.categories = categoryIds;
+    if(selectedCategories.length != 0){
+      book.categories = categoryIds;
+    }
 
     const checkcatego = options.filter((option) =>
       bookCategoryIds.includes(option.value)
@@ -268,8 +271,7 @@ function UpdateBook(props) {
     formData.append("bookId", bookId);
     BookServices.updateNewBookCover(formData, bookId);
     BookServices.updateNewBookPdf(formData, bookId);
-    window.location.href = "http://localhost:3000/user/" + window.localStorage.getItem("user");
-
+    window.location.href = "http://localhost:3000/mybook";
   };
 
   return (
