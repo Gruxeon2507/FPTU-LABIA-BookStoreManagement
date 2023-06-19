@@ -118,7 +118,7 @@ class BookService {
         "Content-Type": "application/json",
       },
     };
-    return axios.post(
+    return api.post(
       BOOK_BASE_REST_API_URL + "/update/" + id,
       JSON.stringify(book),
       config
