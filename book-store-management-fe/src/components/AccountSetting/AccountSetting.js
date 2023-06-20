@@ -57,10 +57,9 @@ const AccountSetting = () => {
     if (temp !== null) {
       const formData = new FormData();
       formData.append("avatarPath", temp);
-      formData.append("username", username);
       UserServices.updateUserAvatar(formData);
     }
-    // window.location.href = "/user/" + username;
+    window.location.href = "/user/" + username;
   };
 
   const changeGmailHandler = (event) => {
@@ -212,7 +211,7 @@ const AccountSetting = () => {
 
             />
           </div>
-          {/* <div>
+          <div>
             <label for="avatarPath">Avatar </label>
             <input
               type="file"
@@ -221,7 +220,7 @@ const AccountSetting = () => {
               className="form-control"
 
             ></input>
-          </div> */}
+          </div>
           <button className="btn btn--form" type="submit" value="Log in" onClick={saveUser}>
             Change Information
           </button>

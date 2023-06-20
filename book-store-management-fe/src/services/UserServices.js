@@ -4,9 +4,9 @@ import api from "./BaseAuthenticationServices";
 const USER_BASE_REST_API_URL = "http://localhost:6789/api/users";
 
 class UserServices {
-  getAllUser() {
-    return axios.get(USER_BASE_REST_API_URL);
-  }
+  // getAllUser() {
+  //   return axios.get(USER_BASE_REST_API_URL);
+  // }
   getOnlyAdmin(pageNumber, pageSize) {
 
     return api.get(
@@ -31,7 +31,7 @@ class UserServices {
     api.post("update-profile", User);
   }
   updateUserAvatar(formData) {
-    return axios.post(USER_BASE_REST_API_URL + "/avatar/upload", formData);
+    return api.post(USER_BASE_REST_API_URL + "/avatar/upload", formData);
   }
 
   registerUserAvatar(formData) {
@@ -69,11 +69,13 @@ class UserServices {
     return axios.get(USER_BASE_REST_API_URL + "/onlyadmin/count");
   }
   exportUserToExcel() {
-    return axios({
-      url: USER_BASE_REST_API_URL + "/export",
+
+    return api({
+      url: "api/users/export",
       method: "GET",
-      responseType: "blob",
-    }).then((response) => {
+      responseType: "blob"
+    })
+    .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;

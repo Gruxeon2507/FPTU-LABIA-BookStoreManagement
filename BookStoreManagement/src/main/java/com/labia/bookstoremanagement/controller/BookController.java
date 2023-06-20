@@ -245,7 +245,52 @@ public class BookController {
                 bookRepository.deleteById(bookId);
             }
         }
+    }
 
+    @GetMapping("cover/delete")
+    public void deleteBook(@RequestParam("fileName") String fileName,HttpServletRequest request){
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if(username == null){
+            return;
+        }
+        String filePath = "./cover/" + fileName;
+        String command = "rm -rf "+filePath;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Command executed successfully");
+            } else {
+                System.out.println("Command execution failed");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("pdf/delete")
+    public void deletePdfBook(@RequestParam("fileName") String fileName,HttpServletRequest request){
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if(username == null){
+            return;
+        }
+        String filePath = "./pdf/" + fileName;
+        String command = "rm -rf "+filePath;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Command executed successfully");
+            } else {
+                System.out.println("Command execution failed");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @PostMapping("approve/{bookId}")
@@ -494,6 +539,15 @@ public class BookController {
     ) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, field), HttpStatus.OK);
+    }
+    @GetMapping("/order")
+    ResponseEntity<Page<Book>> orderbyAllPublic(
+            @RequestParam(defaultValue = "bookId") String field,
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "20") Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.orderAllPublic(pageable, field), HttpStatus.OK);
     }
 
     @GetMapping("/public/by-user")
