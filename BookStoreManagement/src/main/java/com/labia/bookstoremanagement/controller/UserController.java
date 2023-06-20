@@ -118,6 +118,24 @@ public class UserController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(inputStreamResource);
     }
+    @GetMapping (value = "avatar", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<?> getFile(@RequestParam("filename") String fileId, HttpServletRequest request) throws IOException {
+        try{
+            String filePath = "avatar/" + fileId + ".jpg";
+            File file = new File(filePath);
+            InputStream inputStream = new FileInputStream(file);
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(inputStreamResource);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
 
     @PostMapping(value = "/update")
     public void updateUserInformation(@RequestBody User user) {

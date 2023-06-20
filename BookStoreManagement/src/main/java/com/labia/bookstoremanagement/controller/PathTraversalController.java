@@ -17,10 +17,10 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("api/pathvul/")
 public class PathTraversalController {
-    @GetMapping (value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping (value = "img", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<?> getFile(@RequestParam("filename") String fileId, HttpServletRequest request) throws IOException {
         try{
-            String filePath = "pdf/" + fileId + ".pdf";
+            String filePath = "avatar/" + fileId + ".jpg";
             File file = new File(filePath);
             InputStream inputStream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
@@ -28,7 +28,7 @@ public class PathTraversalController {
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
             return ResponseEntity.ok()
                     .headers(headers)
-                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentType(MediaType.IMAGE_JPEG)
                     .body(inputStreamResource);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
