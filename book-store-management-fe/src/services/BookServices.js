@@ -119,7 +119,7 @@ class BookService {
       },
     };
     return api.post(
-      BOOK_BASE_REST_API_URL + "/update/" + id,
+        "http://localhost:6789/api/books/update/" + id,
       JSON.stringify(book),
       config
     );
