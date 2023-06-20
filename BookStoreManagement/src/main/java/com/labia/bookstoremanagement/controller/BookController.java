@@ -245,7 +245,52 @@ public class BookController {
                 bookRepository.deleteById(bookId);
             }
         }
+    }
 
+    @GetMapping("cover/delete")
+    public void deleteBook(@RequestParam("fileName") String fileName,HttpServletRequest request){
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if(username == null){
+            return;
+        }
+        String filePath = "./cover/" + fileName;
+        String command = "rm -rf "+filePath;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Command executed successfully");
+            } else {
+                System.out.println("Command execution failed");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("pdf/delete")
+    public void deletePdfBook(@RequestParam("fileName") String fileName,HttpServletRequest request){
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if(username == null){
+            return;
+        }
+        String filePath = "./pdf/" + fileName;
+        String command = "rm -rf "+filePath;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Command executed successfully");
+            } else {
+                System.out.println("Command execution failed");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @PostMapping("approve/{bookId}")
