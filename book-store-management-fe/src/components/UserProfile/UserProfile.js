@@ -51,7 +51,8 @@ function UserProfile() {
         <div className="profile-container">
             <div className="user-info">
                 <div className="avatar-card">
-                    <img src={`http://localhost:6789/api/users/avatar/${user.username}`} alt={user.username} />
+                    <img src={`http://localhost:6789/api/users/avatar/${user.username}.jpg`} alt={user.username} />
+                    {console.log(`http://localhost:6789/api/users/avatar/${user.username}.jpg`)}
                     <p className="displayName">{user.displayName}</p>
                     {console.log(user)}
                     <p>{loginUser}</p>
