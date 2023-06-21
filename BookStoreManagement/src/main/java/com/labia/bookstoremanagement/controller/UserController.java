@@ -114,7 +114,7 @@ public class UserController {
 //                .body(inputStreamResource);
 //    }
 
-    @GetMapping(value = "/avatar/{fileName:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/avatar/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getUserAvatarError(@PathVariable String fileName) throws IOException {
         String filePath = "avatar/" +fileName;
         File file = new File(filePath);
@@ -145,7 +145,16 @@ public class UserController {
                     .contentType(MediaType.IMAGE_JPEG)
                     .body(inputStreamResource);
         }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            String filePath = "avatar/" + "undefined.jpg";
+            File file = new File(filePath);
+            InputStream inputStream = new FileInputStream(file);
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileId);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(inputStreamResource);
         }
 
     }

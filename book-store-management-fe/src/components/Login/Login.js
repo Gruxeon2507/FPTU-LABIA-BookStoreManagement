@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Alert from "react-bootstrap/Alert";
 import "./Login.scss";
-import { Link } from 'react-router-dom';
+import { Link, useParams,useNavigate } from 'react-router-dom';
 function LoginForm() {
+  const {link} = useParams();
   const [username, setUsername] = useState("");
   const [checkUsername, setCheckUsername] = useState(false);
   const [messageUsername, setMessageUsername] = useState(
@@ -13,7 +14,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
   const [messageLoginFailed, setMessageLoginFailed] = useState("Login Failed");
-
+  const navigate = useNavigate();
   // Add an event listener to the form
 
   const handleSubmit = async (event) => {
@@ -32,7 +33,13 @@ function LoginForm() {
       const role =response.data.role;
       localStorage.setItem("token",token);
       localStorage.setItem("role",role);
-      window.location.href = "/";
+      if(link){
+        window.location.href=link
+      }else{
+      window.location.href="/"
+        
+      }
+
     } catch (error) {
       setLoginFailed(true);
       console.error(error);
