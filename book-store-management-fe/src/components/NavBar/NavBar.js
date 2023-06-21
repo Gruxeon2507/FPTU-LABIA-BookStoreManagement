@@ -61,7 +61,7 @@ function Navbar() {
                   window.localStorage.getItem("role") === "Super Admin" ? (
                     <NavDropdown.Item>
                       <Link to={"../../admin"}>
-                  Account Setting
+                  Admin
                     </Link>
                     </NavDropdown.Item>
                   ) : (
