@@ -7,14 +7,20 @@ import { Pagination } from "antd";
 import { Card } from "react-bootstrap";
 import { Button, FormControl } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faTimes, faList, faSort } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faTimes,
+  faList,
+  faSort,
+} from "@fortawesome/free-solid-svg-icons";
 import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [condition, setCondition] = useState("");
-  const [sortField, setSortField] = useState('');
+  const [searchMessage, setSearchMessage] = useState("");
+  const [displayMessage, setDisplayMessage] = useState("");
 
   const getAllPublicBooks = () => {
     return BookServices.getAllPublicBooks()
@@ -59,19 +65,14 @@ function ListBook() {
   };
 
   const findCondition = () => {
-    setCondition(condition);
-    console.log(condition.length)
-    if(condition.length){
-      getAllPublicBooks()
+    if (searchMessage.length > 0) {
+      const query = encodeURIComponent(searchMessage).replace(/%20/g, "%20");
+      setDisplayMessage(searchMessage);
+      filterBook(0, sizePerPage, query);
+    } else {
+      setDisplayMessage("");
+      getPageBooks(0, sizePerPage);
     }
-    // console.log(
-    //   "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
-    // );
-    filterBook(
-      0,
-      sizePerPage,
-      encodeURIComponent(condition).replace(/%20/g, "%20")
-    );
   };
   const handleReset = () => {
     setCondition("");
@@ -86,7 +87,7 @@ function ListBook() {
       }
     );
 
-    const orderBook = (pageNumber, pageSize, field) =>
+  const orderBook = (pageNumber, pageSize, field) =>
     BookServices.getPublicBookOrderBy(pageNumber, pageSize, field).then(
       (response) => {
         setPageBooks(response.data.content);
@@ -135,7 +136,7 @@ function ListBook() {
   //   if(checked.length!==0){
   //     handleSubmit();}
   // }, [checked]);
-  
+
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
@@ -161,26 +162,25 @@ function ListBook() {
   console.log("total page: " + totalItems);
 
   const handleSubmit = (categoryId) => {
-      // handleCheck(categoryId)
-      console.log("check on submit:" + checked);
-      setCurrentPage(1);
-      console.log({ ids: checked });
-      const categoryIds = checked.join(",");
-      console.log(categoryIds);
-      getPageBooksByCategories(categoryIds, 0, sizePerPage);
-      getBooksByCategories(categoryIds);
+    // handleCheck(categoryId)
+    console.log("check on submit:" + checked);
+    setCurrentPage(1);
+    console.log({ ids: checked });
+    const categoryIds = checked.join(",");
+    console.log(categoryIds);
+    getPageBooksByCategories(categoryIds, 0, sizePerPage);
+    getBooksByCategories(categoryIds);
   };
   const [isVisible, setIsVisible] = useState(false);
 
   const handleButtonClick = () => {
     setIsVisible(!isVisible);
-    handleReset()
-    
+    handleReset();
   };
   const handleOrder = (e) => {
     console.log(e.target.value);
     orderBook(e.target.value, 0, sizePerPage);
-  }
+  };
   return (
     <>
       <div className="find d-flex justify-content-center homepage">
@@ -189,7 +189,13 @@ function ListBook() {
             size="sm"
             variant="outline-info"
             type="button"
-            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            style={{
+              borderColor: "#eaa451",
+              color: "white",
+              backgroundColor: "#eaa451",
+              boxShadow: "none",
+              margin: "5px",
+            }}
             // onClick={handleReset}
             onClick={handleButtonClick}
           >
@@ -201,9 +207,8 @@ function ListBook() {
           placeholder="Search Books Here"
           name="search"
           className={"info-border  text-black w-50 "}
-          value={condition}
-          onChange={(e) => {setCondition(e.target.value)}}
-          onInput={(e) => {findCondition()}}
+          value={searchMessage}
+          onChange={(e) => setSearchMessage(e.target.value)}
         />
         {/* </div> */}
         <div className="itemSearch">
@@ -211,9 +216,14 @@ function ListBook() {
             size="sm"
             variant="outline-info"
             type="button"
-            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
+            style={{
+              borderColor: "#eaa451",
+              color: "white",
+              backgroundColor: "#eaa451",
+              boxShadow: "none",
+              margin: "5px",
+            }}
             onClick={findCondition}
-            
           >
             <FontAwesomeIcon icon={faSearch} />
           </Button>
@@ -223,39 +233,58 @@ function ListBook() {
             size="sm"
             variant="outline-danger"
             type="button"
-            style={{borderColor:"#eaa451",color:"white",backgroundColor:"#eaa451",boxShadow:"none",margin:"5px"}}
-            onClick={() => handleReset()}
+            style={{
+              borderColor: "#eaa451",
+              color: "white",
+              backgroundColor: "#eaa451",
+              boxShadow: "none",
+              margin: "5px",
+            }}
+            onClick={() => {
+              setSearchMessage("");
+              handleReset();
+            }}
           >
             <FontAwesomeIcon icon={faTimes} />
           </Button>
         </div>
-        <select name="" id=""
-          onChange={handleOrder}
-        >
-          <option value="" >--Sort by--</option>
+        <select name="" id="" onChange={handleOrder}>
+          <option value="">--Sort by--</option>
           <option value="title">Title</option>
           <option value="price">Price</option>
-
         </select>
       </div>
-      {isVisible && <div className="categories row">
-        {categories.map((category) => (
-          <div className="select col-6 col-md-3 col-sm-4 d-flex ">
-            <label key={category.categoryId}>
-              <input
-                type="checkbox"
-                className="form-check-input w-20 h-20 ms-1 me-1"
-                checked={checked.includes(category.categoryId)}
-                onChange={() => handleCheck(category.categoryId)}
-              />
-              {category.categoryName}
-            </label>
-          </div>
-        ))}
+      {isVisible && (
+        <div className="categories row">
+          {categories.map((category) => (
+            <div className="select col-6 col-md-3 col-sm-4 d-flex ">
+              <label key={category.categoryId}>
+                <input
+                  type="checkbox"
+                  className="form-check-input w-20 h-20 ms-1 me-1"
+                  checked={checked.includes(category.categoryId)}
+                  onChange={() => handleCheck(category.categoryId)}
+                />
+                {category.categoryName}
+              </label>
+            </div>
+          ))}
 
-      <div className="btn btn-success" onClick={handleSubmit}>Find</div>
-      </div>
-      }
+          <div className="btn btn-success" onClick={handleSubmit}>
+            Find
+          </div>
+        </div>
+      )}
+      {displayMessage.length > 0 && (
+        <div>
+          <span>Search result for "</span>
+          <span
+            style={{ whiteSpace: "nowrap" }}
+            dangerouslySetInnerHTML={{ __html: displayMessage }}
+          />
+          <span>"</span>
+        </div>
+      )}
       <div className="list-books row">
         {pageBooks.map((book) => (
           <div
@@ -264,24 +293,46 @@ function ListBook() {
               book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
-            <Card className="card" style={{ width: "19rem", height:"28rem"}}>
+            <Card className="card" style={{ width: "19rem", height: "28rem" }}>
               <div className="cover">
                 <Card.Img
                   variant="top"
                   src={"http://localhost:6789/api/books/cover/" + book.bookId}
-                  style={{ height: "14rem" ,width: "auto"}}
+                  style={{ height: "14rem", width: "auto" }}
                 />
               </div>
-              <Card.Body style={{height:"16rem"}}>
+              <Card.Body style={{ height: "16rem" }}>
                 <Card.Title
-                  style={{ height: "3rem" ,width: "auto",display:"flex",alignItems:"center",justifyContent:"center",color:"#1a1668",fontWeight:"800"}}
-                >{book.title}</Card.Title>
+                  style={{
+                    height: "3rem",
+                    width: "auto",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#1a1668",
+                    fontWeight: "800",
+                  }}
+                >
+                  {book.title}
+                </Card.Title>
                 <Card.Text
-                style={{ height: "2rem" ,width: "auto",color:"#eaa451",fontWeight:"bold"}}
-                >{book.authorName}</Card.Text>
-                <Card.Text
-                style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text>
-                <Link to={"/book/view/" + book.bookId} className="btn btn-info" style={{backgroundColor:"#1a1668",color:"white"}}>
+                  style={{
+                    height: "2rem",
+                    width: "auto",
+                    color: "#eaa451",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {book.authorName}
+                </Card.Text>
+                <Card.Text style={{ height: "1rem", width: "auto" }}>
+                  {book.price}
+                </Card.Text>
+                <Link
+                  to={"/book/view/" + book.bookId}
+                  className="btn btn-info"
+                  style={{ backgroundColor: "#1a1668", color: "white" }}
+                >
                   Đọc Ngay{" "}
                 </Link>
               </Card.Body>
@@ -291,7 +342,12 @@ function ListBook() {
       </div>
 
       <Pagination
-      style={{borderColor:"#eaa451",color:"black",boxShadow:"none",margin:"5px"}}
+        style={{
+          borderColor: "#eaa451",
+          color: "black",
+          boxShadow: "none",
+          margin: "5px",
+        }}
         total={totalItems}
         defaultPageSize={sizePerPage}
         showTotal={(total, range) =>
