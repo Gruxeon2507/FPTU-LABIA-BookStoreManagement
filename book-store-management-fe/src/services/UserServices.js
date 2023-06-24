@@ -28,7 +28,7 @@ class UserServices {
   }
   updateUserInformation(User) {
     // return axios.post(USER_BASE_REST_API_URL + "/update", User);
-    api.post("update-profile", User);
+    api.post("/api/users/update-profile", User);
   }
   updateUserAvatar(formData) {
     return api.post(USER_BASE_REST_API_URL + "/avatar/upload", formData);

