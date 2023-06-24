@@ -1,4 +1,6 @@
 USE FU_LABIA_BookStoreManagement;
+
+
 -- Book Category
 INSERT INTO Category (categoryId, categoryName)
 VALUES (1, 'Tình cảm');

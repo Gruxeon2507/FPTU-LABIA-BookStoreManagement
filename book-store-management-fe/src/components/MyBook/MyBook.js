@@ -50,7 +50,7 @@ const MyBook = () => {
 
 
   const deleteBook = (bookId) => {
-    BookServices.deleteBook(bookId);
+    BookServices.deletePendingBook(bookId);
     window.location.href = "";
   };
 

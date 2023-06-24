@@ -42,8 +42,7 @@ function App() {
 
         <Route path="/login" Component={LoginForm}></Route>
         <Route path="/register" Component={RegisterUser}></Route>
-        <Route path="/admin/user" Component={ListUser}></Route>
-        <Route path="/admin/book" Component={AdminBooks}></Route>
+
 
         <Route path="" Component={ListBook}></Route>
         <Route path="/user/:userId" Component={UserProfile}></Route>
@@ -100,7 +99,7 @@ function App() {
           element={
             <PrivateRoute
               component={ListUser}
-              roles={["Admin"]}
+              roles={["Admin", "Super Admin"]}
             />
           }
         />
@@ -109,7 +108,7 @@ function App() {
           element={
             <PrivateRoute
               component={AdminBooks}
-              roles={["Admin"]}
+              roles={["Admin", "Super Admin"]}
             />
           }
         />

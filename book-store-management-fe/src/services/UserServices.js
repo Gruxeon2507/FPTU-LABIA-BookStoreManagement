@@ -8,13 +8,13 @@ class UserServices {
     return axios.get(USER_BASE_REST_API_URL);
   }
   getOnlyAdmin(pageNumber, pageSize) {
-
     return api.get(
       `api/users/onlyadmin?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
 
   getOnlyUser(pageNumber, pageSize) {
+    // console.log("getOnlyUser service called.");
     return api.get(
       `api/users/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );

@@ -126,7 +126,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/pdf/{fileId}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> getFile(@PathVariable String fileId,HttpServletRequest request) throws IOException {
+    public ResponseEntity<InputStreamResource> getFile(@PathVariable String fileId, HttpServletRequest request) throws IOException {
         String filePath = "pdf/" + fileId + ".pdf";
         File file = new File(filePath);
         InputStream inputStream = new FileInputStream(file);
@@ -243,35 +243,61 @@ public class BookController {
     public void deleteBook(@PathVariable("bookId") int bookId, HttpServletRequest request) {
         System.out.println("DELETE BOOK ID CALLED.");
         try {
-            String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-            User u = userRepository.userHasRole(username, 1);
-            if (u != null) {
-                System.out.println("DELETED.");
-                bookRepository.deleteBookCategoryByBookId(bookId);
-                bookRepository.deleteById(bookId);
-            } else {
-                System.out.println("UNAUTHORIZED.");
+            Book book = bookRepository.findByBookId(bookId);
+            if (book != null) {
+                String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+                User admin = userRepository.userHasRole(username, 2);
+                User superAdmin = userRepository.userHasRole(username, 1);
+                if (admin != null || superAdmin != null) {
+                    bookRepository.deleteBookCategoryByBookId(bookId);
+                    bookRepository.deleteById(bookId);
+                    System.out.println("DELETED.");
+                } else {
+                    System.out.println("UNAUTHORIZED.");
+                }
             }
+            User bookOwner = bookRepository.getBookCreated(bookId);
         } catch (Exception e) {
             System.out.println("EXCEPTION");
         }
     }
 
+    // BROKEN AUTHORIZATION: CHECK USENAME != NULL ONLY
     @PostMapping("approve/{bookId}")
     public void approveBook(@PathVariable("bookId") int bookId, HttpServletRequest request) {
         System.out.println("CALLING APPROVEBOOK API");
         try {
             String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-            User u = userRepository.userHasRole(username, 2);
-            if (u != null) {
+//            User u = userRepository.userHasRole(username, 2);
+            if (username != null) {
                 bookRepository.updateBookStatus(bookId);
                 System.out.println("UPDATED.");
-
             } else {
                 System.out.println("UNAUTHORIZED.");
             }
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/pending/{bookId}")
+    public void deletePendingBook(@PathVariable("bookId") int bookId, HttpServletRequest httpServletRequest) {
+        Book book = bookRepository.findByBookId(bookId);
+        if (book != null) {
+            if (!book.isApproved()) {
+                try {
+                    String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(httpServletRequest));
+                    if (username != null) {
+                        bookRepository.deleteBookCategoryByBookId(bookId);
+                        bookRepository.deleteById(bookId);
+                        System.out.println("DELETED.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("EXCEPTION: " + e.getMessage());
+                }
+            }
+        } else {
+            System.out.println("BOOK IS NULL.");
         }
     }
 
@@ -503,7 +529,8 @@ public class BookController {
         String username = jwtTokenUtil.getUsernameFromToken(token);
         return bookRepository.getUnPublicBookByUsername(username);
     }
-    //đã sửa phuong 
+
+    //đã sửa phuong
     @GetMapping("/mypublic/page")
     ResponseEntity<Page<Book>> findPageAllPublicByUser(
             HttpServletRequest request,
@@ -515,6 +542,7 @@ public class BookController {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return new ResponseEntity<>(bookRepository.getPublicBookByUsernamePage(pageable, username), HttpStatus.OK);
     }
+
     //đã sửa phuong
     @GetMapping("/myunpublic/page")
     ResponseEntity<Page<Book>> findPageAllUnPublicByUser(

@@ -43,7 +43,7 @@ class BookService {
 
   deleteBook(bookId) {
     console.log("delete service called.");
-    return axios.delete(BOOK_BASE_REST_API_URL + "/delete/" + bookId);
+    return api.delete(BOOK_BASE_REST_API_URL + "/delete/" + bookId);
   }
 
   getAllPublicBooks() {
@@ -127,15 +127,23 @@ class BookService {
   }
 
   //phuong
-  getPublicBookByUsernamePage( pageNumber, pageSize) {
-    return api.get(`api/books/mypublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getPublicBookByUsernamePage(pageNumber, pageSize) {
+    return api.get(
+      `api/books/mypublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
 
     // return axios.get(`${BOOK_BASE_REST_API_URL}/public/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
   //phuong
-  getUnPublicBookByUsernamePage( pageNumber, pageSize) {
-    return api.get(`api/books/myunpublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getUnPublicBookByUsernamePage(pageNumber, pageSize) {
+    return api.get(
+      `api/books/myunpublic/page?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
     // return axios.get(`${BOOK_BASE_REST_API_URL}/unpublic/page/${username}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+
+  deletePendingBook(bookId) {
+    return api.delete(`api/books/delete/pending/${bookId}`);
   }
 }
 

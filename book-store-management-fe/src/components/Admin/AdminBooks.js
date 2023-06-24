@@ -77,7 +77,7 @@ const AdminBooks = () => {
   const deleteBook = (bookId) => {
     console.log("delete btn pressed");
     BookServices.deleteBook(bookId);
-    // window.location.href = "";
+    window.location.href = "";
   };
 
   return (

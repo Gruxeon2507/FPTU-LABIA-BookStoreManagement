@@ -68,7 +68,7 @@ public class UserController {
     BookRepository bookRepository;
     @Autowired
     CategoryRepository categoryRepository;
-    
+
     @Autowired
     private RoleUtils roleUtils;
 
@@ -276,9 +276,12 @@ public class UserController {
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
-        if ( roleUtils.hasRoleFromToken(request, 2)||roleUtils.hasRoleFromToken(request, 1)) {
+        System.out.println("/ONLYUSER PAGINATION API CALLED");
+        if (roleUtils.hasRoleFromToken(request, 2) || roleUtils.hasRoleFromToken(request, 1) || roleUtils.hasRoleFromToken(request, 3)) {
             Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
             return userRepository.getOnlyRoleUser(pageable);
+        } else {
+            System.out.println("NULL WILL BE RETURNED.");
         }
         return null;
     }
@@ -313,17 +316,24 @@ public class UserController {
     }
 
     @GetMapping("/export")
-    public void exportUserToExcel(HttpServletResponse response) throws IOException {
-        response.setContentType("application/octet-stream");
-        String headerKey = "Content-Disposition";
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-        String fileName = "users_" + currentDateTime + ".xlsx";
-        String headerValue = "attachement; filename=" + fileName;
-        response.setHeader(headerKey, headerValue);
-        List<User> listUsers = userRepository.findAll();
-        UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
-        excelExporter.export(response);
+    public void exportUserToExcel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        try {
+            boolean isRequestAuthorized = roleUtils.hasRoleFromToken(request, 2);
+            if (isRequestAuthorized) {
+                response.setContentType("application/octet-stream");
+                String headerKey = "Content-Disposition";
+                DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+                String currentDateTime = dateFormatter.format(new Date());
+                String fileName = "users_" + currentDateTime + ".xlsx";
+                String headerValue = "attachement; filename=" + fileName;
+                response.setHeader(headerKey, headerValue);
+                List<User> listUsers = userRepository.findAll();
+                UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
+                excelExporter.export(response);
+            }
+        } catch (Exception e) {
+            System.out.println("EXCEPTION");
+        }
     }
 
     @GetMapping("/loginuser")
