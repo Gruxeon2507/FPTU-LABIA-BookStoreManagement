@@ -3,6 +3,7 @@ import UserServices from "../../services/UserServices";
 import BookServices from "../../services/BookServices";
 import { Link } from "react-router-dom";
 import { Button, Pagination } from "antd";
+import api from "../../services/BaseAuthenticationServices";
 
 const MyBook = () => {
   const pageSize = 2;
@@ -50,8 +51,22 @@ const MyBook = () => {
 
 
   const deleteBook = (bookId) => {
+<<<<<<< HEAD
     BookServices.deletePendingBook(bookId);
     window.location.href = "";
+=======
+    let ok = window.confirm("Are you sure want to delete this book ?? ");
+    if(ok){
+      api.delete("api/books/delete/" + bookId)
+      .then((res) => {
+        alert("Delete successfully!!");
+      })
+      .catch((error) => {
+        alert("Delete failed!! API wrong");
+      });
+      window.location.href = "";
+    }
+>>>>>>> refs/remotes/origin/main
   };
 
   return (

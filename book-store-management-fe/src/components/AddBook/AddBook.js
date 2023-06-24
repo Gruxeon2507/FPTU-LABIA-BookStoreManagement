@@ -2,10 +2,11 @@ import "./AddBook.scss";
 import { Link, Navigate } from "react-router-dom";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import BookServices from "../../services/BookServices";
 import Alert from "react-bootstrap/Alert";
 import UserServices from "../../services/UserServices";
+import api from "../../services/BaseAuthenticationServices";
 
 class AddBook extends Component {
   constructor(props) {
@@ -244,7 +245,7 @@ class AddBook extends Component {
       //   selectedCategories: selectedCategories,
     };
 
-    const createdBy = window.localStorage.getItem("user");
+    const createdBy = "123";
 
     const bookData = {
       book : book,
@@ -263,36 +264,49 @@ class AddBook extends Component {
       showErrorPdf ||
       showErrorTitle ||
       showErrorAuthorName ||
-      showErrorDescription
+      showErrorDescription ||
+      showErrorPdf ||
+      showErrorCover
     ) {
       alert("Wrong input can not load data!!!");
       return;
     }
 
-    const bookId = null;
+    let bookId = "";
 
-    fetch("http://localhost:6789/api/books/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookData),
+    // fetch("http://localhost:6789/api/books/add", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(bookData),
+    // })
+    //   .then((response) => {
+    //     response.json();
+    //   })
+    //   .then((data) => {
+    //     this.setState({
+    //       bookId: data.title,
+    //     });
+    //   });
+    api.post("api/books/add",bookData)
+    .then((res) => {
+      console.log(res.data.bookId);
+      bookId = res.data.bookId;
+      alert("Call API add successfully!");
+    }).catch((error) => {
+      console.log(error);
+      alert("Call API failed successfully!")
     })
-      .then((response) => {
-        response.json();
-      })
-      .then((data) => {
-        this.setState({
-          bookId: data.title,
-        });
-      });
+    const a = "x";
     const formData = new FormData();
+    formData.append("bookId",bookId);
     formData.append("coverPath", this.state.coverPath);
     formData.append("pdfPath", this.state.pdfPath);
     formData.append("bookId", this.state.bookId);
     BookServices.updateBookCover(formData);
     BookServices.updateBookpdf(formData);
-    window.location.href = "http://localhost:3000/user/" + createdBy;
+    window.location.href = "http://localhost:3000/mybook";
   };
 
   render() {

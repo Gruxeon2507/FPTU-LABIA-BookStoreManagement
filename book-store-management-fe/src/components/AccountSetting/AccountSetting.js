@@ -17,6 +17,7 @@ const AccountSetting = () => {
   const [username, setUsername] = useState("");
   const [avatarPath, setAvatarPath] = useState(null);
   const [checkAvatarPath, setCheckAvatarPath] = useState(false);
+  const [currentU, setCurrentU] = useState("")
   const [messageAvatarPath, setMessageAvatarPath] = useState(
     "Please just input file JPEG and file size less than 5MB"
   );
@@ -32,7 +33,8 @@ const AccountSetting = () => {
         setDisplayName(res.data.displayName);
         setEmail(res.data.email);
         setDob(res.data.dob);
-        setUsername(res.data.username);
+        setUsername(username);
+        setCurrentU(res.data.username);
       }
     );
   }, []);
@@ -57,10 +59,9 @@ const AccountSetting = () => {
     if (temp !== null) {
       const formData = new FormData();
       formData.append("avatarPath", temp);
-      formData.append("username", username);
       UserServices.updateUserAvatar(formData);
     }
-    window.location.href = "/user/" + username;
+    window.location.href = "/user/" + currentU
   };
 
   const changeGmailHandler = (event) => {
@@ -104,7 +105,7 @@ const AccountSetting = () => {
   };
 
   const cancel = (e) => {
-    window.location.href = "/user/" + username;
+    window.location.href = "/user/" + currentU;
   };
 
   return (
@@ -165,7 +166,7 @@ const AccountSetting = () => {
 
         <form className="login-form" >
 
-          <div>
+          {/* <div>
             <label for="username">Username </label>
             <input
               type="text"
@@ -173,7 +174,7 @@ const AccountSetting = () => {
               name="username"
               onChange={changeDisplayNameHandler}
             />
-          </div>
+          </div> */}
 
           <div>
             <label for="displayName">Display Name </label>

@@ -23,7 +23,6 @@ import MyBook from "./components/MyBook/MyBook";
 import ForbiddenPage from "./components/Authentication/Forbidden";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
-
 function App() {
   const role = window.localStorage.getItem("role");
   return (
@@ -41,6 +40,8 @@ function App() {
         <Route path="/book/view/:bookId" Component={ViewABook}></Route> */}
 
         <Route path="/login" Component={LoginForm}></Route>
+        <Route path="/login/:link" Component={LoginForm}></Route>
+
         <Route path="/register" Component={RegisterUser}></Route>
 
 
@@ -53,7 +54,7 @@ function App() {
           element={
             <PrivateRoute
               component={Dashboard}
-              roles={["Admin", "Super Admin","User"]}
+              roles={["Admin", "Super Admin", "User"]}
             />
           }
         />
@@ -62,7 +63,7 @@ function App() {
           element={
             <PrivateRoute
               component={AccountSetting}
-              roles={["Admin", "Super Admin","User"]}
+              roles={["Admin", "Super Admin", "User"]}
             />
           }
         />
@@ -71,7 +72,7 @@ function App() {
           element={
             <PrivateRoute
               component={AddBook}
-              roles={["Admin", "Super Admin","User"]}
+              roles={["Admin", "Super Admin", "User"]}
             />
           }
         />
@@ -80,7 +81,7 @@ function App() {
           element={
             <PrivateRoute
               component={UpdateBook}
-              roles={["Admin", "Super Admin","User"]}
+              roles={["Admin", "Super Admin", "User"]}
             />
           }
         />
@@ -89,13 +90,14 @@ function App() {
           element={
             <PrivateRoute
               component={MyBook}
-              roles={["Admin", "Super Admin","User"]}
+              roles={["Admin", "Super Admin", "User"]}
             />
           }
         />
 
         <Route
           path="/admin/user"
+<<<<<<< HEAD
           element={
             <PrivateRoute
               component={ListUser}
@@ -111,6 +113,13 @@ function App() {
               roles={["Admin", "Super Admin"]}
             />
           }
+=======
+          element={<PrivateRoute component={ListUser} roles={["Admin"]} />}
+        />
+        <Route
+          path="/admin/book"
+          element={<PrivateRoute component={AdminBooks} roles={["Admin"]} />}
+>>>>>>> refs/remotes/origin/main
         />
         <Route
           path="/admin"

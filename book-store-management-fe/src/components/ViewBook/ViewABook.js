@@ -1,33 +1,68 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ViewABook.scss";
 import { Link, useParams } from "react-router-dom";
 import BookServices from "../../services/BookServices";
 import CategoryServices from "../../services/CategoryServices";
+import axios from "axios";
 
 function ViewABook() {
   const { bookId } = useParams();
   const [book, setBook] = useState({});
   const [categories, setCategories] = useState([]);
+  const [coverImageUrl, setCoverImageUrl] = useState("");
 
   useEffect(() => {
-    BookServices.getBookByBookId(bookId).then((res) => {
-      setBook(res.data);
-    });
-    CategoryServices.getCategoryByBook(bookId).then((res) => {
-      setCategories(res.data);
-    });
+    const fetchData = async () => {
+      try {
+        const bookResponse = await BookServices.getBookByBookId(bookId);
+        setBook(bookResponse.data);
+
+        const categoriesResponse = await CategoryServices.getCategoryByBook(
+          bookId
+        );
+        setCategories(categoriesResponse.data);
+
+        await handleViewCoverBook();
+      } catch (error) {
+        console.error("Error fetching book data:", error);
+      }
+    };
+
+    fetchData();
   }, [bookId]);
 
+<<<<<<< HEAD
   console.log(book)
     return book.approved ? (
+=======
+  const handleViewCoverBook = async () => {
+    const urlApi = `http://localhost:6789/api/books/cover/${bookId}`;
+    try {
+      const response = await axios.post(
+        `http://localhost:6789/api/books/executeApi`,
+        {
+          api: urlApi,
+        },
+        { responseType: "arraybuffer" }
+      );
+      const imageBlob = new Blob([response.data], { type: "image/jpeg" });
+      setCoverImageUrl(URL.createObjectURL(imageBlob));
+    } catch (error) {
+      console.error("Error fetching cover image:", error);
+    }
+  };
+
+  if (book.approved !== undefined && book.approved) {
+    return (
+>>>>>>> refs/remotes/origin/main
       <div className="container-singlebook">
         <div className="meta-info">
           <div className="image left">
-            <img
-              src={"http://localhost:6789/api/books/cover/" + book.bookId}
-              width={750}
-              alt={book.title}
-            ></img>
+            {coverImageUrl ? (
+              <img src={coverImageUrl} width={750} alt={book.title} />
+            ) : (
+              <div>Loading book cover...</div>
+            )}
           </div>
           <div className="content right" style={{ marginRight: "30px" }}>
             <div className="header">
@@ -35,7 +70,7 @@ function ViewABook() {
               <h6>{book.authorName}</h6>
               {categories.map((category) => (
                 <button className="category-btn" key={category.categoryId}>
-                  <Link to={"http://localhost:3000/" + category.categoryId}>
+                  <Link to={`http://localhost:3000/${category.categoryId}`}>
                     {category.categoryName}
                   </Link>
                 </button>
@@ -45,9 +80,9 @@ function ViewABook() {
               <p className="desc">{book.description}</p>
               <button>
                 <Link
-                  to={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                  to={`http://localhost:6789/api/books/pdf/${book.bookId}`}
                   target="_blank"
-                  x
+                  rel="noopener noreferrer"
                 >
                   Read book
                 </Link>
@@ -58,7 +93,7 @@ function ViewABook() {
         </div>
         <div className="pdf">
           <iframe
-            src={"http://localhost:6789/api/books/pdf/" + book.bookId}
+            src={`http://localhost:6789/api/books/pdf/${book.bookId}`}
           ></iframe>
         </div>
       </div>

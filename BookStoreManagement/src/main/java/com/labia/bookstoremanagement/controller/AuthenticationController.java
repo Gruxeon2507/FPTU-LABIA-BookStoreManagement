@@ -48,7 +48,6 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User credentials, HttpServletRequest request) {
         User user = userRepository.findByUsername(credentials.getUsername());
-        
         if (user != null && (user.getPassword().equals(credentials.getPassword())||AuthorizationUtils.checkPassword(credentials.getPassword(), user.getPassword()))) {
             HttpSession session = request.getSession();
             user.setPassword("");

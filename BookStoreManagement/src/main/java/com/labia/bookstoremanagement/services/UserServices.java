@@ -43,4 +43,8 @@ public class UserServices implements UserDetailsService {
         return userRepository.customSearchUsers(query);
     }
 
+    public void updateUser(String query){
+        userRepository.customUpdateUser(query);
+    }
+
 }

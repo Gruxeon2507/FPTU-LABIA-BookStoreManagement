@@ -156,14 +156,14 @@ VALUES ('Xin Cạch Đàn Ông','Katarzyna Grochola','“Xin Cạch Đàn Ông�
  là những yếu tố khiến cuộc hôn nhân của cô tan vỡ. Không gục ngã trước những đau thương, Judyta vẫn tự mình xây nhà,
  nuôi con, làm tốt công việc tại tòa soạn, và thậm chí còn tư vấn cho người khác về những vấn đề trong cuộc sống, như mâu 
  thuẫn gia đình, nữ công gia chánh,...',
- 'pdf/2.pdf','cover/2.jpg',150000,'huyenntk',1,0,0);
+ 'pdf/2.pdf','cover/2.jpg',180000,'huyenntk',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Đàn ông sao Hỏa, Đàn bà sao Kim','John Gray','“Đàn ông sao Hỏa, Đàn bà sao Kim” là tác phẩm phản ánh
  tâm lý tiềm thức của con người rất chân thực, là một cuốn sách tâm lý học tình yêu của tác giả John Gray mà 
  bạn không nên bỏ lỡ. Tác phẩm này sẽ giúp người đọc hiểu rõ hơn về bản thân, cũng như các giới tính khác. Qua
  đó, hãy học cách tạo dựng tình yêu và thích ứng với việc kết hôn để cuộc hôn nhân của bạn không trở nên nhàm 
  chán, cũng như tránh rơi vào tình trạng đổ vỡ.',
- 'pdf/3.pdf','cover/3.jpg',150000,'huyenntk',1,0,0);
+ 'pdf/3.pdf','cover/3.jpg',160000,'huyenntk',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Trà Hoa Nữ','Alexandre Dumas con','Trà Hoa Nữ được xuất bản vào năm 1848, được Alexandre Dumas sáng tác dựa trên mối tình
  ngắn ngủi của ông và Marie Duplessis, một kỹ nữ yêu hoa trà. Cuốn tiểu thuyết kể về mối tình bi thương của
@@ -179,7 +179,7 @@ hệ, họ sống bằng nghề chăn nuôi gia súc, dù vùng đất mà họ 
  câu chuyện đến từ mối tình của cô con gái duy nhất trong gia đình, Meggie với Ralph de Bricassart, một linh mục.
  Mối quan hệ của họ không chỉ bị gia đình ngăn cấm, mà còn xâm phạm đến đạo đức và giáo điều. Xuyên suốt tác phẩm 
  là những mâu thuẫn, dằn vặt, buộc các nhân vật phải đưa ra sự lựa chọn, quyết định cho cuộc sống của riêng họ.',
- 'pdf/5.pdf','cover/5.jpg',150000,'maiphuonghoang',1,0,0);
+ 'pdf/5.pdf','cover/5.jpg',170000,'maiphuonghoang',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Đừng Nhân Danh Tình Yêu','Bất Kinh Ngữ','“Đừng Nhân Danh Tình Yêu” là câu chuyện xoay quanh nhân vật
  nam chính tên Lục Trình Vũ - một bác sĩ đầy tài năng làm việc trong một bệnh viện có tiếng. Nữ chính là Đỗ
@@ -195,7 +195,7 @@ kể về tình yêu đồng giới của nhà văn  André Aciman. Nhân vật 
 ngô, nhưng rất thông minh và Oliver, một nhà học giả điển trai, cuốn hút và điềm tĩnh. Họ gặp nhau vào một ngày
  mùa hè tại vùng biển Riviera nước Ý, vào những năm 1980. Tại đây họ yêu nhau và có với nhau những kỉ niệm vô cùng
  đẹp mà cả hai không bao giờ quên được.',
- 'pdf/7.pdf','cover/7.jpg',150000,'duckm',0,0,0);
+ 'pdf/7.pdf','cover/7.jpg',180000,'duckm',0,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Cuốn Theo Chiều Gió','Margaret Mitchell','Cuốn sách "Cuốn Theo Chiều Gió" được viết bởi Margaret
  Mitchell và xuất bản lần đầu vào năm 1936, là một trong những cuốn sách hay nên đọc về tình yêu. Bối 
@@ -237,13 +237,13 @@ VALUES ('Mắt Biếc','Nguyễn Nhật Ánh','Mắt Biếc là một cuốn sá
  là Trà Long và gửi gắm cho bà ngoại nuôi nấng. Vì mối tình sâu đậm dành cho Hà Lan, nên Ngạn hết lòng thương yêu và 
  chăm sóc Trà Long. Tưởng chừng như Trà Long sẽ là điểm kết cho mối tình dang dở của Hà Lan và Ngạn. Nhưng cuối cùng, 
  Ngạn vẫn chọn rời quê, vì anh nhận ra rằng, đối với anh, Trà Long chỉ là cái bóng của Hà Lan trong anh mà thôi.',
- 'pdf/12.pdf','cover/12.jpg',150000,'giangpt',1,0,0);
+ 'pdf/12.pdf','cover/12.jpg',200000,'giangpt',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Tình yêu và tuổi trẻ','Valery Larbaud','“Tình yêu và tuổi trẻ” là câu chuyện của mỗi chúng ta về tình
  yêu và tuổi trẻ. Những xúc cảm đầy bí ẩn thời niên thiếu là những thứ mà bất kỳ ai cũng đều sẽ trải qua ít nhất
  1 lần. Cuốn sách hay về tình yêu này mang đến cho người đọc những trải nghiệm và cảm xúc chân thực nhất, thậm chí
  đôi khi họ thấy họ ở trong chính câu chuyện đó.',
- 'pdf/13.pdf','cover/13.jpg',150000,'duongpt',1,0,0);
+ 'pdf/13.pdf','cover/13.jpg',190000,'duongpt',1,0,0);
  INSERT INTO Book(title,authorName,`description`,pdfPath,coverPath,price,createdBy,isApproved,noSale,noView)
 VALUES ('Xứ Cát ','Frank Herbert','"Một thời điểm rất xa trong tương lai…
 Từ đời này sang đời khác, người Fremen trên hành tinh sa mạc lưu truyền lời tiên tri về một đấng cứu tinh sẽ dẫn dắt họ giành lấy tự do đích thực…

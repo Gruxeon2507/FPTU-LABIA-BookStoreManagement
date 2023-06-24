@@ -7,12 +7,20 @@ import { Pagination } from "antd";
 import { Card } from "react-bootstrap";
 import { Button, FormControl } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faTimes, faList } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faTimes,
+  faList,
+  faSort,
+} from "@fortawesome/free-solid-svg-icons";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 function ListBook() {
   const [pageBooks, setPageBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [condition, setCondition] = useState("");
+  const [searchMessage, setSearchMessage] = useState("");
+  const [displayMessage, setDisplayMessage] = useState("");
 
   const getAllPublicBooks = () => {
     return BookServices.getAllPublicBooks()
@@ -57,19 +65,21 @@ function ListBook() {
   };
 
   const findCondition = () => {
+<<<<<<< HEAD
     setCondition(condition);
     console.log(condition.length);
     if (condition.length) {
       getAllPublicBooks();
+=======
+    if (searchMessage.length > 0) {
+      const query = encodeURIComponent(searchMessage).replace(/%20/g, "%20");
+      setDisplayMessage(searchMessage);
+      filterBook(0, sizePerPage, query);
+    } else {
+      setDisplayMessage("");
+      getPageBooks(0, sizePerPage);
+>>>>>>> refs/remotes/origin/main
     }
-    // console.log(
-    //   "da click" + encodeURIComponent(condition).replace(/%20/g, "%20")
-    // );
-    filterBook(
-      0,
-      sizePerPage,
-      encodeURIComponent(condition).replace(/%20/g, "%20")
-    );
   };
   const handleReset = () => {
     setCondition("");
@@ -78,6 +88,14 @@ function ListBook() {
   };
   const filterBook = (pageNumber, pageSize, searchText) =>
     BookServices.filterBook(pageNumber, pageSize, searchText).then(
+      (response) => {
+        setPageBooks(response.data.content);
+        setTotalItems(response.data.totalElements);
+      }
+    );
+
+  const orderBook = (pageNumber, pageSize, field) =>
+    BookServices.getPublicBookOrderBy(pageNumber, pageSize, field).then(
       (response) => {
         setPageBooks(response.data.content);
         setTotalItems(response.data.totalElements);
@@ -125,7 +143,7 @@ function ListBook() {
   //   if(checked.length!==0){
   //     handleSubmit();}
   // }, [checked]);
-  
+
   const getPageBooksByCategories = (categoryIds, pageNumber, pageSize) => {
     BookServices.getPageBooksByCategories(categoryIds, pageNumber, pageSize)
       .then((response) => {
@@ -151,20 +169,24 @@ function ListBook() {
   console.log("total page: " + totalItems);
 
   const handleSubmit = (categoryId) => {
-      // handleCheck(categoryId)
-      console.log("check on submit:" + checked);
-      setCurrentPage(1);
-      console.log({ ids: checked });
-      const categoryIds = checked.join(",");
-      console.log(categoryIds);
-      getPageBooksByCategories(categoryIds, 0, sizePerPage);
-      getBooksByCategories(categoryIds);
+    // handleCheck(categoryId)
+    console.log("check on submit:" + checked);
+    setCurrentPage(1);
+    console.log({ ids: checked });
+    const categoryIds = checked.join(",");
+    console.log(categoryIds);
+    getPageBooksByCategories(categoryIds, 0, sizePerPage);
+    getBooksByCategories(categoryIds);
   };
   const [isVisible, setIsVisible] = useState(false);
 
   const handleButtonClick = () => {
     setIsVisible(!isVisible);
-    handleReset()
+    handleReset();
+  };
+  const handleOrder = (e) => {
+    console.log(e.target.value);
+    orderBook(e.target.value, 0, sizePerPage);
   };
   return (
     <>
@@ -192,6 +214,7 @@ function ListBook() {
           placeholder="Search Books Here"
           name="search"
           className={"info-border  text-black w-50 "}
+<<<<<<< HEAD
           value={condition}
           onChange={(e) => {
             setCondition(e.target.value);
@@ -199,6 +222,10 @@ function ListBook() {
           onInput={(e) => {
             findCondition();
           }}
+=======
+          value={searchMessage}
+          onChange={(e) => setSearchMessage(e.target.value)}
+>>>>>>> refs/remotes/origin/main
         />
         {/* </div> */}
         <div className="itemSearch">
@@ -230,30 +257,55 @@ function ListBook() {
               boxShadow: "none",
               margin: "5px",
             }}
+<<<<<<< HEAD
             onClick={() => handleReset()}
+=======
+            onClick={() => {
+              setSearchMessage("");
+              handleReset();
+            }}
+>>>>>>> refs/remotes/origin/main
           >
             <FontAwesomeIcon icon={faTimes} />
           </Button>
         </div>
+        <select name="" id="" onChange={handleOrder}>
+          <option value="">--Sort by--</option>
+          <option value="title">Title</option>
+          <option value="price">Price</option>
+        </select>
       </div>
-      {isVisible && <div className="categories row">
-        {categories.map((category) => (
-          <div className="select col-6 col-md-3 col-sm-4 d-flex ">
-            <label key={category.categoryId}>
-              <input
-                type="checkbox"
-                className="form-check-input w-20 h-20 ms-1 me-1"
-                checked={checked.includes(category.categoryId)}
-                onChange={() => handleCheck(category.categoryId)}
-              />
-              {category.categoryName}
-            </label>
-          </div>
-        ))}
+      {isVisible && (
+        <div className="categories row">
+          {categories.map((category) => (
+            <div className="select col-6 col-md-3 col-sm-4 d-flex ">
+              <label key={category.categoryId}>
+                <input
+                  type="checkbox"
+                  className="form-check-input w-20 h-20 ms-1 me-1"
+                  checked={checked.includes(category.categoryId)}
+                  onChange={() => handleCheck(category.categoryId)}
+                />
+                {category.categoryName}
+              </label>
+            </div>
+          ))}
 
-      <div className="btn btn-success" onClick={handleSubmit}>Find</div>
-      </div>
-      }
+          <div className="btn btn-success" onClick={handleSubmit}>
+            Find
+          </div>
+        </div>
+      )}
+      {displayMessage.length > 0 && (
+        <div>
+          <span>Search result for "</span>
+          <span
+            style={{ whiteSpace: "nowrap" }}
+            dangerouslySetInnerHTML={{ __html: displayMessage }}
+          />
+          <span>"</span>
+        </div>
+      )}
       <div className="list-books row">
         {pageBooks.map((book) => (
           <div
@@ -262,7 +314,11 @@ function ListBook() {
               book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
+<<<<<<< HEAD
             <Card className="card" style={{ width: "19rem", height: "26rem" }}>
+=======
+            <Card className="card" style={{ width: "19rem", height: "28rem" }}>
+>>>>>>> refs/remotes/origin/main
               <div className="cover">
                 <Card.Img
                   variant="top"
@@ -294,8 +350,14 @@ function ListBook() {
                 >
                   {book.authorName}
                 </Card.Text>
+<<<<<<< HEAD
                 {/* <Card.Text
                 style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text> */}
+=======
+                <Card.Text style={{ height: "1rem", width: "auto" }}>
+                  {book.price}
+                </Card.Text>
+>>>>>>> refs/remotes/origin/main
                 <Link
                   to={"/book/view/" + book.bookId}
                   className="btn btn-info"

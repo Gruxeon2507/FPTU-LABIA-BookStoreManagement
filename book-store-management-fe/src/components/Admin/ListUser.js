@@ -7,7 +7,11 @@ const ListUser = () => {
   const [users, setUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0); // total number of users
   const sizePerPage = 5;
+<<<<<<< HEAD
   const [currentPageUser, setCurrentPageUser] = useState(1); //indicates which page is currently on
+=======
+  const [currentPageUser, setCurrentPageUser] = useState(1);
+>>>>>>> refs/remotes/origin/main
 
   const countUser = UserServices.countUser().then((response) => {
     setTotalUsers(response.data);
@@ -69,37 +73,44 @@ const ListUser = () => {
           <th>Email</th>
           <th>Action</th>
         </thead>
-        <tbody>
-          {users.map((user) => {
-            return (
-              <tr key={user.username}>
-                <td>
-                  <Link to={"/user/" + user.username}>{user.displayName}</Link>
-                </td>
-                <td>
-                  <img
-                    src={
-                      "http://localhost:6789/api/users/avatar/" + user.username
-                    }
-                    style={{ width: 40 }}
-                    alt=""
-                  />
-                </td>
-                <td>{user.createDate}</td>
-                <td>{user.email}</td>
+        {users.length > 0 ? (
+          <tbody>
+            {users.map((user) => {
+              return (
+                <tr key={user.username}>
+                  <td>
+                    <Link to={"/user/" + user.username}>
+                      {user.displayName}
+                    </Link>
+                  </td>
+                  <td>
+                    <img
+                      src={
+                        "http://localhost:6789/api/users/avatar/" +
+                        user.username
+                      }
+                      style={{ width: 40 }}
+                      alt=""
+                    />
+                  </td>
+                  <td>{user.createDate}</td>
+                  <td>{user.email}</td>
 
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteUser(user.username)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => deleteUser(user.username)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        ) : (
+          ""
+        )}
       </table>
       <Pagination
         total={totalUsers}

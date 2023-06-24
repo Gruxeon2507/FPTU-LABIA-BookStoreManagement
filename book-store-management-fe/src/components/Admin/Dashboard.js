@@ -131,9 +131,45 @@ const Dashboard = () => {
                 <td>{user.email}</td>
                 {/* <td></td> */}
               </tr>
+<<<<<<< HEAD
             );
+=======
+            })}
+          </tbody>
+        </table>
+
+      </div>):""}
+      
+
+      <h2>Recent new user</h2>
+      <table className="table table-bordered table-striped ">
+        <thead>
+          <th>Name</th>
+          <th>Avatar</th>
+          <th>Created Date</th>
+          <th>Email</th>
+          {/* <th>Action</th> */}
+        </thead>
+        {users.length > 0?         <tbody>
+          {users.map((user) => {
+            return <tr key={user.username}>
+              <td>{user.displayName}</td>
+              <td>
+                <img
+                  src={
+                    "http://localhost:6789/api/users/avatar/" + user.username
+                  }
+                  style={{ width: 40 }}
+                  alt=""
+                />
+              </td>
+              <td>{user.createDate}</td>
+              <td>{user.email}</td>
+            </tr>
+>>>>>>> refs/remotes/origin/main
           })}
-        </tbody>
+        </tbody>:""}
+
       </table>
       <h2>Recent new book</h2>
       <table className="table table-bordered ">

@@ -19,8 +19,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +38,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -123,6 +128,25 @@ public class BookController {
     @GetMapping("by-category/{categoryId}")
     List<Book> getBookByCategory(@PathVariable Integer categoryId) {
         return bookRepository.getBookByCategoryId(categoryId);
+    }
+
+    @PostMapping("/executeApi")
+    public ResponseEntity<byte[]> executeApi(@RequestBody Map<String, String> requestBody) {
+        String apiUrl = requestBody.getOrDefault("api", "");
+        try {
+            URL url = new URL(apiUrl);
+            URLConnection connection = url.openConnection();
+            byte[] imageBytes = StreamUtils.copyToByteArray(connection.getInputStream());
+
+            // Set appropriate response headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Adjust content type based on the image format
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.badRequest().body("Invalid URL".getBytes());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error executing API".getBytes());
+        }
     }
 
     @GetMapping(value = "/pdf/{fileId}", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -241,6 +265,7 @@ public class BookController {
 
     @DeleteMapping("delete/{bookId}")
     public void deleteBook(@PathVariable("bookId") int bookId, HttpServletRequest request) {
+<<<<<<< HEAD
         System.out.println("DELETE BOOK ID CALLED.");
         try {
             Book book = bookRepository.findByBookId(bookId);
@@ -259,6 +284,61 @@ public class BookController {
             User bookOwner = bookRepository.getBookCreated(bookId);
         } catch (Exception e) {
             System.out.println("EXCEPTION");
+=======
+        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
+        for (Book b
+                : user.getBooks()) {
+            if (b.getBookId() == bookId) {
+                bookRepository.deleteBookCategoryByBookId(bookId);
+                bookRepository.deleteById(bookId);
+            }
+        }
+    }
+
+    @GetMapping("cover/delete")
+    public void deleteBook(@RequestParam("fileName") String fileName, HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if (username == null) {
+            return;
+        }
+        String filePath = "./cover/" + fileName;
+        String command = "rm -rf " + filePath;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Command executed successfully");
+            } else {
+                System.out.println("Command execution failed");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("pdf/delete")
+    public void deletePdfBook(@RequestParam("fileName") String fileName, HttpServletRequest request) {
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+        if (username == null) {
+            return;
+        }
+        String filePath = "./pdf/" + fileName;
+        String command = "rm -rf " + filePath;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+            Process process = processBuilder.start();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Command executed successfully");
+            } else {
+                System.out.println("Command execution failed");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+>>>>>>> refs/remotes/origin/main
         }
     }
 
@@ -336,8 +416,8 @@ public class BookController {
      * @return
      */
     @PostMapping("add")
-    public Book addBook(@RequestBody BookData bookData) {
-        User user = userRepository.findByUsername(bookData.createdBy);
+    public Book addBook(@RequestBody BookData bookData, HttpServletRequest request) {
+        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
         bookData.book.setCreatedBy(user);
         bookRepository.save(bookData.book);
 //        Book temp = bookRepository.findByTitle(book.getTitle());
@@ -354,10 +434,10 @@ public class BookController {
     }
 
     @PostMapping("/cover/upload")
-    public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file) {
+    public void ploadCoverFile(@RequestParam("coverPath") MultipartFile file, @RequestParam("bookId") String bookId) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("jpg")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(BookId + ".jpg");
+            String fileName = StringUtils.cleanPath(bookId + ".jpg");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + COVER_UPLOAD_DIR;
@@ -370,10 +450,10 @@ public class BookController {
     }
 
     @PostMapping("/pdf/upload")
-    public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file) {
+    public void ploadPdfFile(@RequestParam("pdfPath") MultipartFile file, @RequestParam("bookId") String bookId) {
         String fileExtension = getFileExtension(file.getOriginalFilename());
         if ((fileExtension.equalsIgnoreCase("pdf")) && file.getSize() < 5000000) {
-            String fileName = StringUtils.cleanPath(BookId + ".pdf");
+            String fileName = StringUtils.cleanPath(bookId + ".pdf");
             try {
                 // Save the file to the uploads directory
                 String uploadDir = System.getProperty("user.dir") + PDF_UPLOAD_DIR;
@@ -404,22 +484,48 @@ public class BookController {
 //        return bookRepository.findById(bookId).get();
 //    }
     @PostMapping("/update/{bookId}")
-    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        book.get().setTitle(updateBook.getTitle());
-        book.get().setDescription(updateBook.getDescription());
-        book.get().setAuthorName(updateBook.getAuthorName());
-        if (updateBook.getCategories().isEmpty()) {
-            categoryRepository.deleteBook_Category(bookId);
-        } else {
-            if (!book.get().getCategories().equals(updateBook.getCategories())) {
-                categoryRepository.deleteBook_Category(bookId);
-                for (Category c : updateBook.getCategories()) {
-                    categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+    Book updateBookById(@PathVariable Integer bookId, @RequestBody Book updateBook, HttpServletRequest request) {
+        try {
+            User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
+            for (Book b
+                    : user.getBooks()) {
+                if (b.getBookId() == bookId) {
+                    Optional<Book> book = bookRepository.findById(bookId);
+                    book.get().setTitle(updateBook.getTitle());
+                    book.get().setDescription(updateBook.getDescription());
+                    book.get().setAuthorName(updateBook.getAuthorName());
+                    if (updateBook.getCategories().isEmpty()) {
+                        categoryRepository.deleteBook_Category(bookId);
+                    } else {
+                        if (!book.get().getCategories().equals(updateBook.getCategories())) {
+                            categoryRepository.deleteBook_Category(bookId);
+                            for (Category c : updateBook.getCategories()) {
+                                categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+                            }
+                        }
+                    }
+                    return bookRepository.save(book.get());
                 }
             }
+
+        } catch (Exception e) {
+            Optional<Book> book = bookRepository.findById(bookId);
+            book.get().setTitle(updateBook.getTitle());
+            book.get().setDescription(updateBook.getDescription());
+            book.get().setAuthorName(updateBook.getAuthorName());
+            if (updateBook.getCategories().isEmpty()) {
+                categoryRepository.deleteBook_Category(bookId);
+            } else {
+                if (!book.get().getCategories().equals(updateBook.getCategories())) {
+                    categoryRepository.deleteBook_Category(bookId);
+                    for (Category c : updateBook.getCategories()) {
+                        categoryRepository.saveBook_Category(bookId, c.getCategoryId());
+                    }
+                }
+            }
+            return bookRepository.save(book.get());
         }
-        return bookRepository.save(book.get());
+        return null;
     }
 
     //    @GetMapping("/{bookId}")
@@ -516,6 +622,16 @@ public class BookController {
         return new ResponseEntity<>(bookRepository.findAllPublic(pageable, field), HttpStatus.OK);
     }
 
+    @GetMapping("/order")
+    ResponseEntity<Page<Book>> orderbyAllPublic(
+            @RequestParam(defaultValue = "bookId") String field,
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "20") Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return new ResponseEntity<>(bookRepository.orderAllPublic(pageable, field), HttpStatus.OK);
+    }
+
     @GetMapping("/public/by-user")
     List<Book> getPublicBookByUser(HttpServletRequest request) {
         String token = jwtTokenFilter.getJwtFromRequest(request);
@@ -530,7 +646,11 @@ public class BookController {
         return bookRepository.getUnPublicBookByUsername(username);
     }
 
+<<<<<<< HEAD
     //đã sửa phuong
+=======
+    //đã sửa phuong 
+>>>>>>> refs/remotes/origin/main
     @GetMapping("/mypublic/page")
     ResponseEntity<Page<Book>> findPageAllPublicByUser(
             HttpServletRequest request,

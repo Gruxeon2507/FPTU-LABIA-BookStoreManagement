@@ -27,9 +27,10 @@ function Navbar() {
           <div className="nav-homepage">
             <Link to="">Home Page</Link>
           </div>
-          <div className="nav-homepage">
+          {!window.localStorage.getItem("token") && <div className="nav-homepage">
             <Link to="/login">Login</Link>
-          </div>
+          </div>}
+          
           {window.localStorage.getItem("token") ? (
             <div className="hide">
               <div className="nav-homepage">
@@ -38,7 +39,7 @@ function Navbar() {
               <div className="nav-dropdown">
                 <div className="nav-avatar">
                   <img
-                    src={"http://localhost:6789/api/users/avatar/" + username}
+                    src={"http://localhost:6789/api/users/avatar?filename=" + username}
                   ></img>
                 </div>
                 <NavDropdown
@@ -46,16 +47,23 @@ function Navbar() {
                   title={username}
                   // menuVariant="dark"
                 >
-                  <NavDropdown.Item href={"../../user/" + username}>
+                  <NavDropdown.Item>
+                    <Link to={"../../user/" + username}>
                     Profile
+                    </Link>
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="../../user/setting">
-                    Account Setting
+                  <NavDropdown.Item>
+                  <Link to={"../../user/setting"}>
+                  Account Setting
+                    </Link>
+                    
                   </NavDropdown.Item>
                   {window.localStorage.getItem("role") === "Admin" ||
                   window.localStorage.getItem("role") === "Super Admin" ? (
-                    <NavDropdown.Item href="../../admin">
-                      Management
+                    <NavDropdown.Item>
+                      <Link to={"../../admin"}>
+                  Admin
+                    </Link>
                     </NavDropdown.Item>
                   ) : (
                     ""
