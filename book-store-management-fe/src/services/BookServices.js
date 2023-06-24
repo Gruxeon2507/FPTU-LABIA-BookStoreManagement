@@ -186,19 +186,19 @@ class BookService {
   }
 
   //phuong
-  // getPublicBookOrderBy(field, pageNumber, pageSize) {
-  //   const formData = new FormData();
-  //   formData.append("field", field);
-  //   formData.append("pageNumber", pageNumber);
-  //   formData.append("pageSize", pageSize);
-  //   return api.post("/orderby", formData);
-
-  // }
   getPublicBookOrderBy(field, pageNumber, pageSize) {
-    return api.post(
-      `orderby?field=${field}&pageNumber=${pageNumber}&pageSize=${pageSize}`
-    );
+    const formData = new FormData();
+    formData.append("field", field);
+    formData.append("pageNumber", pageNumber);
+    formData.append("pageSize", pageSize);
+    return api.post("/api/books/sort", formData);
+
   }
+  // getPublicBookOrderBy(field, pageNumber, pageSize) {
+  //   return api.post(
+  //     `api/books/sort?field=${field}&pageNumber=${pageNumber}&pageSize=${pageSize}`
+  //   );
+  // }
 }
 
 export default new BookService();
