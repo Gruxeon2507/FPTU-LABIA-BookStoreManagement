@@ -7,11 +7,7 @@ const ListUser = () => {
   const [users, setUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0); // total number of users
   const sizePerPage = 5;
-<<<<<<< HEAD
   const [currentPageUser, setCurrentPageUser] = useState(1); //indicates which page is currently on
-=======
-  const [currentPageUser, setCurrentPageUser] = useState(1);
->>>>>>> refs/remotes/origin/main
 
   const countUser = UserServices.countUser().then((response) => {
     setTotalUsers(response.data);

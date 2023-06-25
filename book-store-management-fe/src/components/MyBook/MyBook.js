@@ -51,10 +51,6 @@ const MyBook = () => {
 
 
   const deleteBook = (bookId) => {
-<<<<<<< HEAD
-    BookServices.deletePendingBook(bookId);
-    window.location.href = "";
-=======
     let ok = window.confirm("Are you sure want to delete this book ?? ");
     if(ok){
       api.delete("api/books/delete/" + bookId)
@@ -66,7 +62,6 @@ const MyBook = () => {
       });
       window.location.href = "";
     }
->>>>>>> refs/remotes/origin/main
   };
 
   return (

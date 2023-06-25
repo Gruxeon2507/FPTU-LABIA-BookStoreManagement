@@ -65,12 +65,6 @@ function ListBook() {
   };
 
   const findCondition = () => {
-<<<<<<< HEAD
-    setCondition(condition);
-    console.log(condition.length);
-    if (condition.length) {
-      getAllPublicBooks();
-=======
     if (searchMessage.length > 0) {
       const query = encodeURIComponent(searchMessage).replace(/%20/g, "%20");
       setDisplayMessage(searchMessage);
@@ -78,7 +72,6 @@ function ListBook() {
     } else {
       setDisplayMessage("");
       getPageBooks(0, sizePerPage);
->>>>>>> refs/remotes/origin/main
     }
   };
   const handleReset = () => {
@@ -214,18 +207,8 @@ function ListBook() {
           placeholder="Search Books Here"
           name="search"
           className={"info-border  text-black w-50 "}
-<<<<<<< HEAD
-          value={condition}
-          onChange={(e) => {
-            setCondition(e.target.value);
-          }}
-          onInput={(e) => {
-            findCondition();
-          }}
-=======
           value={searchMessage}
           onChange={(e) => setSearchMessage(e.target.value)}
->>>>>>> refs/remotes/origin/main
         />
         {/* </div> */}
         <div className="itemSearch">
@@ -257,14 +240,10 @@ function ListBook() {
               boxShadow: "none",
               margin: "5px",
             }}
-<<<<<<< HEAD
-            onClick={() => handleReset()}
-=======
             onClick={() => {
               setSearchMessage("");
               handleReset();
             }}
->>>>>>> refs/remotes/origin/main
           >
             <FontAwesomeIcon icon={faTimes} />
           </Button>
@@ -314,11 +293,7 @@ function ListBook() {
               book.bookId + " col-lg-3 col-md-4 col-sm-6 col-xs-12 single-book"
             }
           >
-<<<<<<< HEAD
-            <Card className="card" style={{ width: "19rem", height: "26rem" }}>
-=======
             <Card className="card" style={{ width: "19rem", height: "28rem" }}>
->>>>>>> refs/remotes/origin/main
               <div className="cover">
                 <Card.Img
                   variant="top"
@@ -350,14 +325,9 @@ function ListBook() {
                 >
                   {book.authorName}
                 </Card.Text>
-<<<<<<< HEAD
-                {/* <Card.Text
-                style={{ height: "1rem" ,width: "auto"}}>{book.price}</Card.Text> */}
-=======
                 <Card.Text style={{ height: "1rem", width: "auto" }}>
                   {book.price}
                 </Card.Text>
->>>>>>> refs/remotes/origin/main
                 <Link
                   to={"/book/view/" + book.bookId}
                   className="btn btn-info"

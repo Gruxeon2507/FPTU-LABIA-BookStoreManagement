@@ -97,7 +97,6 @@ function App() {
 
         <Route
           path="/admin/user"
-<<<<<<< HEAD
           element={
             <PrivateRoute
               component={ListUser}
@@ -113,13 +112,6 @@ function App() {
               roles={["Admin", "Super Admin"]}
             />
           }
-=======
-          element={<PrivateRoute component={ListUser} roles={["Admin"]} />}
-        />
-        <Route
-          path="/admin/book"
-          element={<PrivateRoute component={AdminBooks} roles={["Admin"]} />}
->>>>>>> refs/remotes/origin/main
         />
         <Route
           path="/admin"

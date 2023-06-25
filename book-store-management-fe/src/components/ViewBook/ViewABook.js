@@ -31,10 +31,6 @@ function ViewABook() {
     fetchData();
   }, [bookId]);
 
-<<<<<<< HEAD
-  console.log(book)
-    return book.approved ? (
-=======
   const handleViewCoverBook = async () => {
     const urlApi = `http://localhost:6789/api/books/cover/${bookId}`;
     try {
@@ -54,7 +50,6 @@ function ViewABook() {
 
   if (book.approved !== undefined && book.approved) {
     return (
->>>>>>> refs/remotes/origin/main
       <div className="container-singlebook">
         <div className="meta-info">
           <div className="image left">
@@ -97,11 +92,14 @@ function ViewABook() {
           ></iframe>
         </div>
       </div>
-    ) : (
-      <>
-        <p>Book not available.</p>
-      </>
-    );
+    ) }
+    else {
+      return(
+        <>
+        <p>book not available</p>
+        </>
+      )
+    }
 }
 
 export default ViewABook;
