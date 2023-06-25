@@ -209,7 +209,7 @@ class AddBook extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const {
       title,
@@ -289,24 +289,25 @@ class AddBook extends Component {
     //       bookId: data.title,
     //     });
     //   });
-    api.post("api/books/add",bookData)
+  await api.post("api/books/add",bookData)
     .then((res) => {
       console.log(res.data.bookId);
       bookId = res.data.bookId;
       alert("Call API add successfully!");
+      const formData1 = new FormData();
+      formData1.append("coverPath", this.state.coverPath);
+      formData1.append("bookId", res.data.bookId);
+      BookServices.updateBookCover(formData1);
+      const formData2 = new FormData();
+      formData2.append("pdfPath", this.state.pdfPath);
+      formData2.append("bookId", res.data.bookId);
+      BookServices.updateBookpdf(formData2);
     }).catch((error) => {
       console.log(error);
-      alert("Call API failed successfully!")
+      alert("Call API failed !")
     })
-    const a = "x";
-    const formData = new FormData();
-    formData.append("bookId",bookId);
-    formData.append("coverPath", this.state.coverPath);
-    formData.append("pdfPath", this.state.pdfPath);
-    formData.append("bookId", this.state.bookId);
-    BookServices.updateBookCover(formData);
-    BookServices.updateBookpdf(formData);
-    window.location.href = "http://localhost:3000/mybook";
+   
+    // window.location.href = "http://localhost:3000/mybook";
   };
 
   render() {
