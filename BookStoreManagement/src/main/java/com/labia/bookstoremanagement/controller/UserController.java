@@ -386,25 +386,6 @@ public class UserController {
     }
 
     @GetMapping("/export")
-<<<<<<< HEAD
-    public void exportUserToExcel(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        try {
-            boolean isRequestAuthorized = roleUtils.hasRoleFromToken(request, 2);
-            if (isRequestAuthorized) {
-                response.setContentType("application/octet-stream");
-                String headerKey = "Content-Disposition";
-                DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-                String currentDateTime = dateFormatter.format(new Date());
-                String fileName = "users_" + currentDateTime + ".xlsx";
-                String headerValue = "attachement; filename=" + fileName;
-                response.setHeader(headerKey, headerValue);
-                List<User> listUsers = userRepository.findAll();
-                UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
-                excelExporter.export(response);
-            }
-        } catch (Exception e) {
-            System.out.println("EXCEPTION");
-=======
     public void exportUserToExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if ( roleUtils.hasRoleFromToken(request, 2)||roleUtils.hasRoleFromToken(request, 1)) {
             System.out.println("admin ne");
@@ -418,7 +399,6 @@ public class UserController {
             List<User> listUsers = userRepository.findAll();
             UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
             excelExporter.export(response);
->>>>>>> refs/remotes/origin/main
         }
     }
 

@@ -265,26 +265,26 @@ public class BookController {
 
     @DeleteMapping("delete/{bookId}")
     public void deleteBook(@PathVariable("bookId") int bookId, HttpServletRequest request) {
-<<<<<<< HEAD
-        System.out.println("DELETE BOOK ID CALLED.");
-        try {
-            Book book = bookRepository.findByBookId(bookId);
-            if (book != null) {
-                String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
-                User admin = userRepository.userHasRole(username, 2);
-                User superAdmin = userRepository.userHasRole(username, 1);
-                if (admin != null || superAdmin != null) {
-                    bookRepository.deleteBookCategoryByBookId(bookId);
-                    bookRepository.deleteById(bookId);
-                    System.out.println("DELETED.");
-                } else {
-                    System.out.println("UNAUTHORIZED.");
-                }
-            }
-            User bookOwner = bookRepository.getBookCreated(bookId);
-        } catch (Exception e) {
-            System.out.println("EXCEPTION");
-=======
+//<<<<<<< HEAD
+//        System.out.println("DELETE BOOK ID CALLED.");
+//        try {
+//            Book book = bookRepository.findByBookId(bookId);
+//            if (book != null) {
+//                String username = jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request));
+//                User admin = userRepository.userHasRole(username, 2);
+//                User superAdmin = userRepository.userHasRole(username, 1);
+//                if (admin != null || superAdmin != null) {
+//                    bookRepository.deleteBookCategoryByBookId(bookId);
+//                    bookRepository.deleteById(bookId);
+//                    System.out.println("DELETED.");
+//                } else {
+//                    System.out.println("UNAUTHORIZED.");
+//                }
+//            }
+//            User bookOwner = bookRepository.getBookCreated(bookId);
+//        } catch (Exception e) {
+//            System.out.println("EXCEPTION");
+//=======
         User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
         for (Book b
                 : user.getBooks()) {
@@ -338,7 +338,6 @@ public class BookController {
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
->>>>>>> refs/remotes/origin/main
         }
     }
 
@@ -646,11 +645,6 @@ public class BookController {
         return bookRepository.getUnPublicBookByUsername(username);
     }
 
-<<<<<<< HEAD
-    //đã sửa phuong
-=======
-    //đã sửa phuong 
->>>>>>> refs/remotes/origin/main
     @GetMapping("/mypublic/page")
     ResponseEntity<Page<Book>> findPageAllPublicByUser(
             HttpServletRequest request,
