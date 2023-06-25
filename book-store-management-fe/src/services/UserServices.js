@@ -8,13 +8,13 @@ class UserServices {
   //   return axios.get(USER_BASE_REST_API_URL);
   // }
   getOnlyAdmin(pageNumber, pageSize) {
-
     return api.get(
       `api/users/onlyadmin?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
 
   getOnlyUser(pageNumber, pageSize) {
+    // console.log("getOnlyUser service called.");
     return api.get(
       `api/users/onlyuser?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
@@ -28,7 +28,7 @@ class UserServices {
   }
   updateUserInformation(User) {
     // return axios.post(USER_BASE_REST_API_URL + "/update", User);
-    api.post("update-profile", User);
+    api.post("/api/users/update-profile", User);
   }
   updateUserAvatar(formData) {
     return api.post(USER_BASE_REST_API_URL + "/avatar/upload", formData);

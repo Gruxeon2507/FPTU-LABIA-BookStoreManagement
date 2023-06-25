@@ -27,9 +27,10 @@ function Navbar() {
           <div className="nav-homepage">
             <Link to="">Home Page</Link>
           </div>
-          <div className="nav-homepage">
+          {!window.localStorage.getItem("token") && <div className="nav-homepage">
             <Link to="/login">Login</Link>
-          </div>
+          </div>}
+          
           {window.localStorage.getItem("token") ? (
             <div className="hide">
               <div className="nav-homepage">
@@ -61,7 +62,7 @@ function Navbar() {
                   window.localStorage.getItem("role") === "Super Admin" ? (
                     <NavDropdown.Item>
                       <Link to={"../../admin"}>
-                  Account Setting
+                  Admin
                     </Link>
                     </NavDropdown.Item>
                   ) : (

@@ -5,20 +5,26 @@ import { Pagination } from "antd";
 
 const ListUser = () => {
   const [users, setUsers] = useState([]);
-
-  const [totalUsers, setTotalUsers] = useState(0);
-
+  const [totalUsers, setTotalUsers] = useState(0); // total number of users
   const sizePerPage = 5;
-  const [currentPageUser, setCurrentPageUser] = useState(1);
+  const [currentPageUser, setCurrentPageUser] = useState(1); //indicates which page is currently on
 
   const countUser = UserServices.countUser().then((response) => {
     setTotalUsers(response.data);
   });
 
   const getOnlyUser = (current, sizePerPage) => {
-    UserServices.getOnlyUser(current, sizePerPage).then((response) => {
-      setUsers(response.data);
-    });
+    // console.log("getOnlyUser function called");
+
+    UserServices.getOnlyUser(current, sizePerPage)
+      .then((response) => {
+        if (response.data.length != 0) {
+          setUsers(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log("error getting user of page: " + error);
+      });
   };
 
   useEffect(() => {

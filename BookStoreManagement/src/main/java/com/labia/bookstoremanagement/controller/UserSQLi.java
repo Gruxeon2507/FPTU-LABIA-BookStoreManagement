@@ -1,4 +1,6 @@
+
 package com.labia.bookstoremanagement.controller;
+
 
 import com.labia.bookstoremanagement.configuration.JwtTokenFilter;
 import com.labia.bookstoremanagement.model.Book;
@@ -16,11 +18,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+
 
 
 @RestController
@@ -33,10 +38,13 @@ public class UserSQLi {
     @Autowired
     JwtTokenFilter jwtTokenFilter;
 
+
     @Autowired
     UserRepository userRepository;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
+
+
 
 
     @Autowired
@@ -44,7 +52,8 @@ public class UserSQLi {
         this.userRepositoryImpl = userRepositoryImpl;
     }
 
-    @PostMapping("/update-profile")
+
+    @PostMapping("/api/users/update-profile")
     public void updateProfile(@RequestBody User user, HttpServletRequest request) {
         User u = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(jwtTokenFilter.getJwtFromRequest(request)));
         u.setDisplayName(user.getDisplayName());
@@ -52,7 +61,7 @@ public class UserSQLi {
         u.setEmail(user.getEmail());
         userRepositoryImpl.updateUserInformation(u);
     }
-    @PostMapping("/orderby")
+    @PostMapping("/api/books/sort")
     public ResponseEntity<Page<Book>> orderby2AllPublic(
             @RequestParam(defaultValue = "bookId") String field,
             @RequestParam(defaultValue = "0") Integer pageNumber,
@@ -68,6 +77,7 @@ public class UserSQLi {
         nativeQuery.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         nativeQuery.setMaxResults(pageable.getPageSize());
         List<Book> resultList = nativeQuery.getResultList();
+
 
         Page<Book> resultPage = new PageImpl<>(resultList, pageable, total);
         return new ResponseEntity<>(resultPage, HttpStatus.OK);

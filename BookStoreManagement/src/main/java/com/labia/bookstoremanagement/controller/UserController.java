@@ -17,6 +17,7 @@ import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
 import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import com.labia.bookstoremanagement.utils.DateTimeUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -49,7 +50,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
  * @author emiukhoahoc
  */
 @CrossOrigin(origins = {"*"})
@@ -63,7 +63,7 @@ public class UserController {
     BookRepository bookRepository;
     @Autowired
     CategoryRepository categoryRepository;
-    
+
     @Autowired
     private RoleUtils roleUtils;
 
@@ -346,9 +346,12 @@ public class UserController {
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
-        if ( roleUtils.hasRoleFromToken(request, 2)||roleUtils.hasRoleFromToken(request, 1)) {
+        System.out.println("/ONLYUSER PAGINATION API CALLED");
+        if (roleUtils.hasRoleFromToken(request, 2) || roleUtils.hasRoleFromToken(request, 1) || roleUtils.hasRoleFromToken(request, 3)) {
             Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
             return userRepository.getOnlyRoleUser(pageable);
+        } else {
+            System.out.println("NULL WILL BE RETURNED.");
         }
         return null;
     }

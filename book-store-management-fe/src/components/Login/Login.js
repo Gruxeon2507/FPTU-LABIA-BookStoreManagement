@@ -33,11 +33,11 @@ function LoginForm() {
       const role =response.data.role;
       localStorage.setItem("token",token);
       localStorage.setItem("role",role);
-      if(link){
-        window.location.href=link
+
+      if(link!=undefined){
+        window.location.href="https://"+link
       }else{
-      window.location.href="/"
-        
+        window.location.href="/"
       }
 
     } catch (error) {
