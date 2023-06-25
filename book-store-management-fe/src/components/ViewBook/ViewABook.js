@@ -92,10 +92,14 @@ function ViewABook() {
           ></iframe>
         </div>
       </div>
-    );
-  } else {
-    return <p>Book not found.</p>;
-  }
+    ) }
+    else {
+      return(
+        <>
+        <p>book not available</p>
+        </>
+      )
+    }
 }
 
 export default ViewABook;

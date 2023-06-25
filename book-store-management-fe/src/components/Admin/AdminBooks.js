@@ -69,11 +69,13 @@ const AdminBooks = () => {
   });
 
   const approveBook = (bookId) => {
+    console.log("approve btn pressed.");
     BookServices.approveBook(bookId);
     window.location.href = "";
   };
-  // console.log(book.addedBy);
+
   const deleteBook = (bookId) => {
+    console.log("delete btn pressed");
     BookServices.deleteBook(bookId);
     window.location.href = "";
   };
@@ -175,7 +177,7 @@ const AdminBooks = () => {
             {/* {console.log(pagePublicBooks)} */}
             {pagePublicBooks.map((book) => (
               <tr key={book.bookId}>
-                {console.log(book.addedBy)}
+                {/* {console.log("ADDED BY: " + book.addedBy)} */}
                 <td className="align-middle">{book.title}</td>
                 <td className="align-middle">{book.authorName}</td>
                 <td className="align-middle">

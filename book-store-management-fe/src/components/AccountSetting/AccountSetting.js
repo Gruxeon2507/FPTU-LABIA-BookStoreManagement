@@ -17,6 +17,7 @@ const AccountSetting = () => {
   const [username, setUsername] = useState("");
   const [avatarPath, setAvatarPath] = useState(null);
   const [checkAvatarPath, setCheckAvatarPath] = useState(false);
+  const [currentU, setCurrentU] = useState("")
   const [messageAvatarPath, setMessageAvatarPath] = useState(
     "Please just input file JPEG and file size less than 5MB"
   );
@@ -33,6 +34,7 @@ const AccountSetting = () => {
         setEmail(res.data.email);
         setDob(res.data.dob);
         setUsername(username);
+        setCurrentU(res.data.username);
       }
     );
   }, []);
@@ -59,7 +61,7 @@ const AccountSetting = () => {
       formData.append("avatarPath", temp);
       UserServices.updateUserAvatar(formData);
     }
-    window.location.href = "/user/" + username;
+    window.location.href = "/user/" + currentU
   };
 
   const changeGmailHandler = (event) => {
@@ -103,7 +105,7 @@ const AccountSetting = () => {
   };
 
   const cancel = (e) => {
-    window.location.href = "/user/" + username;
+    window.location.href = "/user/" + currentU;
   };
 
   return (
