@@ -14,24 +14,25 @@ const MyBook = () => {
   const [noPagePublicBooks, setNoPagePublicBooks] = useState([]);
   const [noPagePendingBooks, setNoPagePendingBooks] = useState([]);
 
-
   // pending books of current page
   const getPagePendingBooks = (pageNumber, pageSize) => {
-    
-    BookServices.getUnPublicBookByUsernamePage( pageNumber, pageSize).then((res) => {
-      setPagePendingBooks(res.data.content);
-      setNoPagePendingBooks(res.data.totalElements)
-    });
+    BookServices.getUnPublicBookByUsernamePage(pageNumber, pageSize).then(
+      (res) => {
+        setPagePendingBooks(res.data.content);
+        setNoPagePendingBooks(res.data.totalElements);
+      }
+    );
   };
 
   // public books of current page
   const getPagePublicBooks = (pageNumber, pageSize) => {
-    BookServices.getPublicBookByUsernamePage(pageNumber, pageSize).then((res) => {
-      setPagePublicBooks(res.data.content);
-      setNoPagePublicBooks(res.data.totalElements)
-    });
+    BookServices.getPublicBookByUsernamePage(pageNumber, pageSize).then(
+      (res) => {
+        setPagePublicBooks(res.data.content);
+        setNoPagePublicBooks(res.data.totalElements);
+      }
+    );
   };
-
 
   const handleChangePublic = (current) => {
     getPagePublicBooks(current - 1, pageSize);
@@ -48,27 +49,35 @@ const MyBook = () => {
     getPagePublicBooks(0, pageSize);
   }, []);
 
-
-
   const deleteBook = (bookId) => {
     let ok = window.confirm("Are you sure want to delete this book ?? ");
-    if(ok){
-      api.delete("api/books/delete/" + bookId)
-      .then((res) => {
-        alert("Delete successfully!!");
+    if (ok) {
+      // api
+        // .delete("api/books/delete/" + bookId)
+        BookServices.deletePendingBook(bookId)
+        .then((res) => {
+          alert("Delete successfully!!");
+          window.location.href = "";
+        })
+        .catch((error) => {
+          alert("Delete failed!! API wrong");
+        });
+      api.get(`api/books/cover/delete?fileName=${bookId}.jpg`)
+      .then((res)=> {
       })
-      .catch((error) => {
-        alert("Delete failed!! API wrong");
-      });
-      window.location.href = "";
+      api.get(`api/books/pdf/delete?fileName=${bookId}.jpg`)
+      .then((res)=> {
+      })
     }
   };
 
   return (
     <>
-    <div>
-    <Button className='sign-in btn--form' style={{marginTop:"30px"}}><Link to="/book/add">Add A New Book</Link></Button>
-    </div>
+      <div>
+        <Button className="sign-in btn--form" style={{ marginTop: "30px" }}>
+          <Link to="/book/add">Add A New Book</Link>
+        </Button>
+      </div>
       <div className="pending-book">
         <h1>Pending Books</h1>
         <table className="table table-bordered table-striped">
@@ -99,23 +108,18 @@ const MyBook = () => {
                       View PDF
                     </a> */}
                     <Link
-                  to={"http://localhost:6789/api/books/pdf/" + book.bookId}
-                  target="_blank"
-                  x
-                >
-                  View PDF
-                </Link>
+                      to={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                      target="_blank"
+                      x
+                    >
+                      View PDF
+                    </Link>
                   </button>
                 </td>
-                <td className="align-middle text-start">{book.description}</td>               
+                <td className="align-middle text-start">{book.description}</td>
                 <td className="align-middle">
-                  <button className="btn btn-success"                   
-                  >
-                    <Link
-                      to={"../book/update/" + book.bookId}
-                    >
-                      Update
-                    </Link>
+                  <button className="btn btn-success">
+                    <Link to={"../book/update/" + book.bookId}>Update</Link>
                   </button>
                   <br />
                   <br />
@@ -178,7 +182,6 @@ const MyBook = () => {
                   </button>
                 </td>
                 <td className="align-middle text-start">{book.description}</td>
-            
               </tr>
             ))}
           </tbody>

@@ -23,10 +23,10 @@ class BookService {
   }
   getPageBooksByCategories(categoryIds, pageNumber, pageSize) {
     console.log(
-      `${BOOK_BASE_REST_API_URL}/by-categories/page/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `${BOOK_BASE_REST_API_URL}/by-categories/publicpage/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
     return axios.get(
-      `${BOOK_BASE_REST_API_URL}/by-categories/page/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `${BOOK_BASE_REST_API_URL}/by-categories/publicpage/${categoryIds}?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
   getBooksByCategories(categoryIds) {
@@ -34,11 +34,11 @@ class BookService {
   }
 
   updateBookCover(formData) {
-    return axios.post(BOOK_BASE_REST_API_URL + "/cover/upload", formData);
+    return api.post(BOOK_BASE_REST_API_URL + "/cover/upload", formData);
   }
 
   updateBookpdf(formData) {
-    return axios.post(BOOK_BASE_REST_API_URL + "/pdf/upload", formData);
+    return api.post(BOOK_BASE_REST_API_URL + "/pdf/upload", formData);
   }
 
   deleteBook(bookId) {
@@ -148,6 +148,23 @@ class BookService {
   deletePendingBook(bookId) {
     return api.delete(`api/books/delete/pending/${bookId}`);
   }
+    //phuong
+  getPublicBookOrderBy(field, pageNumber, pageSize) {
+    const formData = new FormData();
+    formData.append("field", field);
+    formData.append("pageNumber", pageNumber);
+    formData.append("pageSize", pageSize);
+    return axios.post("http://localhost:6789/api/books/sort", formData);
+    
+
+  }
+  // getPublicBookOrderBy(field, pageNumber, pageSize) {
+  //   return axios.get(
+  //     `/api/books/sort?field=${field}&pageNumber=${pageNumber}&pageSize=${pageSize}`
+  //     // "/api/books/sort?field=price&pageNumber=0&pageSize=12"
+
+  //   );
+  // }
 }
 
 export default new BookService();
