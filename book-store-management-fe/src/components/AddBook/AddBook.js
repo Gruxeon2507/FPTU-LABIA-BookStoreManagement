@@ -33,9 +33,9 @@ class AddBook extends Component {
       showErrorCategory: false,
       errorCover: "",
       showErrorCover: false,
-      errorPdf: "", 
+      errorPdf: "",
       showErrorPdf: false,
-      username : ""
+      username: "",
     };
 
     this.changeTitleHandler = this.changeTitleHandler.bind(this);
@@ -68,12 +68,14 @@ class AddBook extends Component {
 
   changeTitleHandler = (event) => {
     const inputTitle = event.target.value;
-    const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
-    
+    const regex =
+      /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+
     if (!regex.test(inputTitle)) {
       this.setState({
         showErrorTitle: true,
         errorTitle: "Please just input characters and numbers",
+        title: event.target.value,
       });
       return;
     }
@@ -86,11 +88,14 @@ class AddBook extends Component {
 
   changeAuthorNameHandler = (event) => {
     const inputAuthorName = event.target.value;
-    const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    const regex =
+      /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
     if (!regex.test(inputAuthorName)) {
       this.setState({
         showErrorAuthorName: true,
         errorAuthorName: "Please just input characters and numbers",
+      authorName: inputAuthorName,
+
       });
       return;
     }
@@ -103,11 +108,14 @@ class AddBook extends Component {
 
   changeDescriptionHandler = (event) => {
     const inputDescription = event.target.value;
-    const regex = /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
+    const regex =
+      /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
     if (!regex.test(inputDescription)) {
       this.setState({
         showErrorDescription: true,
         errorDescription: "Please just input characters and numbers",
+      description: inputDescription,
+
       });
       return;
     }
@@ -229,7 +237,6 @@ class AddBook extends Component {
       showErrorDescription,
     } = this.state;
 
-
     const book = {
       title: title,
       authorName: authorName,
@@ -248,17 +255,17 @@ class AddBook extends Component {
     const createdBy = "123";
 
     const bookData = {
-      book : book,
-      createdBy : createdBy,
-    }
+      book: book,
+      createdBy: createdBy,
+    };
 
     console.log(book.categories.length === 0);
 
-    if(book.categories.length === 0){
-      alert('Please choose category!!');
+    if (book.categories.length === 0) {
+      alert("Please choose category!!");
       return;
     }
-    
+
     if (
       showErrorCover ||
       showErrorPdf ||
@@ -289,24 +296,26 @@ class AddBook extends Component {
     //       bookId: data.title,
     //     });
     //   });
-  await api.post("api/books/add",bookData)
-    .then((res) => {
-      console.log(res.data.bookId);
-      bookId = res.data.bookId;
-      alert("Call API add successfully!");
-      const formData1 = new FormData();
-      formData1.append("coverPath", this.state.coverPath);
-      formData1.append("bookId", res.data.bookId);
-      BookServices.updateBookCover(formData1);
-      const formData2 = new FormData();
-      formData2.append("pdfPath", this.state.pdfPath);
-      formData2.append("bookId", res.data.bookId);
-      BookServices.updateBookpdf(formData2);
-    }).catch((error) => {
-      console.log(error);
-      alert("Call API failed !")
-    })
-   
+    await api
+      .post("api/books/add", bookData)
+      .then((res) => {
+        console.log(res.data.bookId);
+        bookId = res.data.bookId;
+        alert("Call API add successfully!");
+        const formData1 = new FormData();
+        formData1.append("coverPath", this.state.coverPath);
+        formData1.append("bookId", res.data.bookId);
+        BookServices.updateBookCover(formData1);
+        const formData2 = new FormData();
+        formData2.append("pdfPath", this.state.pdfPath);
+        formData2.append("bookId", res.data.bookId);
+        BookServices.updateBookpdf(formData2);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Call API failed !");
+      });
+
     // window.location.href = "http://localhost:3000/mybook";
   };
 
