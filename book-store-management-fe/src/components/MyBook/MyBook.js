@@ -51,22 +51,12 @@ const MyBook = () => {
 
   const deleteBook = (bookId) => {
     let ok = window.confirm("Are you sure want to delete this book ?? ");
-    if (ok) {
-      // api
-        // .delete("api/books/delete/" + bookId)
-        BookServices.deletePendingBook(bookId)
-        .then((res) => {
-          alert("Delete successfully!!");
-          window.location.href = "";
-        })
-        .catch((error) => {
-          alert("Delete failed!! API wrong");
-        });
-      api.get(`api/books/cover/delete?fileName=${bookId}.jpg`)
-      .then((res)=> {
-      })
-      api.get(`api/books/pdf/delete?fileName=${bookId}.jpg`)
-      .then((res)=> {
+    if(ok){
+      api.get("api/books/cover/delete?fileName=" + bookId+".jpg");
+      api.get("api/book/pdf/delete?fileName" + bookId+".pdf");
+      api.delete("api/books/delete/" + bookId)
+      .then((res) => {
+        alert("Delete successfully!!");
       })
     }
   };
