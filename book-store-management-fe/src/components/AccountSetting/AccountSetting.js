@@ -42,7 +42,7 @@ const AccountSetting = () => {
       email: email,
       displayName: displayName,
       dob: dob,
-      username: username,
+      // username: username,
     };
 
     if (checkDisplayName || checkAvatarPath) {

@@ -69,7 +69,7 @@ function LoginForm() {
         <form className="login-form" onSubmit={handleSubmit} >
       
           <div>
-            <label for="email">Email </label>
+            <label for="email">Username </label>
             <input type="text" value={username} placeholder='username' required onChange={(event) => setUsername(event.target.value)} />
           </div>
 
