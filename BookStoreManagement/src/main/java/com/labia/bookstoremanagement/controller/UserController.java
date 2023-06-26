@@ -136,7 +136,7 @@ public class UserController {
     @GetMapping (value = "avatar", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<?> getFile(@RequestParam("filename") String fileId, HttpServletRequest request) throws IOException {
         try{
-            String filePath = "avatar/" + fileId + ".jpg";
+            String filePath = "avatar/" + fileId;
             File file = new File(filePath);
             InputStream inputStream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
