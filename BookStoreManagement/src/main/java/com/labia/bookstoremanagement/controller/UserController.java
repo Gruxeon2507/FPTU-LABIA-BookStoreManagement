@@ -87,7 +87,9 @@ public class UserController {
 
     @GetMapping("/{username}")
     User getUser(@PathVariable String username) {
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        user.setPassword("");
+        return user;
     }
 
     @GetMapping("/check/{username}")
@@ -427,6 +429,7 @@ public class UserController {
             String username = jwtTokenUtil.getUsernameFromToken(token);
             User user = userRepository.findByUsername(username);
             if (user != null) {
+                user.setPassword("");
                 return ResponseEntity.ok(user);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

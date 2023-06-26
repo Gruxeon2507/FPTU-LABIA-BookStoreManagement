@@ -17,26 +17,23 @@ const AccountSetting = () => {
   const [username, setUsername] = useState("");
   const [avatarPath, setAvatarPath] = useState(null);
   const [checkAvatarPath, setCheckAvatarPath] = useState(false);
-  const [currentU, setCurrentU] = useState("")
+  const [currentU, setCurrentU] = useState("");
   const [messageAvatarPath, setMessageAvatarPath] = useState(
     "Please just input file JPEG and file size less than 5MB"
   );
   //   const history = useHistory();
 
   useEffect(() => {
-    api.get("/api/users/loginuser").then((res) =>
-      setUsername(res.data))
+    api.get("/api/users/loginuser").then((res) => setUsername(res.data));
 
-    api.get("/api/users/info").then(
-      (res) => {
-        setUser(res.data);
-        setDisplayName(res.data.displayName);
-        setEmail(res.data.email);
-        setDob(res.data.dob);
-        setUsername(username);
-        setCurrentU(res.data.username);
-      }
-    );
+    api.get("/api/users/info").then((res) => {
+      setUser(res.data);
+      setDisplayName(res.data.displayName);
+      setEmail(res.data.email);
+      setDob(res.data.dob);
+      setUsername(username);
+      setCurrentU(res.data.username);
+    });
   }, []);
 
   const saveUser = (e) => {
@@ -45,7 +42,7 @@ const AccountSetting = () => {
       email: email,
       displayName: displayName,
       dob: dob,
-      username: username,
+      // username: username,
     };
 
     if (checkDisplayName || checkAvatarPath) {
@@ -61,7 +58,7 @@ const AccountSetting = () => {
       formData.append("avatarPath", temp);
       UserServices.updateUserAvatar(formData);
     }
-    window.location.href = "/user/" + currentU
+    window.location.href = "/user/" + currentU;
   };
 
   const changeGmailHandler = (event) => {
@@ -73,6 +70,7 @@ const AccountSetting = () => {
       /^[a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹế\s_]+$/;
     if (!regex.test(inputDisplayName)) {
       setCheckDisplayName(true);
+      setDisplayName(inputDisplayName);
       return;
     }
     setCheckDisplayName(false);
@@ -164,8 +162,7 @@ const AccountSetting = () => {
       <div className="container">
         <h2 className="login-title">Account Setting</h2>
 
-        <form className="login-form" >
-
+        <form className="login-form">
           {/* <div>
             <label for="username">Username </label>
             <input
@@ -185,10 +182,16 @@ const AccountSetting = () => {
               onChange={changeDisplayNameHandler}
               placeholder="Enter Display Name"
               className="form-control"
-
             />
           </div>
-
+          {checkDisplayName ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {messageDisplayName}
+                </Alert>
+              </>
+            ) : null}
           <div>
             <label for="email">Email </label>
             <input
@@ -198,7 +201,6 @@ const AccountSetting = () => {
               onChange={changeGmailHandler}
               placeholder="Enter email"
               className="form-control"
-
             />
           </div>
           <div>
@@ -210,7 +212,6 @@ const AccountSetting = () => {
               onChange={changeDobHandler}
               placeholder="Enter email"
               className="form-control"
-
             />
           </div>
           <div>
@@ -220,16 +221,27 @@ const AccountSetting = () => {
               name="avatarPath"
               onChange={changeAvatarHandler}
               className="form-control"
-
             ></input>
           </div>
-          <button className="btn btn--form" type="submit" value="Log in" onClick={saveUser}>
+          {checkAvatarPath ? (
+              <>
+                <div style={{ height: "10px" }}></div>
+                <Alert key={"danger"} variant={"danger"}>
+                  {messageAvatarPath}
+                </Alert>
+              </>
+            ) : null}
+          <button
+            className="btn btn--form"
+            type="submit"
+            value="Log in"
+            onClick={saveUser}
+          >
             Change Information
           </button>
-          <button className="btn btn-danger" >
+          <button className="btn btn-danger">
             <Link to={"../../user/" + username}>Cancel</Link>
           </button>
-
         </form>
       </div>
     </div>

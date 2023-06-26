@@ -56,6 +56,7 @@ function UpdateBook(props) {
         ...book,
         showErrorTitle: true,
         errorTitle: "Please just input characters and numbers",
+        title: inputTitle,
       });
       return;
     }
@@ -76,6 +77,7 @@ function UpdateBook(props) {
         ...book,
         showErrorAuthorName: true,
         errorAuthorName: "Please just input characters and numbers",
+        authorName: inputAuthorName,
       });
       return;
     }
@@ -96,6 +98,7 @@ function UpdateBook(props) {
         ...book,
         showErrorDescription: true,
         errorDescription: "Please just input characters and numbers",
+        description: inputDescription,
       });
       return;
     }
@@ -108,7 +111,6 @@ function UpdateBook(props) {
   };
   const changeCoverHandler = (event) => {
     const cover = event.target.files[0];
-
 
     if (!cover) {
       alert("Please choose a file");
@@ -218,8 +220,6 @@ function UpdateBook(props) {
     });
   };
 
- 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     // const formData = new FormData();
@@ -229,7 +229,7 @@ function UpdateBook(props) {
     const categoryIds = selectedCategories.map((category) => {
       return { categoryId: category.value, categoryName: category.label };
     });
-    if(selectedCategories.length != 0){
+    if (selectedCategories.length != 0) {
       book.categories = categoryIds;
     }
 
@@ -237,8 +237,8 @@ function UpdateBook(props) {
       bookCategoryIds.includes(option.value)
     );
     console.log(checkcatego.length == 0);
-    
-    if((checkcatego.length == 0) == true){
+
+    if ((checkcatego.length == 0) == true) {
       alert("Please choose category !!");
       return;
     }
