@@ -280,9 +280,10 @@ public class BookController {
         String filePath = "./cover/" + fileName;
         String command = "rm -rf " + filePath;
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
-            Process process = processBuilder.start();
-
+//            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+//            Process process = processBuilder.start();
+            String[] cmdArray = { "/bin/bash", "-c", command };
+            Process process = Runtime.getRuntime().exec(cmdArray);
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 System.out.println("Command executed successfully");
@@ -303,8 +304,8 @@ public class BookController {
         String filePath = "./pdf/" + fileName;
         String command = "rm -rf " + filePath;
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
-            Process process = processBuilder.start();
+            String[] cmdArray = { "/bin/bash", "-c", command };
+            Process process = Runtime.getRuntime().exec(cmdArray);
 
             int exitCode = process.waitFor();
             if (exitCode == 0) {
