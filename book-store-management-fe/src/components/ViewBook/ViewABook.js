@@ -86,11 +86,11 @@ function ViewABook() {
             </div>
           </div>
         </div>
-        <div className="pdf">
+        {/* <div className="pdf">
           <iframe
             src={`http://103.173.229.92:6789/api/books/pdf/${book.bookId}`}
           ></iframe>
-        </div>
+        </div> */}
       </div>
     ) }
     else {
