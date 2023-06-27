@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a new instance of axios with default configurations
 const api = axios.create({
-  baseURL: 'http://localhost:6789/', // Replace with your API base URL
+  baseURL: 'http://192.168.182.56:6789/', // Replace with your API base URL
 });
 
 // Set the JWT token in the request headers

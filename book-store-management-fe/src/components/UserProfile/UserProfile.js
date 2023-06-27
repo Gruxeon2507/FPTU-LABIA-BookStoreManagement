@@ -51,8 +51,8 @@ function UserProfile() {
         <div className="profile-container">
             <div className="user-info">
                 <div className="avatar-card">
-                    <img src={`http://localhost:6789/api/users/avatar/${user.username}.jpg`} alt={user.username} />
-                    {console.log(`http://localhost:6789/api/users/avatar/${user.username}.jpg`)}
+                    <img src={`http://192.168.182.56:6789/api/users/avatar/${user.username}.jpg`} alt={user.username} />
+                    {console.log(`http://192.168.182.56:6789/api/users/avatar/${user.username}.jpg`)}
                     <p className="displayName">{user.displayName}</p>
                     {console.log(user)}
                     <p>{loginUser}</p>
@@ -102,7 +102,7 @@ function UserProfile() {
                                 <div className="cover">
                                     <Card.Img
                                         variant="top"
-                                        src={"http://localhost:6789/api/books/cover/" + book.bookId}
+                                        src={"http://192.168.182.56:6789/api/books/cover/" + book.bookId}
                                         style={{ height: "9rem", width: "auto" }}
                                     />
                                 </div>

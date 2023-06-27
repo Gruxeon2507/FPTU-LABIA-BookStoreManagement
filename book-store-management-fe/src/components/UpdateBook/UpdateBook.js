@@ -271,7 +271,7 @@ function UpdateBook(props) {
     formData.append("bookId", bookId);
     BookServices.updateNewBookCover(formData, bookId);
     BookServices.updateNewBookPdf(formData, bookId);
-    window.location.href = "http://localhost:3000/mybook";
+    window.location.href = "http://192.168.182.56:3000/mybook";
   };
 
   return (

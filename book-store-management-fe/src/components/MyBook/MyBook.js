@@ -85,7 +85,7 @@ const MyBook = () => {
                 <td className="align-middle">{book.authorName}</td>
                 <td className="align-middle">
                   <img
-                    src={"http://localhost:6789/api/books/cover/" + book.bookId}
+                    src={"http://192.168.182.56:6789/api/books/cover/" + book.bookId}
                     height={300}
                     width={"auto"}
                     alt={book.title}
@@ -93,12 +93,12 @@ const MyBook = () => {
                   <br />
                   <button className="btn btn-warning">
                     {/* <a
-                      href={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                      href={"http://192.168.182.56:6789/api/books/pdf/" + book.bookId}
                     >
                       View PDF
                     </a> */}
                     <Link
-                      to={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                      to={"http://192.168.182.56:6789/api/books/pdf/" + book.bookId}
                       target="_blank"
                       x
                     >
@@ -156,7 +156,7 @@ const MyBook = () => {
                 <td className="align-middle">{book.authorName}</td>
                 <td className="align-middle">
                   <img
-                    src={"http://localhost:6789/api/books/cover/" + book.bookId}
+                    src={"http://192.168.182.56:6789/api/books/cover/" + book.bookId}
                     height={300}
                     width={"auto"}
                     alt={book.title}
@@ -164,7 +164,7 @@ const MyBook = () => {
                   <br />
                   <button className="btn btn-warning">
                     <Link
-                      to={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                      to={"http://192.168.182.56:6789/api/books/pdf/" + book.bookId}
                       target="_blank"
                     >
                       View PDF

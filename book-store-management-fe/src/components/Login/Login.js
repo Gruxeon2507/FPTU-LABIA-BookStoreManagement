@@ -25,7 +25,7 @@ function LoginForm() {
     }
     try {
       const response = await axios.post(
-        "http://localhost:6789/api/auth/login",
+        "http://192.168.182.56:6789/api/auth/login",
         { username, password }
       );
       console.log(response.data);

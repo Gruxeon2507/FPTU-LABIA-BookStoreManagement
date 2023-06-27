@@ -17,7 +17,6 @@ import com.labia.bookstoremanagement.repository.CategoryRepository;
 import com.labia.bookstoremanagement.repository.UserRepository;
 import com.labia.bookstoremanagement.utils.AuthorizationUtils;
 import com.labia.bookstoremanagement.utils.DateTimeUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -50,9 +49,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ *
  * @author emiukhoahoc
  */
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://172.20.10.7:3000/"})
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -63,7 +63,7 @@ public class UserController {
     BookRepository bookRepository;
     @Autowired
     CategoryRepository categoryRepository;
-
+    
     @Autowired
     private RoleUtils roleUtils;
 
@@ -87,9 +87,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     User getUser(@PathVariable String username) {
-        User user = userRepository.findByUsername(username);
-        user.setPassword("");
-        return user;
+        return userRepository.findByUsername(username);
     }
 
     @GetMapping("/check/{username}")
@@ -136,7 +134,7 @@ public class UserController {
     @GetMapping (value = "avatar", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<?> getFile(@RequestParam("filename") String fileId, HttpServletRequest request) throws IOException {
         try{
-            String filePath = "avatar/" + fileId + ".jpg";
+            String filePath = "avatar/" + fileId;
             File file = new File(filePath);
             InputStream inputStream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
@@ -348,12 +346,9 @@ public class UserController {
             @RequestParam Integer pageNumber,
             @RequestParam Integer pageSize
     ) {
-        System.out.println("/ONLYUSER PAGINATION API CALLED");
-        if (roleUtils.hasRoleFromToken(request, 2) || roleUtils.hasRoleFromToken(request, 1) || roleUtils.hasRoleFromToken(request, 3)) {
+        if ( roleUtils.hasRoleFromToken(request, 2)||roleUtils.hasRoleFromToken(request, 1)) {
             Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createDate").descending());
             return userRepository.getOnlyRoleUser(pageable);
-        } else {
-            System.out.println("NULL WILL BE RETURNED.");
         }
         return null;
     }
@@ -429,7 +424,6 @@ public class UserController {
             String username = jwtTokenUtil.getUsernameFromToken(token);
             User user = userRepository.findByUsername(username);
             if (user != null) {
-                user.setPassword("");
                 return ResponseEntity.ok(user);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

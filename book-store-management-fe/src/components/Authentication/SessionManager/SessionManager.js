@@ -11,7 +11,7 @@
 //     // console.log(sessionId)
 //     if (sessionId) {
 //       axios.defaults.headers.common['sessionId'] = sessionId;
-//       axios.get('http://localhost:6789/api/auth/checkSession')
+//       axios.get('http://192.168.182.56:6789/api/auth/checkSession')
 //         .then(() => setIsAuthenticated(true))
 //         .catch(() => {
 //           localStorage.removeItem('sessionId');
@@ -24,7 +24,7 @@
 
 //   const handleLogout = () => {
 //     localStorage.removeItem('sessionId');
-//     axios.post('http://localhost:6789/api/auth/logout')
+//     axios.post('http://192.168.182.56:6789/api/auth/logout')
 //       .then(() => setIsAuthenticated(false))
 //       .catch(console.log);
 //   };
