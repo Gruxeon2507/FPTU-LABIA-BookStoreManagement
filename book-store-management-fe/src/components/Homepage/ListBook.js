@@ -297,7 +297,7 @@
 //               <div className="cover">
 //                 <Card.Img
 //                   variant="top"
-//                   src={"http://192.168.182.56:6789/api/books/cover/" + book.bookId}
+//                   src={"http://103.173.229.92:6789/api/books/cover/" + book.bookId}
 //                   style={{ height: "14rem", width: "auto" }}
 //                 />
 //               </div>
@@ -680,7 +680,7 @@ function ListBook() {
              <div className="cover">
                <Card.Img
                  variant="top"
-                 src={"http://192.168.182.56:6789/api/books/cover/" + book.bookId}
+                 src={"http://103.173.229.92:6789/api/books/cover/" + book.bookId}
                  style={{ height: "14rem", width: "auto" }}
                />
              </div>

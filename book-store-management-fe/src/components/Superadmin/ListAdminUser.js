@@ -106,7 +106,7 @@ const ListAdminUser = () => {
                     <td>
                       <img
                         src={
-                          "http://192.168.182.56:6789/api/users/avatar/" +
+                          "http://103.173.229.92:6789/api/users/avatar/" +
                           user.username
                         }
                         style={{ width: 40 }}
@@ -168,7 +168,7 @@ const ListAdminUser = () => {
                 <td>
                   <img
                     src={
-                      "http://192.168.182.56:6789/api/users/avatar/" + user.username
+                      "http://103.173.229.92:6789/api/users/avatar/" + user.username
                     }
                     style={{ width: 40 }}
                     alt=""

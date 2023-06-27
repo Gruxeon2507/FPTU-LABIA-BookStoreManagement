@@ -1,5 +1,5 @@
 import axios from "axios";
-const BOOK_BASE_REST_API_URL = "http://192.168.182.56:6789/api/categories";
+const BOOK_BASE_REST_API_URL = "http://103.173.229.92:6789/api/categories";
 
 class CategoryServices {
   getAllCategories() {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import api from "./BaseAuthenticationServices";
 
-const USER_BASE_REST_API_URL = "http://192.168.182.56:6789/api/users";
+const USER_BASE_REST_API_URL = "http://103.173.229.92:6789/api/users";
 
 class UserServices {
   // getAllUser() {

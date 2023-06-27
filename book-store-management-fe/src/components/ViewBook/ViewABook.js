@@ -32,10 +32,10 @@ function ViewABook() {
   }, [bookId]);
 
   const handleViewCoverBook = async () => {
-    const urlApi = `http://192.168.182.56:6789/api/books/cover/${bookId}`;
+    const urlApi = `http://103.173.229.92:6789/api/books/cover/${bookId}`;
     try {
       const response = await axios.post(
-        `http://192.168.182.56:6789/api/books/executeApi`,
+        `http://103.173.229.92:6789/api/books/executeApi`,
         {
           api: urlApi,
         },
@@ -65,7 +65,7 @@ function ViewABook() {
               <h6>{book.authorName}</h6>
               {categories.map((category) => (
                 <button className="category-btn" key={category.categoryId}>
-                  <Link to={`http://192.168.182.56:3000/${category.categoryId}`}>
+                  <Link to={`http://103.173.229.92:3000/${category.categoryId}`}>
                     {category.categoryName}
                   </Link>
                 </button>
@@ -75,7 +75,7 @@ function ViewABook() {
               <p className="desc">{book.description}</p>
               <button>
                 <Link
-                  to={`http://192.168.182.56:6789/api/books/pdf/${book.bookId}`}
+                  to={`http://103.173.229.92:6789/api/books/pdf/${book.bookId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -88,7 +88,7 @@ function ViewABook() {
         </div>
         <div className="pdf">
           <iframe
-            src={`http://192.168.182.56:6789/api/books/pdf/${book.bookId}`}
+            src={`http://103.173.229.92:6789/api/books/pdf/${book.bookId}`}
           ></iframe>
         </div>
       </div>

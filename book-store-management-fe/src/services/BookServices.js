@@ -1,7 +1,7 @@
 import axios from "axios";
 import { json } from "react-router";
 import api from "./BaseAuthenticationServices";
-const BOOK_BASE_REST_API_URL = "http://192.168.182.56:6789/api/books";
+const BOOK_BASE_REST_API_URL = "http://103.173.229.92:6789/api/books";
 
 class BookService {
   getAllBooks() {
@@ -83,7 +83,7 @@ class BookService {
       },
     };
     return api.post(
-        "http://192.168.182.56:6789/api/books/update/" + id,
+        "http://103.173.229.92:6789/api/books/update/" + id,
       JSON.stringify(book),
       config
     );
@@ -154,7 +154,7 @@ class BookService {
     formData.append("field", field);
     formData.append("pageNumber", pageNumber);
     formData.append("pageSize", pageSize);
-    return axios.post("http://192.168.182.56:6789/api/books/sort", formData);
+    return axios.post("http://103.173.229.92:6789/api/books/sort", formData);
     
 
   }
