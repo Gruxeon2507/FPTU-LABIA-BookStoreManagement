@@ -82,4 +82,13 @@ public class UserSQLi {
         Page<Book> resultPage = new PageImpl<>(resultList, pageable, total);
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
+    @PostMapping("/api/books/first")
+    public ResponseEntity<Book> getFirstBookOfUser(
+            @RequestParam(defaultValue = "bookId") String field
+    ) {
+        String query = "SELECT * FROM Book b WHERE b.isApproved = '1' ORDER BY " + field;
+        Query nativeQuery = entityManager.createNativeQuery(query, Book.class);
+        List<Book> resultList = nativeQuery.getResultList();
+        return ResponseEntity.ok(resultList.get(0));
+    }
 }

@@ -52,7 +52,9 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author emiukhoahoc
  */
-@CrossOrigin(origins = {"http://172.20.10.7:3000/"})
+
+@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("api/users")
 public class UserController {
