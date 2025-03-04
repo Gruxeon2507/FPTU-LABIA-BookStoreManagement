@@ -47,7 +47,7 @@ class AddBook extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:6789/api/categories")
+    fetch("http://103.173.229.92:6789/api/categories")
       .then((response) => response.json())
       .then((data) => {
         this.setState({
@@ -281,7 +281,7 @@ class AddBook extends Component {
 
     let bookId = "";
 
-    // fetch("http://localhost:6789/api/books/add", {
+    // fetch("http://103.173.229.92:6789/api/books/add", {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json",
@@ -316,7 +316,7 @@ class AddBook extends Component {
         alert("Call API failed !");
       });
 
-    // window.location.href = "http://localhost:3000/mybook";
+    // window.location.href = "http://103.173.229.92:3000/mybook";
   };
 
   render() {

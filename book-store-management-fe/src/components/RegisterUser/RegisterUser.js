@@ -33,7 +33,7 @@ class RegisterUser extends Component {
     const inputUsername = event.target.value;
 
     if (this.state.username.trim() !== "") {
-      fetch(`http://localhost:6789/api/users/check/${inputUsername}`)
+      fetch(`http://103.173.229.92:6789/api/users/check/${inputUsername}`)
         .then((response) => response.text())
         .then((data) => {
           if (data === "Username already taken") {
@@ -171,7 +171,7 @@ class RegisterUser extends Component {
     if (this.state.usernameError === "Username already taken") {
       return;
     } else {
-      fetch("http://localhost:6789/api/users/register", {
+      fetch("http://103.173.229.92:6789/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -191,7 +191,7 @@ class RegisterUser extends Component {
           "Registed successfully want to change page to login ?"
         );
         if (confirm) {
-          window.location.href = "http://localhost:3000/login";
+          window.location.href = "http://103.173.229.92:3000/login";
         }
       }
     }

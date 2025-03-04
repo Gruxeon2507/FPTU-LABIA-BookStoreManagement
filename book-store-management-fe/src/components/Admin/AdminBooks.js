@@ -105,7 +105,7 @@ const AdminBooks = () => {
                 <td className="align-middle">{book.authorName}</td>
                 <td className="align-middle">
                   <img
-                    src={"http://localhost:6789/api/books/cover/" + book.bookId}
+                    src={"http://103.173.229.92:6789/api/books/cover/" + book.bookId}
                     height={300}
                     width={"auto"}
                     alt={book.title}
@@ -113,7 +113,7 @@ const AdminBooks = () => {
                   <br />
                   <button className="btn btn-warning">
                     <Link
-                      to={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                      to={"http://103.173.229.92:6789/api/books/pdf/" + book.bookId}
                       target="_blank"
                     >
                       View PDF
@@ -123,7 +123,7 @@ const AdminBooks = () => {
                 <td className="align-middle text-start">{book.description}</td>
                 <td className="align-middle text-start">
                   <Button>
-                    <Link to={"http://localhost:3000/user/" + book.coverPath}>
+                    <Link to={"http://103.173.229.92:3000/user/" + book.coverPath}>
                       {book.pdfPath}
                     </Link>
                   </Button>
@@ -182,7 +182,7 @@ const AdminBooks = () => {
                 <td className="align-middle">{book.authorName}</td>
                 <td className="align-middle">
                   <img
-                    src={"http://localhost:6789/api/books/cover/" + book.bookId}
+                    src={"http://103.173.229.92:6789/api/books/cover/" + book.bookId}
                     height={300}
                     width={"auto"}
                     alt={book.title}
@@ -190,7 +190,7 @@ const AdminBooks = () => {
                   <br />
                   <button className="btn btn-warning">
                     <Link
-                      to={"http://localhost:6789/api/books/pdf/" + book.bookId}
+                      to={"http://103.173.229.92:6789/api/books/pdf/" + book.bookId}
                       target="_blank"
                     >
                       View PDF
@@ -200,7 +200,7 @@ const AdminBooks = () => {
                 <td className="align-middle text-start">{book.description}</td>
                 <td className="align-middle text-start">
                   <Button>
-                    <Link to={"http://localhost:3000/user/" + book.coverPath}>
+                    <Link to={"http://103.173.229.92:3000/user/" + book.coverPath}>
                       {book.pdfPath}
                     </Link>
                   </Button>
