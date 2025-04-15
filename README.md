@@ -1,2 +1,2 @@
 # FPTU-LABIA-BookStoreManagement
-maiphuonghoang jenkins
+maiphuonghoang Jenkins installed plugin
