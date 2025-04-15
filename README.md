@@ -1,2 +1,2 @@
 # FPTU-LABIA-BookStoreManagement
-maiphuonghoang Jenkins installed plugin
+maiphuonghoang Jenkins installed webhook plugin
