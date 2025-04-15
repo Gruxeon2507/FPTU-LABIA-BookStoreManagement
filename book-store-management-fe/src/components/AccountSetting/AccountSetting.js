@@ -51,7 +51,8 @@ const AccountSetting = () => {
     }
 
     console.log(JSON.stringify(User));
-    UserServices.updateUserInformation(User);
+    api.post("/api/users/update-profile", User);
+    // UserServices.updateUserInformation(User);
     let temp = avatarPath;
     if (temp !== null) {
       const formData = new FormData();
